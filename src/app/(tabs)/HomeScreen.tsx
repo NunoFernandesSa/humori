@@ -1,12 +1,13 @@
+import Container from '@/src/components/common/Container';
 import { Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function HomeScreen() {
   return (
     <SafeAreaView>
-      <View>
+      <Container>
         <Text>Home Screen</Text>
-      </View>
+      </Container>
     </SafeAreaView>
   );
 }
