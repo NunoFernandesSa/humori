@@ -1,16 +1,16 @@
 import { create } from "zustand";
+import { MoodState } from "../types/moodType";
 
-const useMoodStore = create((set) => ({
+export const useMoodStore = create<MoodState>((set) => ({
   moods: [],
 
-  loadMoods: (moods: any) => set({ moods }),
+  loadMoods: (moods) => set({ moods }),
 
-  addMood: (mood: any) =>
-    set((state: any) => ({ moods: [...state.moods, mood] })),
+  addMood: (mood) => set((state) => ({ moods: [...state.moods, mood] })),
 
-  deleteMood: (id: any) =>
-    set((state: any) => ({
-      moods: state.moods.filter((m: any) => m.id !== id),
+  deleteMood: (id: string) =>
+    set((state) => ({
+      moods: state.moods.filter((m) => m.id !== id),
     })),
 
   clearMoods: () => set({ moods: [] }),
