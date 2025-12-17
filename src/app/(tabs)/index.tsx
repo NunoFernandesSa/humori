@@ -5,7 +5,7 @@ export default function Index() {
   return (
     <SafeAreaView>
       <View>
-        <Text>Onboarding Page</Text>
+        <Text>Home Page</Text>
       </View>
     </SafeAreaView>
   );
