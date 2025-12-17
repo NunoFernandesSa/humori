@@ -6,7 +6,7 @@ export default function TabsLayout() {
   return (
     <Tabs>
       <Tabs.Screen
-        name="index"
+        name="HomeScreen"
         options={{
           headerShown: false,
           tabBarLabel: "Home",
@@ -17,23 +17,23 @@ export default function TabsLayout() {
       />
 
       <Tabs.Screen
-        name="stats"
+        name="HistoryScreen"
         options={{
           headerShown: false,
-          tabBarLabel: "Stats",
+          tabBarLabel: "Historical",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="stats-chart" color={color} size={size} />
+            <Ionicons name="calendar" color={color} size={size} />
           ),
         }}
       />
 
       <Tabs.Screen
-        name="settings"
+        name="StatsScreen"
         options={{
           headerShown: false,
-          tabBarLabel: "Settings",
+          tabBarLabel: "Stats",
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="settings" color={color} size={size} />
+            <Ionicons name="stats-chart" color={color} size={size} />
           ),
         }}
       />
