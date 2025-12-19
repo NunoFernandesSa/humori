@@ -1,6 +1,6 @@
 import Container from "@/src/components/common/Container";
+import { moods } from "@/src/constants/moods";
 import {
-  Alert,
   StyleSheet,
   Text,
   TextInput,
@@ -16,21 +16,14 @@ export default function HomeScreen() {
         <Text style={styles.title}>How are you feeling today ?</Text>
 
         <View style={styles.moodContainer}>
-          <TouchableOpacity style={styles.moodButton}>
-            <Text>happy</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.moodButton}>
-            <Text>sad</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.moodButton}>
-            <Text>neutral</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.moodButton}>
-            <Text>angry</Text>
-          </TouchableOpacity>
+          {moods.map((mood) => (
+            <TouchableOpacity
+              key={mood.key}
+              style={[styles.moodButton, { backgroundColor: mood.color }]}
+            >
+              <Text style={styles.moodButtonIcon}>{mood.icon}</Text>
+            </TouchableOpacity>
+          ))}
         </View>
 
         <TextInput
@@ -42,10 +35,7 @@ export default function HomeScreen() {
         <TouchableOpacity
           style={styles.submitButton}
           onPress={() => {
-            Alert.alert("Submit", "Are you sure you want to submit?", [
-              { text: "Cancel", style: "cancel" },
-              { text: "OK", style: "destructive" },
-            ]);
+            console.log("Save Mood");
           }}
         >
           <Text style={styles.submitButtonText}>Save Mood</Text>
@@ -63,16 +53,22 @@ const styles = StyleSheet.create({
   },
 
   moodContainer: {
+    gap: 10,
     flexDirection: "row",
     justifyContent: "space-between",
     marginVertical: 60,
   },
 
   moodButton: {
-    padding: 10,
-    borderRadius: 5,
+    flex: 1,
+    height: 60,
+    borderRadius: 9,
     alignItems: "center",
     justifyContent: "center",
+  },
+
+  moodButtonIcon: {
+    fontSize: 36,
   },
 
   moodNote: {
@@ -85,7 +81,7 @@ const styles = StyleSheet.create({
   },
 
   submitButton: {
-    marginTop: 20,
+    marginTop: 30,
     backgroundColor: "blue",
     padding: 10,
     borderRadius: 5,
