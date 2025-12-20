@@ -7,7 +7,7 @@ import { useState } from "react";
 import { Alert, StyleSheet, TextInput } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-export default function HomeScreen() {
+const HomeScreen = () => {
   const [moodNote, setMoodNote] = useState("");
   const [selectedMood, setSelectedMood] = useState<Mood | "">("");
 
@@ -46,7 +46,9 @@ export default function HomeScreen() {
       </Container>
     </SafeAreaView>
   );
-}
+};
+
+export default HomeScreen;
 
 // ---------- styles ----------
 const styles = StyleSheet.create({

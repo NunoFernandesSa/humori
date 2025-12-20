@@ -11,7 +11,7 @@ export default function TabsLayout() {
   return (
     <Tabs>
       <Tabs.Screen
-        name="HomeScreen"
+        name="home"
         options={{
           headerShown: true,
           headerTitle: () => (
@@ -34,7 +34,7 @@ export default function TabsLayout() {
       />
 
       <Tabs.Screen
-        name="HistoryScreen"
+        name="history"
         options={{
           headerShown: true,
           headerTitle: () => <Text style={{ color: "gray" }}>Historical</Text>,
@@ -55,7 +55,7 @@ export default function TabsLayout() {
       />
 
       <Tabs.Screen
-        name="StatsScreen"
+        name="stats"
         options={{
           headerShown: true,
           headerTitle: () => <Text style={{ color: "gray" }}>Stats</Text>,
