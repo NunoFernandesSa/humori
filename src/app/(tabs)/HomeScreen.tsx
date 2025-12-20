@@ -15,19 +15,13 @@ export default function HomeScreen() {
 
   // handle submit button press
   const handleSubmt = () => {
-    Alert.alert("Submit", "Are you sure you want to submit?", [
-      {
-        text: "Cancel",
-        style: "cancel",
-      },
-      {
-        text: "OK",
-        onPress: () => {
-          console.log("Mood : ", selectedMood);
-          console.log("Note : ", moodNote);
-        },
-      },
-    ]);
+    if (!selectedMood) {
+      Alert.alert("Please select a mood", "You must select a mood to submit.");
+      return;
+    }
+
+    // TODO: Send data to AsyncStorage or SQLite. Note is not required.
+    console.log("Mood : ", selectedMood);
   };
 
   return (
@@ -54,6 +48,7 @@ export default function HomeScreen() {
   );
 }
 
+// ---------- styles ----------
 const styles = StyleSheet.create({
   moodNote: {
     borderWidth: 1,

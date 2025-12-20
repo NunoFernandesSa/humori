@@ -2,11 +2,29 @@ import { moods } from "@/src/constants/moods";
 import { MoodSelectorProps } from "@/src/types/mood-selector-props-types";
 import { Mood } from "@/src/types/moodType";
 import { ScaleAnimations } from "@/src/types/scale-animations-props-types";
-import React, { useRef } from "react";
+import React, { JSX, useRef } from "react";
 import { Animated, Easing, StyleSheet, View } from "react-native";
 import MoodButton from "./MoodButton";
 
-export function MoodSelector({ selectedMood, onSelect }: MoodSelectorProps) {
+/**
+ * MoodSelector renders a row of mood buttons.
+ * When a mood is pressed, it scales up to indicate selection and
+ * calls onSelect with the chosen mood key (or an empty string to deselect).
+ *
+ * @param {MoodSelectorProps} props
+ * @param {string} props.selectedMood - The currently selected mood key; empty if none.
+ * @param {(mood: string) => void} props.onSelect - Callback invoked when a mood is selected or deselected.
+ * @returns {JSX.Element} The mood selector component.
+ * @example
+ * <MoodSelector
+ *   selectedMood={selectedMood}
+ *   onSelect={setSelectedMood}
+ * />
+ */
+export function MoodSelector({
+  selectedMood,
+  onSelect,
+}: MoodSelectorProps): JSX.Element {
   // create scale animations for each mood button
   const scaleAnimations = useRef<ScaleAnimations>(
     moods.reduce((acc, mood) => {

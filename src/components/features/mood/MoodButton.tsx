@@ -1,9 +1,32 @@
 import { Mood } from "@/src/types/moodType";
-import React from "react";
+import React, { JSX } from "react";
 import { Animated, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { MoodButtonProps } from "../../../types/mood-button-props-types";
 
-const MoodButton = ({ mood, scale, isSelected, onPress }: MoodButtonProps) => {
+/**
+ * Renders an animated mood button that visually represents a mood with an icon and color.
+ * The button scales on interaction and highlights when selected.
+ *
+ * @param {MoodButtonProps} props - The component props.
+ * @param {Mood} props.mood - The mood object containing key, icon, and color.
+ * @param {Animated.AnimatedValue} props.scale - The animated scale value for the button.
+ * @param {boolean} props.isSelected - Whether the button is currently selected.
+ * @param {(moodKey: Mood) => void} props.onPress - Callback fired when the button is pressed.
+ * @returns {JSX.Element} The animated mood button component.
+ * @example
+ * <MoodButton
+ *   mood={{ key: "happy", icon: "😊", color: "#eae79cff" }}
+ *   scale={scale}
+ *   isSelected={isSelected}
+ *   onPress={onPress}
+ * />
+ */
+const MoodButton = ({
+  mood,
+  scale,
+  isSelected,
+  onPress,
+}: MoodButtonProps): JSX.Element => {
   return (
     <Animated.View
       key={mood.key}
