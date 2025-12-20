@@ -1,4 +1,4 @@
-type Mood = "happy" | "sad" | "neutral" | "angry";
+export type Mood = "happy" | "sad" | "neutral" | "angry";
 
 export type MoodEntry = {
   id: string;

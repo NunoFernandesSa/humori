@@ -3,24 +3,24 @@ export const moods = [
     key: "happy",
     name: "happy",
     icon: "😄",
-    color: "green",
+    color: "#4CAF50",
   },
   {
     key: "neutral",
     name: "neutral",
     icon: "😐",
-    color: "gray",
+    color: "#9E9E9E",
   },
   {
     key: "sad",
     name: "sad",
     icon: "😢",
-    color: "blue",
+    color: "#2196f3ff",
   },
   {
     key: "angry",
     name: "angry",
     icon: "😠",
-    color: "red",
+    color: "#F44336",
   },
 ];
