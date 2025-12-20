@@ -9,13 +9,13 @@ export const moods = [
     key: "neutral",
     name: "neutral",
     icon: "😐",
-    color: "#9E9E9E",
+    color: "#2196f3ff",
   },
   {
     key: "sad",
     name: "sad",
     icon: "😢",
-    color: "#2196f3ff",
+    color: "#e98865ff",
   },
   {
     key: "angry",
