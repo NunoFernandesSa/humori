@@ -3,6 +3,10 @@ import { Tabs } from "expo-router";
 import React from "react";
 import { Text, View } from "react-native";
 
+/**
+ * TabsLayout component defines the bottom-tab navigation structure for the MoodTracker app.
+ * It renders three tabs: Home, Historical, and Stats, each with custom headers, icons, and labels.
+ */
 export default function TabsLayout() {
   return (
     <Tabs>
