@@ -3,6 +3,7 @@ import { moods } from "@/src/constants/moods";
 import { Mood } from "@/src/types/moodType";
 import { useRef, useState } from "react";
 import {
+  Alert,
   Animated,
   Easing,
   StyleSheet,
@@ -56,6 +57,22 @@ export default function HomeScreen() {
     setSelectedMood(selectedMood === moodKey ? "" : moodKey);
   };
 
+  const handleSubmt = () => {
+    Alert.alert("Submit", "Are you sure you want to submit?", [
+      {
+        text: "Cancel",
+        style: "cancel",
+      },
+      {
+        text: "OK",
+        onPress: () => {
+          console.log("Mood : ", selectedMood);
+          console.log("Note : ", moodNote);
+        },
+      },
+    ]);
+  };
+
   return (
     <SafeAreaView>
       <Container>
@@ -101,11 +118,11 @@ export default function HomeScreen() {
           onChangeText={(text) => setMoodNote(text)}
         ></TextInput>
 
+        {/* submit button */}
         <TouchableOpacity
           style={styles.submitButton}
           onPress={() => {
-            console.log("Mood : ", selectedMood);
-            console.log("Note : ", moodNote);
+            handleSubmt();
           }}
         >
           <Text style={styles.submitButtonText}>Save Mood</Text>
