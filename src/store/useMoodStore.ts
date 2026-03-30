@@ -1,17 +1,19 @@
-import { create } from "zustand";
-import { MoodState } from "../types/moodType";
+// TODO: Implement mood store using Zustand for state management in V1
 
-export const useMoodStore = create<MoodState>((set) => ({
-  moods: [],
+// import { create } from "zustand";
+// import { MoodState } from "../types/moodType";
 
-  loadMoods: (moods) => set({ moods }),
+// export const useMoodStore = create<MoodState>((set) => ({
+//   moods: [],
 
-  addMood: (mood) => set((state) => ({ moods: [...state.moods, mood] })),
+//   loadMoods: (moods) => set({ moods }),
 
-  deleteMood: (id: string) =>
-    set((state) => ({
-      moods: state.moods.filter((m) => m.id !== id),
-    })),
+//   addMood: (mood) => set((state) => ({ moods: [...state.moods, mood] })),
 
-  clearMoods: () => set({ moods: [] }),
-}));
+//   deleteMood: (id: string) =>
+//     set((state) => ({
+//       moods: state.moods.filter((m) => m.id !== id),
+//     })),
+
+//   clearMoods: () => set({ moods: [] }),
+// }));

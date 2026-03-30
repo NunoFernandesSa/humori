@@ -55,4 +55,14 @@ export const storageService = {
     const today = new Date().toISOString().split("T")[0];
     return entries.find((entry) => entry.date.split("T")[0] === today) || null;
   },
+
+  async deleteAllEntries(): Promise<void> {
+    try {
+      await AsyncStorage.removeItem(STORAGE_KEY);
+      console.log("All entries deleted");
+    } catch (error) {
+      console.error("Error clearing entries:", error);
+      throw error;
+    }
+  },
 };

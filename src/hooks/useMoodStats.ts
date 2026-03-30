@@ -134,15 +134,36 @@ export const useMoodStats = () => {
     return "Très bas 😠";
   }, [getFilteredEntries]);
 
+  const deleteAllEntries = useCallback(() => {
+    Alert.alert(
+      "Confirmation",
+      "Êtes-vous sûr de vouloir supprimer toutes les données ?",
+      [
+        { text: "Annuler", style: "cancel" },
+        {
+          text: "Supprimer",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              await storageService.deleteAllEntries();
+              await loadEntries();
+              Alert.alert("Succès", "Toutes les données ont été supprimées");
+            } catch (error) {
+              console.error("Error deleting all entries:", error);
+              Alert.alert("Erreur", "Impossible de supprimer les données");
+            }
+          },
+        },
+      ],
+    );
+  }, []);
+
   return {
-    // États
     entries,
     isLoading,
     refreshing,
     selectedPeriod,
-    // Setters
     setSelectedPeriod,
-    // Fonctions
     loadEntries,
     onRefresh,
     getFilteredEntries,
@@ -151,5 +172,6 @@ export const useMoodStats = () => {
     getChartData,
     getPieChartData,
     getAverageMood,
+    deleteAllEntries,
   };
 };
