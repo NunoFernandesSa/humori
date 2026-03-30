@@ -9,7 +9,21 @@ import { Text, View } from "react-native";
  */
 export default function TabsLayout() {
   return (
-    <Tabs>
+    <Tabs
+      screenOptions={{
+        tabBarActiveTintColor: "#4CAF50",
+        tabBarStyle: {
+          backgroundColor: "#FFF",
+          borderTopColor: "#E0E0E0",
+          elevation: 0,
+          shadowOpacity: 0,
+        },
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: "500",
+        },
+      }}
+    >
       <Tabs.Screen
         name="home"
         options={{
