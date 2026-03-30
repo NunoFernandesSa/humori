@@ -5,7 +5,7 @@ import { Text, View } from "react-native";
 
 /**
  * TabsLayout component defines the bottom-tab navigation structure for the MoodTracker app.
- * It renders three tabs: Home, Historical, and Stats, each with custom headers, icons, and labels.
+ * It renders two tabs: Home and Stats, each with custom headers, icons, and labels.
  */
 export default function TabsLayout() {
   return (
@@ -15,7 +15,7 @@ export default function TabsLayout() {
         options={{
           headerShown: true,
           headerTitle: () => (
-            <Text style={{ color: "gray" }}>Welcome to MoodTracker</Text>
+            <Text style={{ color: "gray" }}>Bienvenue sur MoodTracker</Text>
           ),
           headerLeft: () => (
             <Ionicons
@@ -26,7 +26,7 @@ export default function TabsLayout() {
             />
           ),
           headerBackground: () => <View style={{ backgroundColor: "white" }} />,
-          tabBarLabel: ({ color }) => <Text style={{ color }}>Home</Text>,
+          tabBarLabel: ({ color }) => <Text style={{ color }}>Accueil</Text>,
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home" color={color} size={size} />
           ),
@@ -37,7 +37,9 @@ export default function TabsLayout() {
         name="stats"
         options={{
           headerShown: true,
-          headerTitle: () => <Text style={{ color: "gray" }}>Stats</Text>,
+          headerTitle: () => (
+            <Text style={{ color: "gray" }}>Statistiques</Text>
+          ),
           headerLeft: () => (
             <Ionicons
               name="grid"
@@ -47,7 +49,9 @@ export default function TabsLayout() {
             />
           ),
           headerBackground: () => <View style={{ backgroundColor: "white" }} />,
-          tabBarLabel: ({ color }) => <Text style={{ color }}>Stats</Text>,
+          tabBarLabel: ({ color }) => (
+            <Text style={{ color }}>Statistiques</Text>
+          ),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="stats-chart" color={color} size={size} />
           ),
