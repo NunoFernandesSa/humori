@@ -18,14 +18,14 @@ export const storageService = {
       if (existingEntryIndex !== -1) {
         entries[existingEntryIndex] = entry;
         await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
-        console.log("Entry updated:", entry);
+        // console.log("Entry updated:", entry);
       } else {
         entries.push(entry);
         await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
-        console.log("Entry saved:", entry);
+        // console.log("Entry saved:", entry);
       }
     } catch (error) {
-      console.error("Error saving entry:", error);
+      // console.error("Error saving entry:", error);
       throw error;
     }
   },
@@ -35,7 +35,7 @@ export const storageService = {
       const data = await AsyncStorage.getItem(STORAGE_KEY);
       return data ? JSON.parse(data) : [];
     } catch (error) {
-      console.error("Error getting entries:", error);
+      // console.error("Error getting entries:", error);
       return [];
     }
   },
@@ -49,7 +49,7 @@ export const storageService = {
         await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
       }
     } catch (error) {
-      console.error("Error updating entry:", error);
+      // console.error("Error updating entry:", error);
       throw error;
     }
   },
@@ -60,7 +60,7 @@ export const storageService = {
       const filtered = entries.filter((entry) => entry.id !== id);
       await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
     } catch (error) {
-      console.error("Error deleting entry:", error);
+      // console.error("Error deleting entry:", error);
       throw error;
     }
   },
@@ -74,9 +74,9 @@ export const storageService = {
   async deleteAllEntries(): Promise<void> {
     try {
       await AsyncStorage.removeItem(STORAGE_KEY);
-      console.log("All entries deleted");
+      // console.log("All entries deleted");
     } catch (error) {
-      console.error("Error clearing entries:", error);
+      // console.error("Error clearing entries:", error);
       throw error;
     }
   },
