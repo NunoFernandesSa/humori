@@ -1,14 +1,19 @@
-import { useMoodStats } from "@/src/hooks/useMoodStats";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import { Tabs } from "expo-router";
-import React from "react";
+// ----- REACT NATIVE -----
+import React, { JSX } from "react";
 import { Text, TouchableOpacity, View } from "react-native";
+// ----- EXPO -----
+import { Tabs } from "expo-router";
+// ----- ICONS -----
+import Ionicons from "@expo/vector-icons/Ionicons";
+// ----- HOOKS -----
+import { useMoodStats } from "@/src/hooks/useMoodStats";
 
 /**
  * TabsLayout component defines the bottom-tab navigation structure for the MoodTracker app.
  * It renders two tabs: Home and Stats, each with custom headers, icons, and labels.
+ * @returns {JSX.Element} The tab navigator layout for the app.
  */
-export default function TabsLayout() {
+export default function TabsLayout(): JSX.Element {
   const { deleteAllEntries } = useMoodStats();
 
   return (
