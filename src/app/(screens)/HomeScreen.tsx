@@ -1,9 +1,4 @@
-import Container from "@/src/components/common/Container";
-import SubmitButton from "@/src/components/common/SubmitButton";
-import { Title } from "@/src/components/common/Title";
-import { MoodSelector } from "@/src/components/features/mood/MoodSelector";
-import { storageService } from "@/src/services/storageService";
-import { Mood, MoodEntry } from "@/src/types/moodType";
+// ----- REACT NATIVE ----------
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -14,6 +9,15 @@ import {
   View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+// ----- COMPONENTS -----
+import Container from "@/src/components/common/Container";
+import SubmitButton from "@/src/components/common/SubmitButton";
+import { Title } from "@/src/components/common/Title";
+import { MoodSelector } from "@/src/components/features/mood/MoodSelector";
+// ----- SERVICES -----
+import { storageService } from "@/src/services/storageService";
+// ----- TYPES -----
+import { Mood, MoodEntry } from "@/src/types/moodType";
 
 const HomeScreen = () => {
   const [moodNote, setMoodNote] = useState("");
@@ -26,7 +30,7 @@ const HomeScreen = () => {
     loadTodaysEntry();
   }, []);
 
-  const loadTodaysEntry = async () => {
+  const loadTodaysEntry = async (): Promise<void> => {
     try {
       const entry = await storageService.getTodaysEntry();
       if (entry) {
@@ -36,6 +40,10 @@ const HomeScreen = () => {
       }
     } catch (error) {
       console.error("Error loading today's entry:", error);
+      Alert.alert(
+        "Erreur",
+        "Impossible de charger l'humeur du jour. Veuillez réessayer plus tard.",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -43,7 +51,10 @@ const HomeScreen = () => {
 
   const handleSubmit = async () => {
     if (!selectedMood) {
-      Alert.alert("Please select a mood", "You must select a mood to submit.");
+      Alert.alert(
+        "Veuillez sélectionner une humeur",
+        "Vous devez sélectionner une humeur pour soumettre.",
+      );
       return;
     }
 
@@ -60,10 +71,10 @@ const HomeScreen = () => {
 
       if (todaysEntry) {
         await storageService.updateEntry(newEntry);
-        Alert.alert("Success", "Your mood has been updated!");
+        Alert.alert("Succès", "Votre humeur a été mise à jour !");
       } else {
         await storageService.saveEntry(newEntry);
-        Alert.alert("Success", "Your mood has been saved!");
+        Alert.alert("Succès", "Votre humeur a été enregistrée !");
       }
 
       // Reset form if it's a new entry
@@ -92,11 +103,18 @@ const HomeScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Container>
-        <Title title="How are you feeling today?" />
+        <Title
+          title="Comment te sens-tu aujourd'hui ?"
+          style={{
+            color: "#1976D2",
+          }}
+        />
 
         {todaysEntry && (
           <View style={styles.updateMessage}>
-            <Text style={styles.updateText}>✏️ Updating today's entry</Text>
+            <Text style={styles.updateText}>
+              ✏️ Mise à jour de l'entrée du jour
+            </Text>
           </View>
         )}
 
@@ -104,7 +122,7 @@ const HomeScreen = () => {
 
         <TextInput
           style={styles.moodNote}
-          placeholder="Add a note about your day... (optional)"
+          placeholder="Ajoutez un petit mot sur votre journée... (facultatif)"
           multiline={true}
           numberOfLines={4}
           value={moodNote}
@@ -113,7 +131,9 @@ const HomeScreen = () => {
         />
 
         <SubmitButton
-          text={todaysEntry ? "Update Mood" : "Save Mood"}
+          text={
+            todaysEntry ? "Mise à jour de l'humeur" : "Enregistrer l'humeur"
+          }
           handleSubmit={handleSubmit}
           disabled={isSubmitting}
         />
