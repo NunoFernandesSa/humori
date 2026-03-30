@@ -1,85 +1,70 @@
-import { moods } from "@/src/constants/moods";
+import { MOODS } from "@/src/constants/moods";
 import { MoodSelectorProps } from "@/src/types/mood-selector-props-types";
-import { Mood } from "@/src/types/moodType";
-import { ScaleAnimations } from "@/src/types/scale-animations-props-types";
-import React, { JSX, useRef } from "react";
-import { Animated, Easing, StyleSheet, View } from "react-native";
-import MoodButton from "./MoodButton";
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-/**
- * MoodSelector renders a row of mood buttons.
- * When a mood is pressed, it scales up to indicate selection and
- * calls onSelect with the chosen mood key (or an empty string to deselect).
- *
- * @param {MoodSelectorProps} props
- * @param {string} props.selectedMood - The currently selected mood key; empty if none.
- * @param {(mood: string) => void} props.onSelect - Callback invoked when a mood is selected or deselected.
- * @returns {JSX.Element} The mood selector component.
- * @example
- * <MoodSelector
- *   selectedMood={selectedMood}
- *   onSelect={setSelectedMood}
- * />
- */
-export function MoodSelector({
+export const MoodSelector: React.FC<MoodSelectorProps> = ({
   selectedMood,
   onSelect,
-}: MoodSelectorProps): JSX.Element {
-  // create scale animations for each mood button
-  const scaleAnimations = useRef<ScaleAnimations>(
-    moods.reduce((acc, mood) => {
-      acc[mood.key] = new Animated.Value(1);
-      return acc;
-    }, {} as ScaleAnimations)
-  ).current;
-
-  // handle press on a mood button
-  const handleMoodPress = (moodKey: Mood): void => {
-    // deselect other moods with animation
-    moods.forEach((mood) => {
-      if (mood.key !== moodKey) {
-        Animated.timing(scaleAnimations[mood.key], {
-          toValue: 1,
-          duration: 200,
-          easing: Easing.inOut(Easing.ease),
-          useNativeDriver: true,
-        }).start();
-      }
-    });
-
-    const newValue = selectedMood === moodKey ? 1 : 1.2;
-    Animated.timing(scaleAnimations[moodKey], {
-      toValue: newValue,
-      duration: 200,
-      easing: Easing.inOut(Easing.ease),
-      useNativeDriver: true,
-    }).start();
-
-    // update selected mood state
-    onSelect(selectedMood === moodKey ? "" : moodKey);
-  };
-
+}) => {
   return (
     <View style={styles.container}>
-      {moods.map((mood) => (
-        <MoodButton
-          key={mood.key}
-          mood={mood}
-          scale={scaleAnimations[mood.key]}
-          isSelected={selectedMood === mood.key}
-          onPress={handleMoodPress}
-        />
-      ))}
+      <Text style={styles.label}>Select your mood</Text>
+      <View style={styles.moodGrid}>
+        {MOODS.map((mood) => (
+          <TouchableOpacity
+            key={mood.value}
+            style={[
+              styles.moodButton,
+              selectedMood === mood.value && styles.selectedMood,
+              { borderColor: mood.color },
+            ]}
+            onPress={() => onSelect(mood.value)}
+          >
+            <Text style={styles.moodEmoji}>{mood.emoji}</Text>
+            <Text style={styles.moodLabel}>{mood.label}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
     </View>
   );
-}
+};
 
-// ---------- styles ----------
 const styles = StyleSheet.create({
   container: {
-    gap: 16,
+    marginVertical: 20,
+  },
+  label: {
+    fontSize: 16,
+    fontWeight: "600",
+    marginBottom: 12,
+    color: "#333",
+  },
+  moodGrid: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginVertical: 60,
+    gap: 12,
+  },
+  moodButton: {
+    flex: 1,
+    alignItems: "center",
+    padding: 12,
+    borderRadius: 12,
+    borderWidth: 2,
+    borderColor: "#E0E0E0",
+    backgroundColor: "#FFF",
+    gap: 8,
+  },
+  selectedMood: {
+    backgroundColor: "#F5F5F5",
+    borderWidth: 2,
+  },
+  moodEmoji: {
+    fontSize: 32,
+  },
+  moodLabel: {
+    fontSize: 12,
+    fontWeight: "500",
+    color: "#666",
   },
 });

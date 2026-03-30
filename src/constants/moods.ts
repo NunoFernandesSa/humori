@@ -1,26 +1,13 @@
-export const moods = [
-  {
-    key: "happy",
-    name: "happy",
-    icon: "😄",
-    color: "#4CAF50",
-  },
-  {
-    key: "neutral",
-    name: "neutral",
-    icon: "😐",
-    color: "#2196f3ff",
-  },
-  {
-    key: "sad",
-    name: "sad",
-    icon: "😢",
-    color: "#e98865ff",
-  },
-  {
-    key: "angry",
-    name: "angry",
-    icon: "😠",
-    color: "#F44336",
-  },
+import { Mood } from "../types/moodType";
+
+export const MOODS: {
+  value: Mood;
+  label: string;
+  emoji: string;
+  color: string;
+}[] = [
+  { value: "happy", label: "Happy", emoji: "😊", color: "#4CAF50" },
+  { value: "neutral", label: "Neutral", emoji: "😐", color: "#FFC107" },
+  { value: "sad", label: "Sad", emoji: "😢", color: "#2196F3" },
+  { value: "angry", label: "Angry", emoji: "😠", color: "#F44336" },
 ];

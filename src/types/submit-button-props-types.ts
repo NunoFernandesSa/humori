@@ -4,5 +4,6 @@ export type SubmitButtonProps = {
   text: string;
   style?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
+  disabled?: boolean;
   handleSubmit: () => void;
 };

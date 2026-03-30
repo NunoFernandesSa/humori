@@ -34,27 +34,6 @@ export default function TabsLayout() {
       />
 
       <Tabs.Screen
-        name="history"
-        options={{
-          headerShown: true,
-          headerTitle: () => <Text style={{ color: "gray" }}>Historical</Text>,
-          headerLeft: () => (
-            <Ionicons
-              name="grid"
-              size={32}
-              color="gray"
-              style={{ marginHorizontal: 16 }}
-            />
-          ),
-          headerBackground: () => <View style={{ backgroundColor: "white" }} />,
-          tabBarLabel: ({ color }) => <Text style={{ color }}>Historical</Text>,
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="calendar" color={color} size={size} />
-          ),
-        }}
-      />
-
-      <Tabs.Screen
         name="stats"
         options={{
           headerShown: true,

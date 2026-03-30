@@ -1,10 +1,18 @@
-export type Mood = "happy" | "sad" | "neutral" | "angry";
+export type Mood = "happy" | "neutral" | "sad" | "angry";
 
 export type MoodEntry = {
   id: string;
-  date: string;
   mood: Mood;
   note?: string;
+  date: string;
+  timestamp: number;
+};
+
+export type MoodStats = {
+  total: number;
+  average: number;
+  moodCounts: Record<Mood, number>;
+  recentEntries: MoodEntry[];
 };
 
 export type MoodState = {
