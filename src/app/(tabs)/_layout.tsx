@@ -1,13 +1,16 @@
+import { useMoodStats } from "@/src/hooks/useMoodStats";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Tabs } from "expo-router";
 import React from "react";
-import { Text, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 
 /**
  * TabsLayout component defines the bottom-tab navigation structure for the MoodTracker app.
  * It renders two tabs: Home and Stats, each with custom headers, icons, and labels.
  */
 export default function TabsLayout() {
+  const { deleteAllEntries } = useMoodStats();
+
   return (
     <Tabs
       screenOptions={{
@@ -22,6 +25,16 @@ export default function TabsLayout() {
           fontSize: 12,
           fontWeight: "500",
         },
+        headerRight: () => (
+          <TouchableOpacity onPress={() => deleteAllEntries()}>
+            <Ionicons
+              name="settings-outline"
+              size={22}
+              color="gray"
+              style={{ marginHorizontal: 16 }}
+            />
+          </TouchableOpacity>
+        ),
       }}
     >
       <Tabs.Screen

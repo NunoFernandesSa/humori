@@ -137,7 +137,7 @@ export const useMoodStats = () => {
   const deleteAllEntries = useCallback(() => {
     Alert.alert(
       "Confirmation",
-      "Êtes-vous sûr de vouloir supprimer toutes les données ?",
+      "Êtes-vous sûr de vouloir supprimer toutes les données ? Cette action est irréversible.",
       [
         { text: "Annuler", style: "cancel" },
         {
