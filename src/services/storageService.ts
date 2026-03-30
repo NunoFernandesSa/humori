@@ -7,8 +7,23 @@ export const storageService = {
   async saveEntry(entry: MoodEntry): Promise<void> {
     try {
       const entries = await this.getEntries();
-      entries.push(entry);
-      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+      const today = new Date().toISOString().split("T")[0];
+      const entryDate = entry.date.split("T")[0];
+
+      // Check if the entry already exists for today
+      const existingEntryIndex = entries.findIndex(
+        (e) => e.date.split("T")[0] === entryDate,
+      );
+
+      if (existingEntryIndex !== -1) {
+        entries[existingEntryIndex] = entry;
+        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+        console.log("Entry updated:", entry);
+      } else {
+        entries.push(entry);
+        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+        console.log("Entry saved:", entry);
+      }
     } catch (error) {
       console.error("Error saving entry:", error);
       throw error;
