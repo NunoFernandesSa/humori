@@ -1,12 +1,12 @@
 // ----- REACT NATIVE -----
 import React, { JSX } from "react";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Alert, Text, TouchableOpacity, View } from "react-native";
 // ----- EXPO -----
 import { Tabs } from "expo-router";
 // ----- ICONS -----
 import Ionicons from "@expo/vector-icons/Ionicons";
 // ----- HOOKS -----
-import { useMoodStats } from "@/src/hooks/useMoodStats";
+import { useMoodStore } from "@/src/store/useMoodStore";
 
 /**
  * TabsLayout component defines the bottom-tab navigation structure for the MoodTracker app.
@@ -14,7 +14,29 @@ import { useMoodStats } from "@/src/hooks/useMoodStats";
  * @returns {JSX.Element} The tab navigator layout for the app.
  */
 export default function TabsLayout(): JSX.Element {
-  const { deleteAllEntries } = useMoodStats();
+  const { deleteAllEntries } = useMoodStore();
+
+  const handleDeleteAll = () => {
+    Alert.alert(
+      "Confirmation",
+      "Êtes-vous sûr de vouloir supprimer toutes les données ? Cette action est irréversible.",
+      [
+        { text: "Annuler", style: "cancel" },
+        {
+          text: "Supprimer",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              await deleteAllEntries();
+              Alert.alert("Succès", "Toutes les données ont été supprimées");
+            } catch (error) {
+              Alert.alert("Erreur", "Impossible de supprimer les données");
+            }
+          },
+        },
+      ],
+    );
+  };
 
   return (
     <Tabs
@@ -31,7 +53,7 @@ export default function TabsLayout(): JSX.Element {
           fontWeight: "500",
         },
         headerRight: () => (
-          <TouchableOpacity onPress={() => deleteAllEntries()}>
+          <TouchableOpacity onPress={() => handleDeleteAll()}>
             <Ionicons
               name="settings-outline"
               size={22}

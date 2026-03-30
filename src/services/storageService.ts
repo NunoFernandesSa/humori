@@ -4,80 +4,160 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const STORAGE_KEY = "@mood_entries";
 
 export const storageService = {
+  /**
+   * save entry will check if an entry for the same date already exists, if it does, it will update it, otherwise it will create a new one
+   */
   async saveEntry(entry: MoodEntry): Promise<void> {
     try {
       const entries = await this.getEntries();
-      const today = new Date().toISOString().split("T")[0];
       const entryDate = entry.date.split("T")[0];
 
-      // Check if the entry already exists for today
+      // Check if an entry for the same date already exists
       const existingEntryIndex = entries.findIndex(
         (e) => e.date.split("T")[0] === entryDate,
       );
 
       if (existingEntryIndex !== -1) {
-        entries[existingEntryIndex] = entry;
+        // update existing entry
+        entries[existingEntryIndex] = {
+          ...entry,
+          id: entries[existingEntryIndex].id, // Garder l'ID existant
+        };
         await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
-        // console.log("Entry updated:", entry);
       } else {
+        // add new entry
         entries.push(entry);
         await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
-        // console.log("Entry saved:", entry);
       }
     } catch (error) {
-      // console.error("Error saving entry:", error);
+      console.error("Error saving entry:", error);
       throw error;
     }
   },
 
+  /**
+   * Find all entries in storage and return them as an array of MoodEntry
+   */
   async getEntries(): Promise<MoodEntry[]> {
     try {
       const data = await AsyncStorage.getItem(STORAGE_KEY);
       return data ? JSON.parse(data) : [];
     } catch (error) {
-      // console.error("Error getting entries:", error);
+      console.error("Error getting entries:", error);
       return [];
     }
   },
 
+  /**
+   * Update a specific entry by its ID
+   */
   async updateEntry(entry: MoodEntry): Promise<void> {
     try {
       const entries = await this.getEntries();
       const index = entries.findIndex((e) => e.id === entry.id);
+
       if (index !== -1) {
-        entries[index] = entry;
+        entries[index] = { ...entry, timestamp: Date.now() };
         await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+      } else {
+        throw new Error(`Entry with id ${entry.id} not found`);
       }
     } catch (error) {
-      // console.error("Error updating entry:", error);
+      console.error("Error updating entry:", error);
       throw error;
     }
   },
 
+  /**
+   * Delete a specific entry by its ID
+   */
   async deleteEntry(id: string): Promise<void> {
     try {
       const entries = await this.getEntries();
       const filtered = entries.filter((entry) => entry.id !== id);
+
+      if (filtered.length === entries.length) {
+        throw new Error(`Entry with id ${id} not found`);
+      }
+
       await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
     } catch (error) {
-      // console.error("Error deleting entry:", error);
+      console.error("Error deleting entry:", error);
       throw error;
     }
   },
 
+  /**
+   * Find the entry for today
+   */
   async getTodaysEntry(): Promise<MoodEntry | null> {
-    const entries = await this.getEntries();
-    const today = new Date().toISOString().split("T")[0];
-    return entries.find((entry) => entry.date.split("T")[0] === today) || null;
+    try {
+      const entries = await this.getEntries();
+      const today = new Date().toISOString().split("T")[0];
+      return (
+        entries.find((entry) => entry.date.split("T")[0] === today) || null
+      );
+    } catch (error) {
+      console.error("Error getting today's entry:", error);
+      return null;
+    }
   },
 
+  /**
+   * Delete all entries
+   */
   async deleteAllEntries(): Promise<void> {
     try {
       await AsyncStorage.removeItem(STORAGE_KEY);
-      // console.log("All entries deleted");
     } catch (error) {
-      // console.error("Error clearing entries:", error);
+      console.error("Error deleting all entries:", error);
       throw error;
+    }
+  },
+
+  /**
+   * Check if an entry exists for a given date
+   */
+  async hasEntryForDate(date: string): Promise<boolean> {
+    try {
+      const entries = await this.getEntries();
+      const targetDate = date.split("T")[0];
+      return entries.some((entry) => entry.date.split("T")[0] === targetDate);
+    } catch (error) {
+      console.error("Error checking entry existence:", error);
+      return false;
+    }
+  },
+
+  /**
+   * Find entries for a specific date range
+   */
+  async getEntriesByDateRange(
+    startDate: Date,
+    endDate: Date,
+  ): Promise<MoodEntry[]> {
+    try {
+      const entries = await this.getEntries();
+      return entries.filter((entry) => {
+        const entryDate = new Date(entry.date);
+        return entryDate >= startDate && entryDate <= endDate;
+      });
+    } catch (error) {
+      console.error("Error getting entries by date range:", error);
+      return [];
+    }
+  },
+
+  /**
+   * Count the total number of entries
+   */
+  async getEntryCount(): Promise<number> {
+    try {
+      const entries = await this.getEntries();
+      return entries.length;
+    } catch (error) {
+      console.error("Error getting entry count:", error);
+      return 0;
     }
   },
 };

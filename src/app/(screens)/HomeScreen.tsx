@@ -17,8 +17,8 @@ import { Title } from "@/src/components/common/Title";
 import { MoodSelector } from "@/src/components/features/mood/MoodSelector";
 // ----- CONSTANTS -----
 import { MOODS } from "@/src/constants/moods";
-// ----- SERVICES -----
-import { storageService } from "@/src/services/storageService";
+// ----- STORE -----
+import { useMoodStore } from "@/src/store/useMoodStore";
 // ----- TYPES -----
 import { Mood, MoodEntry } from "@/src/types/moodType";
 
@@ -26,35 +26,27 @@ const HomeScreen = (): JSX.Element => {
   const [moodNote, setMoodNote] = useState("");
   const [selectedMood, setSelectedMood] = useState<Mood | "">("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [todaysEntry, setTodaysEntry] = useState<MoodEntry | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+
+  const { todaysEntry, isLoading, saveEntry } = useMoodStore();
+
+  // Check if today's entry is valid (has a mood and is not empty)
+  const isValidEntry =
+    todaysEntry && todaysEntry.mood && Object.keys(todaysEntry).length > 0;
 
   useEffect(() => {
-    loadTodaysEntry();
-  }, []);
-
-  const loadTodaysEntry = async (): Promise<void> => {
-    try {
-      const entry = await storageService.getTodaysEntry();
-      if (entry) {
-        setTodaysEntry(entry);
-        setSelectedMood(entry.mood);
-        setMoodNote(entry.note || "");
-      } else {
-        setTodaysEntry(null);
-        setSelectedMood("");
-        setMoodNote("");
-      }
-    } catch (error) {
-      console.error("Error loading today's entry:", error);
-      Alert.alert(
-        "Erreur",
-        "Impossible de charger l'humeur du jour. Veuillez réessayer plus tard.",
-      );
-    } finally {
-      setIsLoading(false);
+    if (isValidEntry) {
+      setSelectedMood(todaysEntry.mood);
+      setMoodNote(todaysEntry.note || "");
+    } else {
+      setSelectedMood("");
+      setMoodNote("");
     }
-  };
+  }, [todaysEntry, isValidEntry]);
+
+  // Find the current mood details for display if there's a valid entry
+  const currentMood = isValidEntry
+    ? MOODS.find((m) => m.value === todaysEntry.mood)
+    : null;
 
   const handleSubmit = async () => {
     if (!selectedMood) {
@@ -76,16 +68,14 @@ const HomeScreen = (): JSX.Element => {
         timestamp: Date.now(),
       };
 
-      await storageService.saveEntry(newEntry);
+      await saveEntry(newEntry);
 
       Alert.alert(
         "Succès",
-        todaysEntry
+        isValidEntry
           ? "Votre humeur a été mise à jour !"
           : "Votre humeur a été enregistrée !",
       );
-
-      await loadTodaysEntry();
     } catch (error) {
       Alert.alert(
         "Erreur",
@@ -97,9 +87,6 @@ const HomeScreen = (): JSX.Element => {
     }
   };
 
-  // Get the current mood details for display
-  const currentMood = MOODS.find((m) => m.value === todaysEntry?.mood);
-
   if (isLoading) {
     return (
       <SafeAreaView style={styles.centerContainer}>
@@ -110,7 +97,10 @@ const HomeScreen = (): JSX.Element => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
+      >
         <Container>
           <Title
             title="Comment te sens-tu aujourd'hui ?"
@@ -119,7 +109,7 @@ const HomeScreen = (): JSX.Element => {
             }}
           />
 
-          {todaysEntry && (
+          {isValidEntry && currentMood && (
             <View style={styles.updateMessage}>
               <View style={styles.updateHeader}>
                 <Text style={styles.updateIcon}>✏️</Text>
@@ -136,19 +126,19 @@ const HomeScreen = (): JSX.Element => {
                   <View
                     style={[
                       styles.currentMoodBadge,
-                      { backgroundColor: currentMood?.color + "20" },
+                      { backgroundColor: currentMood.color + "20" },
                     ]}
                   >
                     <Text style={styles.currentMoodEmoji}>
-                      {currentMood?.emoji}
+                      {currentMood.emoji}
                     </Text>
                     <Text
                       style={[
                         styles.currentMoodText,
-                        { color: currentMood?.color },
+                        { color: currentMood.color },
                       ]}
                     >
-                      {currentMood?.label}
+                      {currentMood.label}
                     </Text>
                   </View>
                 </View>
@@ -191,7 +181,7 @@ const HomeScreen = (): JSX.Element => {
 
           <SubmitButton
             text={
-              todaysEntry
+              isValidEntry
                 ? "Mettre à jour mon humeur"
                 : "Enregistrer mon humeur"
             }
@@ -208,6 +198,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#FFF",
+  },
+  scrollContent: {
+    flexGrow: 1,
   },
   centerContainer: {
     flex: 1,
