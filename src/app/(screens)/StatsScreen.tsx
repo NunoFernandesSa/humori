@@ -1,5 +1,5 @@
 // ----- REACT NATIVE -----
-import React, { useCallback } from "react";
+import React, { JSX, useCallback } from "react";
 import {
   ActivityIndicator,
   Dimensions,
@@ -15,17 +15,25 @@ import { SafeAreaView } from "react-native-safe-area-context";
 // ----- COMPONENTS -----
 import Container from "@/src/components/common/Container";
 import { Title } from "@/src/components/common/Title";
-// ----- CONSTANTS -----
-// ----- SERVICES -----
-// ----- TYPES -----
-import { useFocusEffect } from "expo-router";
-// ----- HOOKS -----
 import MoodBreakdown from "@/src/components/features/stats/MoodBreakdown";
 import RecentEntries from "@/src/components/features/stats/RecentEntries";
 import SummaryCards from "@/src/components/features/stats/SummaryCards";
+// ----- EXPO -----
+import { useFocusEffect } from "expo-router";
+// ----- HOOKS -----
 import { useMoodStats } from "@/src/hooks/useMoodStats";
 
-const StatsScreen = () => {
+/**
+ * StatsScreen displays the user's mood statistics.
+ * It uses the useMoodStats hook to fetch the mood entries and
+ * compute the mood statistics.
+ * The screen displays a summary of the mood entries, a pie chart
+ * of the mood distribution, a line chart of the mood evolution, a
+ * breakdown of the mood by category, and a list of recent mood
+ * entries.
+ * @returns {JSX.Element} A JSX element representing the StatsScreen component.
+ */
+const StatsScreen = (): JSX.Element => {
   const {
     isLoading,
     refreshing,
@@ -77,6 +85,7 @@ const StatsScreen = () => {
             style={{ color: "#4CAF50" }}
           />
 
+          {/* filters */}
           <View style={styles.periodSelector}>
             <TouchableOpacity
               style={[
@@ -181,10 +190,10 @@ const StatsScreen = () => {
                 style={styles.chart}
                 formatYLabel={(value) => {
                   const moodValues: Record<string, string> = {
-                    "4": "Happy",
-                    "3": "Neutral",
-                    "2": "Sad",
-                    "1": "Angry",
+                    "4": "Heureux",
+                    "3": "Neutre",
+                    "2": "Triste",
+                    "1": "En colère",
                   };
                   return moodValues[value] || "";
                 }}
