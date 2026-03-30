@@ -1,5 +1,5 @@
 // ----- REACT NATIVE ----------
-import React, { useEffect, useState } from "react";
+import React, { JSX, useEffect, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
@@ -19,7 +19,13 @@ import { storageService } from "@/src/services/storageService";
 // ----- TYPES -----
 import { Mood, MoodEntry } from "@/src/types/moodType";
 
-const HomeScreen = () => {
+/**
+ * HomeScreen component displays a simple form to record a mood entry.
+ * It fetches the today's entry from storage and updates it if the user submits a new mood.
+ * The component also handles errors and loading states gracefully.
+ * @returns {JSX.Element} The HomeScreen component.
+ */
+const HomeScreen = (): JSX.Element => {
   const [moodNote, setMoodNote] = useState("");
   const [selectedMood, setSelectedMood] = useState<Mood | "">("");
   const [isSubmitting, setIsSubmitting] = useState(false);
