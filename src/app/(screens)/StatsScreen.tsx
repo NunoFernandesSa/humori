@@ -1,9 +1,10 @@
 // ----- REACT NATIVE -----
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
   Dimensions,
+  RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
@@ -21,15 +22,24 @@ import { MOODS } from "@/src/constants/moods";
 import { storageService } from "@/src/services/storageService";
 // ----- TYPES -----
 import { Mood, MoodEntry } from "@/src/types/moodType";
+import { useFocusEffect } from "expo-router";
 
 const StatsScreen = () => {
   const [entries, setEntries] = useState<MoodEntry[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [refreshing, setRefreshing] = useState(false);
   const [selectedPeriod, setSelectedPeriod] = useState<
     "week" | "month" | "all"
   >("week");
 
-  useEffect(() => {
+  useFocusEffect(
+    useCallback(() => {
+      loadEntries();
+    }, []),
+  );
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
     loadEntries();
   }, []);
 
@@ -42,6 +52,7 @@ const StatsScreen = () => {
       Alert.alert("Erruer", "Échec du chargement des statistiques");
     } finally {
       setIsLoading(false);
+      setRefreshing(false);
     }
   };
 
@@ -152,7 +163,17 @@ const StatsScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={["#4CAF50"]}
+            tintColor="#4CAF50"
+          />
+        }
+      >
         <Container>
           <Title
             title="Statistiques sur l'humeur"
