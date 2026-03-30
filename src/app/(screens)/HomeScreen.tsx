@@ -112,7 +112,7 @@ const HomeScreen = (): JSX.Element => {
         <Title
           title="Comment te sens-tu aujourd'hui ?"
           style={{
-            color: "#1976D2",
+            color: "#4CAF50",
           }}
         />
 

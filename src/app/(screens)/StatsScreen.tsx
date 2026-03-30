@@ -1,8 +1,4 @@
-import Container from "@/src/components/common/Container";
-import { Title } from "@/src/components/common/Title";
-import { MOODS } from "@/src/constants/moods";
-import { storageService } from "@/src/services/storageService";
-import { Mood, MoodEntry } from "@/src/types/moodType";
+// ----- REACT NATIVE -----
 import React, { useCallback, useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -16,6 +12,15 @@ import {
 } from "react-native";
 import { LineChart, PieChart } from "react-native-chart-kit";
 import { SafeAreaView } from "react-native-safe-area-context";
+// ----- COMPONENTS -----
+import Container from "@/src/components/common/Container";
+import { Title } from "@/src/components/common/Title";
+// ----- CONSTANTS -----
+import { MOODS } from "@/src/constants/moods";
+// ----- SERVICES -----
+import { storageService } from "@/src/services/storageService";
+// ----- TYPES -----
+import { Mood, MoodEntry } from "@/src/types/moodType";
 
 const StatsScreen = () => {
   const [entries, setEntries] = useState<MoodEntry[]>([]);
@@ -34,7 +39,7 @@ const StatsScreen = () => {
       setEntries(allEntries.sort((a, b) => b.timestamp - a.timestamp));
     } catch (error) {
       console.error("Error loading entries:", error);
-      Alert.alert("Error", "Failed to load statistics");
+      Alert.alert("Erruer", "Échec du chargement des statistiques");
     } finally {
       setIsLoading(false);
     }
@@ -149,7 +154,10 @@ const StatsScreen = () => {
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Container>
-          <Title title="Mood Statistics" />
+          <Title
+            title="Statistiques sur l'humeur"
+            style={{ color: "#4CAF50" }}
+          />
 
           <View style={styles.periodSelector}>
             <TouchableOpacity
@@ -165,7 +173,7 @@ const StatsScreen = () => {
                   selectedPeriod === "week" && styles.activePeriodText,
                 ]}
               >
-                Week
+                Semaine
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -181,7 +189,7 @@ const StatsScreen = () => {
                   selectedPeriod === "month" && styles.activePeriodText,
                 ]}
               >
-                Month
+                Mois
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -197,7 +205,7 @@ const StatsScreen = () => {
                   selectedPeriod === "all" && styles.activePeriodText,
                 ]}
               >
-                All Time
+                Toutes les périodes
               </Text>
             </TouchableOpacity>
           </View>
@@ -206,18 +214,18 @@ const StatsScreen = () => {
           <View style={styles.summaryContainer}>
             <View style={styles.summaryCard}>
               <Text style={styles.summaryNumber}>{totalEntries}</Text>
-              <Text style={styles.summaryLabel}>Total Entries</Text>
+              <Text style={styles.summaryLabel}>Nombre total d'entrées</Text>
             </View>
             <View style={styles.summaryCard}>
               <Text style={styles.summaryNumber}>{getAverageMood()}</Text>
-              <Text style={styles.summaryLabel}>Average Mood</Text>
+              <Text style={styles.summaryLabel}>Humeur moyenne</Text>
             </View>
           </View>
 
           {/* Pie Chart */}
           {getPieChartData().length > 0 && (
             <View style={styles.chartContainer}>
-              <Text style={styles.chartTitle}>Mood Distribution</Text>
+              <Text style={styles.chartTitle}>Distribution des humeurs</Text>
               <PieChart
                 data={getPieChartData()}
                 width={Dimensions.get("window").width - 48}
@@ -236,7 +244,7 @@ const StatsScreen = () => {
           {/* Line Chart */}
           {filteredEntries.length > 1 && (
             <View style={styles.chartContainer}>
-              <Text style={styles.chartTitle}>Mood Evolution</Text>
+              <Text style={styles.chartTitle}>Évolution de l'humeur</Text>
               <LineChart
                 data={getChartData()}
                 width={Dimensions.get("window").width - 48}
@@ -285,7 +293,7 @@ const StatsScreen = () => {
                     <Text style={styles.moodName}>{mood.label}</Text>
                   </View>
                   <View style={styles.moodStats}>
-                    <Text style={styles.moodCount}>{count} times</Text>
+                    <Text style={styles.moodCount}>{count} fois</Text>
                     <Text style={styles.moodPercentage}>
                       {percentage.toFixed(1)}%
                     </Text>
@@ -297,7 +305,7 @@ const StatsScreen = () => {
 
           {/* Recent Entries */}
           <View style={styles.recentContainer}>
-            <Text style={styles.recentTitle}>Recent Entries</Text>
+            <Text style={styles.recentTitle}>Dernières entrées</Text>
             {filteredEntries.slice(0, 5).map((entry) => {
               const mood = MOODS.find((m) => m.value === entry.mood);
               return (
