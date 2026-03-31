@@ -15,6 +15,8 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 // ----- HOOKS -----
 import { useMoodStore } from "@/src/store/useMoodStore";
 
+import { StatusBar } from "expo-status-bar";
+
 /**
  * TabsLayout component defines the bottom-tab navigation structure for the MoodTracker app.
  * It renders two tabs: Home and Stats, each with custom headers, icons, and labels.
@@ -50,77 +52,85 @@ export default function TabsLayout(): JSX.Element {
   };
 
   return (
-    <Tabs
-      screenOptions={{
-        tabBarActiveTintColor: "#4CAF50",
-        tabBarStyle: {
-          backgroundColor: "#FFFFFF",
-          borderTopColor: "#E0E0E0",
-          elevation: 0,
-          shadowOpacity: 0,
-          paddingBottom: Platform.OS === "android" ? 12 : 0,
-        },
-        tabBarLabelStyle: {
-          fontSize: 12,
-          fontWeight: "500",
-        },
-      }}
-    >
-      <Tabs.Screen
-        name="index"
-        options={{
-          headerShown: true,
-          headerTitle: () => (
-            <Text style={{ color: "gray", fontWeight: "bold" }}>Inicio</Text>
-          ),
-          headerLeft: () => (
-            <Image
-              source={require("../../assets/images/icon.png")}
-              style={{ width: 40, height: 40, marginHorizontal: 16 }}
-            />
-          ),
-          headerRight: () => (
-            <TouchableOpacity onPress={() => handleDeleteAll()}>
-              <Ionicons
-                name="settings-outline"
-                size={22}
-                color="gray"
-                style={{ marginHorizontal: 16 }}
-              />
-            </TouchableOpacity>
-          ),
-          headerBackground: () => <View style={{ backgroundColor: "white" }} />,
-          tabBarLabel: ({ color }) => <Text style={{ color }}>Inicio</Text>,
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="home" color={color} size={size} />
-          ),
-        }}
-      />
+    <>
+      <StatusBar style="dark" />
 
-      <Tabs.Screen
-        name="stats"
-        options={{
-          headerShown: true,
-          headerTitle: () => (
-            <Text style={{ color: "gray", fontWeight: "bold" }}>
-              Estatísticas
-            </Text>
-          ),
-          headerLeft: () => (
-            <Image
-              source={require("../../assets/images/icon.png")}
-              style={{ width: 40, height: 40, marginHorizontal: 16 }}
-            />
-          ),
-          headerBackground: () => <View style={{ backgroundColor: "white" }} />,
-          tabBarLabel: ({ color }) => (
-            <Text style={{ color }}>Estatísticas</Text>
-          ),
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="stats-chart" color={color} size={size} />
-          ),
+      <Tabs
+        screenOptions={{
+          tabBarActiveTintColor: "#4CAF50",
+          tabBarStyle: {
+            backgroundColor: "#FFFFFF",
+            borderTopColor: "#E0E0E0",
+            elevation: 0,
+            shadowOpacity: 0,
+            paddingBottom: Platform.OS === "android" ? 12 : 0,
+          },
+          tabBarLabelStyle: {
+            fontSize: 12,
+            fontWeight: "500",
+          },
         }}
-      />
-    </Tabs>
+      >
+        <Tabs.Screen
+          name="index"
+          options={{
+            headerShown: true,
+            headerTitle: () => (
+              <Text style={{ color: "gray", fontWeight: "bold" }}>Inicio</Text>
+            ),
+            headerLeft: () => (
+              <Image
+                source={require("../../assets/images/icon.png")}
+                style={{ width: 40, height: 40, marginHorizontal: 16 }}
+              />
+            ),
+            headerRight: () => (
+              <TouchableOpacity onPress={() => handleDeleteAll()}>
+                <Ionicons
+                  name="settings-outline"
+                  size={22}
+                  color="gray"
+                  style={{ marginHorizontal: 16 }}
+                />
+              </TouchableOpacity>
+            ),
+            headerBackground: () => (
+              <View style={{ backgroundColor: "white" }} />
+            ),
+            tabBarLabel: ({ color }) => <Text style={{ color }}>Inicio</Text>,
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="home" color={color} size={size} />
+            ),
+          }}
+        />
+
+        <Tabs.Screen
+          name="stats"
+          options={{
+            headerShown: true,
+            headerTitle: () => (
+              <Text style={{ color: "gray", fontWeight: "bold" }}>
+                Estatísticas
+              </Text>
+            ),
+            headerLeft: () => (
+              <Image
+                source={require("../../assets/images/icon.png")}
+                style={{ width: 40, height: 40, marginHorizontal: 16 }}
+              />
+            ),
+            headerBackground: () => (
+              <View style={{ backgroundColor: "white" }} />
+            ),
+            tabBarLabel: ({ color }) => (
+              <Text style={{ color }}>Estatísticas</Text>
+            ),
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="stats-chart" color={color} size={size} />
+            ),
+          }}
+        />
+      </Tabs>
+    </>
   );
 }
