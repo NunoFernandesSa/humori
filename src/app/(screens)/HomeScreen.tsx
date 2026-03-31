@@ -1,52 +1,56 @@
 // ----- REACT NATIVE ----------
-import React, { JSX, useEffect, useState } from "react";
+import React, { JSX, useEffect, useRef, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
+  KeyboardAvoidingView,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
-  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 // ----- COMPONENTS -----
 import Container from "@/src/components/common/Container";
 import SubmitButton from "@/src/components/common/SubmitButton";
 import { Title } from "@/src/components/common/Title";
+import ExistingEntryCard from "@/src/components/features/mood/ExistingEntryCard";
 import { MoodSelector } from "@/src/components/features/mood/MoodSelector";
-// ----- CONSTANTS -----
-import { MOODS } from "@/src/constants/moods";
 // ----- STORE -----
 import { useMoodStore } from "@/src/store/useMoodStore";
 // ----- TYPES -----
 import { Mood, MoodEntry } from "@/src/types/moodType";
+// ----- HELPERS -----
+import { getCurrentMood, isValidEntry } from "@/src/utils/helpers/helpers";
 
 const HomeScreen = (): JSX.Element => {
-  const [moodNote, setMoodNote] = useState("");
+  // ----- STATES -----
+  const [moodNote, setMoodNote] = useState<string>("");
   const [selectedMood, setSelectedMood] = useState<Mood | "">("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  // ----- STORE -----
   const { todaysEntry, isLoading, saveEntry } = useMoodStore();
+  // ----- REF'S -----
+  const scrollViewRef = useRef<ScrollView>(null);
+  const textAreaRef = useRef<TextInput>(null);
 
-  // Check if today's entry is valid (has a mood and is not empty)
-  const isValidEntry =
-    todaysEntry && todaysEntry.mood && Object.keys(todaysEntry).length > 0;
+  // ----- Helpers -----
+  const entryIsValid = isValidEntry(todaysEntry);
+  const currentMoodValue = getCurrentMood(todaysEntry);
 
-  useEffect(() => {
-    if (isValidEntry) {
-      setSelectedMood(todaysEntry.mood);
-      setMoodNote(todaysEntry.note || "");
-    } else {
-      setSelectedMood("");
-      setMoodNote("");
+  const handleFocus = () => {
+    // Measure the position of the text area and scroll to it
+    if (textAreaRef.current && scrollViewRef.current) {
+      textAreaRef.current.measureLayout(
+        scrollViewRef.current as any, // Need to cast to any to avoid type issues with measureLayout
+        (x: number, y: number) => {
+          scrollViewRef.current?.scrollTo({ y: y - 100, animated: true });
+        },
+        () => {},
+      );
     }
-  }, [todaysEntry, isValidEntry]);
-
-  // Find the current mood details for display if there's a valid entry
-  const currentMood = isValidEntry
-    ? MOODS.find((m) => m.value === todaysEntry.mood)
-    : null;
+  };
 
   const handleSubmit = async () => {
     if (!selectedMood) {
@@ -63,7 +67,7 @@ const HomeScreen = (): JSX.Element => {
       const newEntry: MoodEntry = {
         id: todaysEntry?.id || Date.now().toString(),
         mood: selectedMood as Mood,
-        note: moodNote.trim(),
+        note: moodNote?.trim() || undefined,
         date: new Date().toISOString(),
         timestamp: Date.now(),
       };
@@ -72,7 +76,7 @@ const HomeScreen = (): JSX.Element => {
 
       Alert.alert(
         "Succès",
-        isValidEntry
+        entryIsValid
           ? "Votre humeur a été mise à jour !"
           : "Votre humeur a été enregistrée !",
       );
@@ -87,6 +91,18 @@ const HomeScreen = (): JSX.Element => {
     }
   };
 
+  // ----- USEFFECTS -----
+  useEffect(() => {
+    if (entryIsValid && todaysEntry) {
+      setSelectedMood(todaysEntry.mood);
+      setMoodNote(todaysEntry.note || "");
+    } else {
+      setSelectedMood("");
+      setMoodNote("");
+    }
+  }, [todaysEntry, entryIsValid]);
+
+  // Loading state while fetching data
   if (isLoading) {
     return (
       <SafeAreaView style={styles.centerContainer}>
@@ -97,99 +113,70 @@ const HomeScreen = (): JSX.Element => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        contentContainerStyle={styles.scrollContent}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
+        style={{ flex: 1 }}
       >
-        <Container>
-          <Title
-            title="Comment te sens-tu aujourd'hui ?"
-            style={{
-              color: "#4CAF50",
-            }}
-          />
+        <ScrollView
+          ref={scrollViewRef}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+          contentContainerStyle={styles.scrollContent}
+        >
+          <Container>
+            <Title
+              title="Comment te sens-tu aujourd'hui ?"
+              style={{
+                color: "#4CAF50",
+              }}
+            />
 
-          {isValidEntry && currentMood && (
-            <View style={styles.updateMessage}>
-              <View style={styles.updateHeader}>
-                <Text style={styles.updateIcon}>✏️</Text>
-                <Text style={styles.updateTitle}>
-                  Mise à jour de l'entrée du jour
-                </Text>
-              </View>
-              <View style={styles.updateDetails}>
-                <Text style={styles.updateText}>
-                  Vous avez déjà enregistré votre humeur aujourd'hui
-                </Text>
-                <View style={styles.currentMoodContainer}>
-                  <Text style={styles.currentMoodLabel}>Humeur actuelle :</Text>
-                  <View
-                    style={[
-                      styles.currentMoodBadge,
-                      { backgroundColor: currentMood.color + "20" },
-                    ]}
-                  >
-                    <Text style={styles.currentMoodEmoji}>
-                      {currentMood.emoji}
-                    </Text>
-                    <Text
-                      style={[
-                        styles.currentMoodText,
-                        { color: currentMood.color },
-                      ]}
-                    >
-                      {currentMood.label}
-                    </Text>
-                  </View>
-                </View>
-                {todaysEntry.note && (
-                  <View style={styles.currentNoteContainer}>
-                    <Text style={styles.currentNoteLabel}>Note actuelle :</Text>
-                    <Text style={styles.currentNoteText} numberOfLines={2}>
-                      "{todaysEntry.note}"
-                    </Text>
-                  </View>
-                )}
-                <Text style={styles.updateHint}>
-                  Vous pouvez modifier votre humeur et votre note ci-dessous
-                </Text>
-              </View>
-            </View>
-          )}
+            {/* display existing entry if there is one for today */}
+            {entryIsValid && currentMoodValue && todaysEntry && (
+              <ExistingEntryCard
+                currentMood={currentMoodValue}
+                todaysEntry={todaysEntry}
+              />
+            )}
 
-          <MoodSelector
-            selectedMood={selectedMood}
-            onSelect={setSelectedMood}
-          />
+            {/* Mood selector component for mood selection */}
+            <MoodSelector
+              selectedMood={selectedMood}
+              onSelect={setSelectedMood}
+            />
 
-          <TextInput
-            style={styles.moodNote}
-            placeholder="Ajoutez un petit mot sur votre journée... (facultatif)"
-            multiline={true}
-            numberOfLines={4}
-            value={moodNote}
-            onChangeText={setMoodNote}
-            editable={!isSubmitting}
-            maxLength={500}
-          />
+            <TextInput
+              ref={textAreaRef}
+              style={styles.moodNote}
+              placeholder="Ajoutez un petit mot sur votre journée... (facultatif)"
+              multiline={true}
+              numberOfLines={4}
+              value={moodNote}
+              onChangeText={setMoodNote}
+              onFocus={handleFocus}
+              editable={!isSubmitting}
+              maxLength={500}
+            />
 
-          {moodNote.length > 0 && (
-            <Text style={styles.charCount}>
-              {moodNote.length}/500 caractères
-            </Text>
-          )}
+            {typeof moodNote === "string" && moodNote.length > 0 && (
+              <Text style={styles.charCount}>
+                {moodNote.length}/500 caractères
+              </Text>
+            )}
 
-          <SubmitButton
-            text={
-              isValidEntry
-                ? "Mettre à jour mon humeur"
-                : "Enregistrer mon humeur"
-            }
-            handleSubmit={handleSubmit}
-            disabled={isSubmitting}
-          />
-        </Container>
-      </ScrollView>
+            <SubmitButton
+              text={
+                entryIsValid
+                  ? "Mettre à jour mon humeur"
+                  : "Enregistrer mon humeur"
+              }
+              handleSubmit={handleSubmit}
+              disabled={isSubmitting}
+            />
+          </Container>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };
@@ -217,86 +204,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginVertical: 20,
     backgroundColor: "#FFF",
-  },
-  updateMessage: {
-    backgroundColor: "#FFF8E1",
-    borderRadius: 12,
-    marginVertical: 12,
-    borderWidth: 1,
-    borderColor: "#FFE082",
-    overflow: "hidden",
-  },
-  updateHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    backgroundColor: "#FFE082",
-    padding: 12,
-    gap: 8,
-  },
-  updateIcon: {
-    fontSize: 18,
-  },
-  updateTitle: {
-    fontSize: 14,
-    fontWeight: "600",
-    color: "#F57C00",
-  },
-  updateDetails: {
-    padding: 12,
-  },
-  updateText: {
-    fontSize: 13,
-    color: "#666",
-    marginBottom: 12,
-  },
-  currentMoodContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    marginBottom: 12,
-    gap: 8,
-  },
-  currentMoodLabel: {
-    fontSize: 13,
-    color: "#666",
-    fontWeight: "500",
-  },
-  currentMoodBadge: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 10,
-    paddingVertical: 4,
-    borderRadius: 20,
-    gap: 6,
-  },
-  currentMoodEmoji: {
-    fontSize: 14,
-  },
-  currentMoodText: {
-    fontSize: 13,
-    fontWeight: "500",
-  },
-  currentNoteContainer: {
-    marginBottom: 12,
-  },
-  currentNoteLabel: {
-    fontSize: 13,
-    color: "#666",
-    fontWeight: "500",
-    marginBottom: 4,
-  },
-  currentNoteText: {
-    fontSize: 13,
-    color: "#666",
-    fontStyle: "italic",
-    backgroundColor: "#F5F5F5",
-    padding: 8,
-    borderRadius: 8,
-  },
-  updateHint: {
-    fontSize: 12,
-    color: "#F57C00",
-    marginTop: 8,
-    fontStyle: "italic",
   },
   charCount: {
     fontSize: 12,

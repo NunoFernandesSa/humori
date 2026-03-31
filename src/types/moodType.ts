@@ -3,7 +3,7 @@ export type Mood = "happy" | "neutral" | "sad" | "angry";
 export type MoodEntry = {
   id: string;
   mood: Mood;
-  note?: string;
+  note?: string | undefined;
   date: string;
   timestamp: number;
 };
