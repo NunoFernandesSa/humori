@@ -22,7 +22,7 @@ import { useMoodStore } from "@/src/store/useMoodStore";
 // ----- TYPES -----
 import { Mood, MoodEntry } from "@/src/types/moodType";
 // ----- HELPERS -----
-import { getCurrentMood, isValidEntry } from "@/src/utils/helpers/helpers";
+import { getCurrentMood, isValidEntry } from "@/src/helpers/helpers";
 
 const HomeScreen = (): JSX.Element => {
   // ----- STATES -----
