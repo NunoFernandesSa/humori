@@ -59,7 +59,7 @@ export default function TabsLayout(): JSX.Element {
       }}
     >
       <Tabs.Screen
-        name="home"
+        name="index"
         options={{
           headerShown: true,
           headerTitle: () => (
