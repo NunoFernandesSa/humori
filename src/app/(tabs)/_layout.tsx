@@ -19,19 +19,22 @@ export default function TabsLayout(): JSX.Element {
 
   const handleDeleteAll = () => {
     Alert.alert(
-      "Confirmation",
-      "Êtes-vous sûr de vouloir supprimer toutes les données ? Cette action est irréversible.",
+      "Confirmação",
+      "Tem a certeza de que pretende eliminar todos os dados? Esta ação é irreversível.",
       [
-        { text: "Annuler", style: "cancel" },
+        { text: "Cancelar", style: "cancel" },
         {
-          text: "Supprimer",
+          text: "Eliminar",
           style: "destructive",
           onPress: async () => {
             try {
               await deleteAllEntries();
-              Alert.alert("Succès", "Toutes les données ont été supprimées");
+              Alert.alert("Sucesso", "Todos os dados foram apagados.");
             } catch (error) {
-              Alert.alert("Erreur", "Impossible de supprimer les données");
+              Alert.alert(
+                "Erro",
+                "Não foi possível eliminar os dados. Por favor, tente mais novamente.",
+              );
             }
           },
         },
@@ -59,9 +62,7 @@ export default function TabsLayout(): JSX.Element {
         name="home"
         options={{
           headerShown: true,
-          headerTitle: () => (
-            <Text style={{ color: "gray" }}>Bienvenue sur MoodTracker</Text>
-          ),
+          headerTitle: () => <Text style={{ color: "gray" }}>Bem-vindo</Text>,
           headerLeft: () => (
             <Ionicons
               name="grid"
@@ -81,7 +82,7 @@ export default function TabsLayout(): JSX.Element {
             </TouchableOpacity>
           ),
           headerBackground: () => <View style={{ backgroundColor: "white" }} />,
-          tabBarLabel: ({ color }) => <Text style={{ color }}>Accueil</Text>,
+          tabBarLabel: ({ color }) => <Text style={{ color }}>Inicio</Text>,
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="home" color={color} size={size} />
           ),
@@ -105,7 +106,7 @@ export default function TabsLayout(): JSX.Element {
           ),
           headerBackground: () => <View style={{ backgroundColor: "white" }} />,
           tabBarLabel: ({ color }) => (
-            <Text style={{ color }}>Statistiques</Text>
+            <Text style={{ color }}>Estatísticas</Text>
           ),
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="stats-chart" color={color} size={size} />

@@ -113,7 +113,7 @@ export const useMoodStats = () => {
 
   const getAverageMood = useCallback(() => {
     const filtered = getFilteredEntries();
-    if (filtered.length === 0) return "Aucune donnée";
+    if (filtered.length === 0) return "-";
 
     const moodValues: Record<Mood, number> = {
       happy: 4,
