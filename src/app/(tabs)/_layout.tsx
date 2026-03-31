@@ -1,13 +1,6 @@
 // ----- REACT NATIVE -----
 import React, { JSX } from "react";
-import {
-  Alert,
-  Image,
-  Platform,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Alert, Image, Text, TouchableOpacity, View } from "react-native";
 // ----- EXPO -----
 import { Tabs } from "expo-router";
 // ----- ICONS -----
@@ -59,11 +52,11 @@ export default function TabsLayout(): JSX.Element {
         screenOptions={{
           tabBarActiveTintColor: "#4CAF50",
           tabBarStyle: {
-            backgroundColor: "#FFFFFF",
+            backgroundColor: "#FFF",
             borderTopColor: "#E0E0E0",
             elevation: 0,
             shadowOpacity: 0,
-            paddingBottom: Platform.OS === "android" ? 12 : 0,
+            minHeight: 100,
           },
           tabBarLabelStyle: {
             fontSize: 12,
