@@ -2,6 +2,7 @@ import { storageService } from "@/src/services/storageService";
 import { Mood, MoodEntry } from "@/src/types/moodType";
 import { useCallback, useState } from "react";
 import { Alert } from "react-native";
+import { MOODS } from "../constants/moods";
 
 export const useMoodStats = () => {
   const [entries, setEntries] = useState<MoodEntry[]>([]);
@@ -17,7 +18,10 @@ export const useMoodStats = () => {
       setEntries(allEntries.sort((a, b) => b.timestamp - a.timestamp));
     } catch (error) {
       console.error("Error loading entries:", error);
-      Alert.alert("Erreur", "Échec du chargement des statistiques");
+      Alert.alert(
+        "Erro",
+        "Erro ao carregar as estatísticas. Por favor, tente novamente.",
+      );
     } finally {
       setIsLoading(false);
       setRefreshing(false);
@@ -83,7 +87,7 @@ export const useMoodStats = () => {
 
     return {
       labels: filtered.map((entry) =>
-        new Date(entry.date).toLocaleDateString("fr-FR", { weekday: "short" }),
+        new Date(entry.date).toLocaleDateString("pt-PT", { weekday: "short" }),
       ),
       datasets: [
         {
@@ -95,13 +99,6 @@ export const useMoodStats = () => {
 
   const getPieChartData = useCallback(() => {
     const counts = getMoodCounts();
-    const MOODS = [
-      { value: "happy", label: "Heureux", emoji: "😊", color: "#4CAF50" },
-      { value: "neutral", label: "Neutre", emoji: "😐", color: "#FFC107" },
-      { value: "sad", label: "Triste", emoji: "😢", color: "#2196F3" },
-      { value: "angry", label: "En colère", emoji: "😠", color: "#F44336" },
-    ];
-
     return MOODS.map((mood) => ({
       name: mood.label,
       count: counts[mood.value as Mood],
@@ -128,29 +125,29 @@ export const useMoodStats = () => {
     );
     const average = sum / filtered.length;
 
-    if (average >= 3.5) return "Bon 😊";
-    if (average >= 2.5) return "Neutre 😐";
-    if (average >= 1.5) return "Bas 😢";
-    return "Très bas 😠";
+    if (average >= 3.5) return "Bom 😊";
+    if (average >= 2.5) return "Neutro 😐";
+    if (average >= 1.5) return "Baixo 😢";
+    return "Muito baixo 😠";
   }, [getFilteredEntries]);
 
   const deleteAllEntries = useCallback(() => {
     Alert.alert(
-      "Confirmation",
-      "Êtes-vous sûr de vouloir supprimer toutes les données ? Cette action est irréversible.",
+      "Confirmação",
+      "Tem certeza de que deseja excluir todos os dados? Esta ação é irreversível.",
       [
-        { text: "Annuler", style: "cancel" },
+        { text: "Cancelar", style: "cancel" },
         {
-          text: "Supprimer",
+          text: "Suprimir",
           style: "destructive",
           onPress: async () => {
             try {
               await storageService.deleteAllEntries();
               await loadEntries();
-              Alert.alert("Succès", "Toutes les données ont été supprimées");
+              Alert.alert("Sucesso", "Todos os dados foram excluídos");
             } catch (error) {
               console.error("Error deleting all entries:", error);
-              Alert.alert("Erreur", "Impossible de supprimer les données");
+              Alert.alert("Erro", "Não foi possível excluir os dados");
             }
           },
         },

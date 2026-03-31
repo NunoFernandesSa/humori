@@ -21,7 +21,7 @@ export const storageService = {
         // update existing entry
         entries[existingEntryIndex] = {
           ...entry,
-          id: entries[existingEntryIndex].id, // Garder l'ID existant
+          id: entries[existingEntryIndex].id, // Safe to keep the same ID for the same date
         };
         await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
       } else {
@@ -60,7 +60,7 @@ export const storageService = {
         entries[index] = { ...entry, timestamp: Date.now() };
         await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
       } else {
-        throw new Error(`Entry with id ${entry.id} not found`);
+        throw new Error(`Entrada com id ${entry.id} não encontrada.`);
       }
     } catch (error) {
       console.error("Error updating entry:", error);
@@ -77,7 +77,7 @@ export const storageService = {
       const filtered = entries.filter((entry) => entry.id !== id);
 
       if (filtered.length === entries.length) {
-        throw new Error(`Entry with id ${id} not found`);
+        throw new Error(`Entrada com id ${id} não encontrada.`);
       }
 
       await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));

@@ -1,6 +1,6 @@
 // ----- REACT NATIVE -----
 import React, { JSX } from "react";
-import { Alert, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Image, Text, TouchableOpacity, View } from "react-native";
 // ----- EXPO -----
 import { Tabs } from "expo-router";
 // ----- ICONS -----
@@ -62,13 +62,13 @@ export default function TabsLayout(): JSX.Element {
         name="home"
         options={{
           headerShown: true,
-          headerTitle: () => <Text style={{ color: "gray" }}>Bem-vindo</Text>,
+          headerTitle: () => (
+            <Text style={{ color: "gray", fontWeight: "bold" }}>Humori</Text>
+          ),
           headerLeft: () => (
-            <Ionicons
-              name="grid"
-              size={32}
-              color="gray"
-              style={{ marginHorizontal: 16 }}
+            <Image
+              source={require("../../assets/images/icon.png")}
+              style={{ width: 40, height: 40, marginHorizontal: 16 }}
             />
           ),
           headerRight: () => (
