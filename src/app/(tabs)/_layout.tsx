@@ -87,7 +87,7 @@ export default function TabsLayout(): JSX.Element {
             headerRight: () => (
               <TouchableOpacity onPress={() => handleDeleteAll()}>
                 <Ionicons
-                  name="settings-outline"
+                  name="trash-outline"
                   size={22}
                   color="gray"
                   style={{ marginHorizontal: 16 }}
