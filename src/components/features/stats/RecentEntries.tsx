@@ -20,15 +20,15 @@ export default function RecentEntries({
 }: RecentEntriesProps): JSX.Element {
   return (
     <View style={styles.recentContainer}>
-      <Text style={styles.recentTitle}>Dernières entrées</Text>
+      <Text style={styles.recentTitle}>Últimos humores</Text>
       {filteredEntries.slice(0, 5).map((entry: any) => {
         const mood = MOODS.find((m) => m.value === entry.mood);
         return (
           <View key={entry.id} style={styles.recentEntry}>
             <View style={styles.recentHeader}>
               <Text style={styles.recentDate}>
-                {new Date(entry.date).toLocaleDateString("fr-FR", {
-                  weekday: "long",
+                {new Date(entry.date).toLocaleDateString("pt-PT", {
+                  weekday: "short",
                   year: "numeric",
                   month: "long",
                   day: "numeric",

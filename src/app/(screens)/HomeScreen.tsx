@@ -55,8 +55,8 @@ const HomeScreen = (): JSX.Element => {
   const handleSubmit = async () => {
     if (!selectedMood) {
       Alert.alert(
-        "Veuillez sélectionner une humeur",
-        "Vous devez sélectionner une humeur pour soumettre.",
+        "Por favor, selecione um humor.",
+        "Você deve selecionar um humor para enviar.",
       );
       return;
     }
@@ -75,15 +75,15 @@ const HomeScreen = (): JSX.Element => {
       await saveEntry(newEntry);
 
       Alert.alert(
-        "Succès",
+        "Sucesso",
         entryIsValid
-          ? "Votre humeur a été mise à jour !"
-          : "Votre humeur a été enregistrée !",
+          ? "Seu humor foi atualizado!"
+          : "Seu humor foi registrado!",
       );
     } catch (error) {
       Alert.alert(
-        "Erreur",
-        "Impossible d'enregistrer votre humeur. Veuillez réessayer.",
+        "Erro",
+        "Não foi possível registrar seu humor. Por favor, tente mais novamente.",
       );
       console.error("Submit error:", error);
     } finally {
@@ -126,7 +126,7 @@ const HomeScreen = (): JSX.Element => {
         >
           <Container>
             <Title
-              title="Comment te sens-tu aujourd'hui ?"
+              title="Como se sente hoje?"
               style={{
                 color: "#4CAF50",
               }}
@@ -149,7 +149,7 @@ const HomeScreen = (): JSX.Element => {
             <TextInput
               ref={textAreaRef}
               style={styles.moodNote}
-              placeholder="Ajoutez un petit mot sur votre journée... (facultatif)"
+              placeholder="Adicione uma breve nota sobre o seu dia... (opcional)"
               multiline={true}
               numberOfLines={4}
               value={moodNote}
@@ -161,15 +161,13 @@ const HomeScreen = (): JSX.Element => {
 
             {typeof moodNote === "string" && moodNote.length > 0 && (
               <Text style={styles.charCount}>
-                {moodNote.length}/500 caractères
+                {moodNote.length}/500 caracteres
               </Text>
             )}
 
             <SubmitButton
               text={
-                entryIsValid
-                  ? "Mettre à jour mon humeur"
-                  : "Enregistrer mon humeur"
+                entryIsValid ? "Atualizar meu humor" : "Registrar meu humor"
               }
               handleSubmit={handleSubmit}
               disabled={isSubmitting}

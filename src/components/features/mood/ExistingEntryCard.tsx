@@ -19,14 +19,12 @@ export default function ExistingEntryCard({
     <View style={styles.updateMessage}>
       <View style={styles.updateHeader}>
         <Text style={styles.updateIcon}>✏️</Text>
-        <Text style={styles.updateTitle}>Mise à jour de l'entrée du jour</Text>
+        <Text style={styles.updateTitle}>Atualização do humor de hoje</Text>
       </View>
       <View style={styles.updateDetails}>
-        <Text style={styles.updateText}>
-          Vous avez déjà enregistré votre humeur aujourd'hui
-        </Text>
+        <Text style={styles.updateText}>Você já registrou seu humor hoje.</Text>
         <View style={styles.currentMoodContainer}>
-          <Text style={styles.currentMoodLabel}>Humeur actuelle :</Text>
+          <Text style={styles.currentMoodLabel}>Humor atual :</Text>
           <View
             style={[
               styles.currentMoodBadge,
@@ -43,14 +41,14 @@ export default function ExistingEntryCard({
         </View>
         {todaysEntry.note && (
           <View style={styles.currentNoteContainer}>
-            <Text style={styles.currentNoteLabel}>Note actuelle :</Text>
+            <Text style={styles.currentNoteLabel}>Nota atual :</Text>
             <Text style={styles.currentNoteText} numberOfLines={2}>
               "{todaysEntry.note}"
             </Text>
           </View>
         )}
         <Text style={styles.updateHint}>
-          Vous pouvez modifier votre humeur et votre note ci-dessous
+          Você pode modificar seu humor e sua nota abaixo
         </Text>
       </View>
     </View>

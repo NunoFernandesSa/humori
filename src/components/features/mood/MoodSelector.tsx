@@ -9,7 +9,7 @@ export const MoodSelector: React.FC<MoodSelectorProps> = ({
 }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Choisissez votre humeur</Text>
+      <Text style={styles.label}>Escolha o seu humor</Text>
       <View style={styles.moodGrid}>
         {MOODS.map((mood) => (
           <TouchableOpacity

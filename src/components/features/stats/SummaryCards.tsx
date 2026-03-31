@@ -10,11 +10,11 @@ export default function SummaryCards({
     <View style={styles.summaryContainer}>
       <View style={styles.summaryCard}>
         <Text style={styles.summaryNumber}>{totalEntries}</Text>
-        <Text style={styles.summaryLabel}>Nombre total d'entrées</Text>
+        <Text style={styles.summaryLabel}>Número total de entradas</Text>
       </View>
       <View style={styles.summaryCard}>
         <Text style={styles.summaryNumber}>{averageMood}</Text>
-        <Text style={styles.summaryLabel}>Humeur moyenne</Text>
+        <Text style={styles.summaryLabel}>Humor médio</Text>
       </View>
     </View>
   );

@@ -80,10 +80,7 @@ const StatsScreen = (): JSX.Element => {
         }
       >
         <Container>
-          <Title
-            title="Statistiques sur l'humeur"
-            style={{ color: "#4CAF50" }}
-          />
+          <Title title="Estatísticas de humor" style={{ color: "#4CAF50" }} />
 
           {/* filters */}
           <View style={styles.periodSelector}>
@@ -100,7 +97,7 @@ const StatsScreen = (): JSX.Element => {
                   selectedPeriod === "week" && styles.activePeriodText,
                 ]}
               >
-                Semaine
+                semana
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -116,7 +113,7 @@ const StatsScreen = (): JSX.Element => {
                   selectedPeriod === "month" && styles.activePeriodText,
                 ]}
               >
-                Mois
+                mês
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -132,7 +129,7 @@ const StatsScreen = (): JSX.Element => {
                   selectedPeriod === "all" && styles.activePeriodText,
                 ]}
               >
-                Toutes les périodes
+                Todos os períodos
               </Text>
             </TouchableOpacity>
           </View>
@@ -146,7 +143,7 @@ const StatsScreen = (): JSX.Element => {
           {/* Pie Chart */}
           {getPieChartData().length > 0 && (
             <View style={styles.chartContainer}>
-              <Text style={styles.chartTitle}>Distribution des humeurs</Text>
+              <Text style={styles.chartTitle}>Distribuição dos humores</Text>
               <PieChart
                 data={getPieChartData()}
                 width={Dimensions.get("window").width - 48}
@@ -165,7 +162,7 @@ const StatsScreen = (): JSX.Element => {
           {/* Line Chart */}
           {filteredEntries.length > 1 && (
             <View style={styles.chartContainer}>
-              <Text style={styles.chartTitle}>Évolution de l'humeur</Text>
+              <Text style={styles.chartTitle}>Alterações de humor</Text>
               <LineChart
                 data={getChartData()}
                 width={Dimensions.get("window").width - 48}

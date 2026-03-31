@@ -13,7 +13,7 @@ export default function MoodBreakdown({
 }: MoodBreakdownProps) {
   return (
     <View style={styles.breakdownContainer}>
-      <Text style={styles.breakdownTitle}>Résumé</Text>
+      <Text style={styles.breakdownTitle}>Resumo de humor</Text>
       {MOODS.map((mood) => {
         const count = moodCounts[mood.value];
         const percentage = getMoodPercentage(count);
@@ -24,7 +24,9 @@ export default function MoodBreakdown({
               <Text style={styles.moodName}>{mood.label}</Text>
             </View>
             <View style={styles.moodStats}>
-              <Text style={styles.moodCount}>{count} fois</Text>
+              <Text style={styles.moodCount}>
+                {count === 1 ? "1 vez" : `${count} vezes`}
+              </Text>
               <Text style={styles.moodPercentage}>
                 {percentage.toFixed(1)}%
               </Text>
