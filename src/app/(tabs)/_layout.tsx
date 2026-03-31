@@ -11,6 +11,7 @@ import { useMoodStore } from "@/src/store/useMoodStore";
 /**
  * TabsLayout component defines the bottom-tab navigation structure for the MoodTracker app.
  * It renders two tabs: Home and Stats, each with custom headers, icons, and labels.
+ * @param props - No props are used in this component.
  * @returns {JSX.Element} The tab navigator layout for the app.
  */
 export default function TabsLayout(): JSX.Element {
@@ -52,16 +53,6 @@ export default function TabsLayout(): JSX.Element {
           fontSize: 12,
           fontWeight: "500",
         },
-        headerRight: () => (
-          <TouchableOpacity onPress={() => handleDeleteAll()}>
-            <Ionicons
-              name="settings-outline"
-              size={22}
-              color="gray"
-              style={{ marginHorizontal: 16 }}
-            />
-          </TouchableOpacity>
-        ),
       }}
     >
       <Tabs.Screen
@@ -78,6 +69,16 @@ export default function TabsLayout(): JSX.Element {
               color="gray"
               style={{ marginHorizontal: 16 }}
             />
+          ),
+          headerRight: () => (
+            <TouchableOpacity onPress={() => handleDeleteAll()}>
+              <Ionicons
+                name="settings-outline"
+                size={22}
+                color="gray"
+                style={{ marginHorizontal: 16 }}
+              />
+            </TouchableOpacity>
           ),
           headerBackground: () => <View style={{ backgroundColor: "white" }} />,
           tabBarLabel: ({ color }) => <Text style={{ color }}>Accueil</Text>,
