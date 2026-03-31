@@ -63,7 +63,7 @@ export default function TabsLayout(): JSX.Element {
         options={{
           headerShown: true,
           headerTitle: () => (
-            <Text style={{ color: "gray", fontWeight: "bold" }}>Humori</Text>
+            <Text style={{ color: "gray", fontWeight: "bold" }}>Inicio</Text>
           ),
           headerLeft: () => (
             <Image
@@ -94,14 +94,14 @@ export default function TabsLayout(): JSX.Element {
         options={{
           headerShown: true,
           headerTitle: () => (
-            <Text style={{ color: "gray" }}>Statistiques</Text>
+            <Text style={{ color: "gray", fontWeight: "bold" }}>
+              Estatísticas
+            </Text>
           ),
           headerLeft: () => (
-            <Ionicons
-              name="grid"
-              size={32}
-              color="gray"
-              style={{ marginHorizontal: 16 }}
+            <Image
+              source={require("../../assets/images/icon.png")}
+              style={{ width: 40, height: 40, marginHorizontal: 16 }}
             />
           ),
           headerBackground: () => <View style={{ backgroundColor: "white" }} />,
