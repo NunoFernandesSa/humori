@@ -19,6 +19,7 @@ import { StatusBar } from "expo-status-bar";
 export default function TabsLayout(): JSX.Element {
   const { deleteAllEntries } = useMoodStore();
 
+  // Handle deleting all entries
   const handleDeleteAll = () => {
     Alert.alert(
       "Apagar tudo?",

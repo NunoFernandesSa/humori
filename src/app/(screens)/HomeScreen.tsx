@@ -24,6 +24,13 @@ import { Mood, MoodEntry } from "@/src/types/moodType";
 // ----- HELPERS -----
 import { getCurrentMood, isValidEntry } from "@/src/helpers/helpers";
 
+/**
+ * HomeScreen component for mood tracking.
+ * Allows users to select their mood, add a note, and submit/update their daily mood entry.
+ * Displays existing mood entry if one exists for today.
+ *
+ * @returns {JSX.Element} The rendered HomeScreen component
+ */
 const HomeScreen = (): JSX.Element => {
   // ----- STATES -----
   const [moodNote, setMoodNote] = useState<string>("");
@@ -41,6 +48,7 @@ const HomeScreen = (): JSX.Element => {
   // ----- VARIABLES -----
   const homeTitle = "Como te sentes hoje?";
 
+  // Handle text area focus
   const handleFocus = () => {
     // Measure the position of the text area and scroll to it
     if (textAreaRef.current && scrollViewRef.current) {
@@ -54,6 +62,7 @@ const HomeScreen = (): JSX.Element => {
     }
   };
 
+  // Handle form submission
   const handleSubmit = async () => {
     if (!selectedMood) {
       Alert.alert(
