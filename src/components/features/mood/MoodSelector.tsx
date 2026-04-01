@@ -7,9 +7,12 @@ export const MoodSelector: React.FC<MoodSelectorProps> = ({
   selectedMood,
   onSelect,
 }) => {
+  // ----- VARIABLES -----
+  const title = "Escolhe o teu humor";
+
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Escolha o seu humor</Text>
+      <Text style={styles.label}>{title}</Text>
       <View style={styles.moodGrid}>
         {MOODS.map((mood) => (
           <TouchableOpacity
@@ -38,7 +41,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     marginBottom: 12,
-    color: "#333",
+    color: "#333333",
   },
   moodGrid: {
     flexDirection: "row",

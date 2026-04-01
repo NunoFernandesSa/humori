@@ -34,10 +34,12 @@ const HomeScreen = (): JSX.Element => {
   // ----- REF'S -----
   const scrollViewRef = useRef<ScrollView>(null);
   const textAreaRef = useRef<TextInput>(null);
-
   // ----- Helpers -----
   const entryIsValid = isValidEntry(todaysEntry);
   const currentMoodValue = getCurrentMood(todaysEntry);
+
+  // ----- VARIABLES -----
+  const homeTitle = "Como te sentes hoje?";
 
   const handleFocus = () => {
     // Measure the position of the text area and scroll to it
@@ -126,7 +128,7 @@ const HomeScreen = (): JSX.Element => {
         >
           <Container>
             <Title
-              title="Como se sente hoje?"
+              title={homeTitle}
               style={{
                 color: "#4CAF50",
               }}
@@ -149,7 +151,7 @@ const HomeScreen = (): JSX.Element => {
             <TextInput
               ref={textAreaRef}
               style={styles.moodNote}
-              placeholder="Adicione uma breve nota sobre o seu dia... (opcional)"
+              placeholder="Adiciona uma breve nota sobre o teu dia..."
               multiline={true}
               numberOfLines={4}
               value={moodNote}
@@ -167,7 +169,7 @@ const HomeScreen = (): JSX.Element => {
 
             <SubmitButton
               text={
-                entryIsValid ? "Atualizar meu humor" : "Registrar meu humor"
+                entryIsValid ? "Atualizar o meu humor" : "Registrar o meu humor"
               }
               handleSubmit={handleSubmit}
               disabled={isSubmitting}
