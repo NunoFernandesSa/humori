@@ -6,8 +6,10 @@ export const MOODS: {
   emoji: string;
   color: string;
 }[] = [
-  { value: "happy", label: "Feliz", emoji: "😊", color: "#4CAF50" },
-  { value: "neutral", label: "Neutro", emoji: "😐", color: "#FFC107" },
-  { value: "sad", label: "Triste", emoji: "😢", color: "#2196F3" },
-  { value: "angry", label: "Nervoso", emoji: "😠", color: "#F44336" },
+  { value: "happy", label: "Feliz", emoji: "😊", color: "#FFD93D" },
+  { value: "sad", label: "Triste", emoji: "😢", color: "#6C91B2" },
+  { value: "angry", label: "Enfurecido", emoji: "😠", color: "#E63946" },
+  { value: "scared", label: "Assustado", emoji: "😨", color: "#9B59B6" },
+  { value: "calm", label: "Calmo", emoji: "😌", color: "#A7E0B0" },
+  { value: "surprised", label: "Surpreso", emoji: "😲", color: "#FF9F4A" },
 ];

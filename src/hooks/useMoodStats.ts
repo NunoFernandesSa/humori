@@ -55,9 +55,11 @@ export const useMoodStats = () => {
     const filtered = getFilteredEntries();
     const counts: Record<Mood, number> = {
       happy: 0,
-      neutral: 0,
       sad: 0,
       angry: 0,
+      scared: 0,
+      calm: 0,
+      surprised: 0,
     };
 
     filtered.forEach((entry) => {
@@ -79,10 +81,12 @@ export const useMoodStats = () => {
   const getChartData = useCallback(() => {
     const filtered = getFilteredEntries();
     const moodValues: Record<Mood, number> = {
-      happy: 4,
-      neutral: 3,
-      sad: 2,
-      angry: 1,
+      happy: 6,
+      sad: 5,
+      angry: 4,
+      scared: 3,
+      calm: 2,
+      surprised: 1,
     };
 
     return {
@@ -113,9 +117,11 @@ export const useMoodStats = () => {
     if (filtered.length === 0) return "-";
 
     const moodValues: Record<Mood, number> = {
-      happy: 4,
-      neutral: 3,
-      sad: 2,
+      happy: 6,
+      calm: 5,
+      surprised: 4,
+      sad: 3,
+      scared: 2,
       angry: 1,
     };
 
@@ -125,10 +131,11 @@ export const useMoodStats = () => {
     );
     const average = sum / filtered.length;
 
-    if (average >= 3.5) return "Bom 😊";
-    if (average >= 2.5) return "Neutro 😐";
-    if (average >= 1.5) return "Baixo 😢";
-    return "Muito baixo 😠";
+    if (average >= 4.5) return "😊";
+    if (average >= 3.5) return "🙂";
+    if (average >= 2.5) return "😐";
+    if (average >= 1.5) return "😢";
+    return "😠";
   }, [getFilteredEntries]);
 
   const deleteAllEntries = useCallback(() => {

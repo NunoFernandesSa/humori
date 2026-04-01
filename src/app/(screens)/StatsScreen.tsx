@@ -80,7 +80,10 @@ const StatsScreen = (): JSX.Element => {
         }
       >
         <Container>
-          <Title title="Estatísticas de humor" style={{ color: "#4CAF50" }} />
+          <Title
+            title="Estatísticas do teu humor"
+            style={{ color: "#4CAF50" }}
+          />
 
           {/* filters */}
           <View style={styles.periodSelector}>
@@ -97,7 +100,7 @@ const StatsScreen = (): JSX.Element => {
                   selectedPeriod === "week" && styles.activePeriodText,
                 ]}
               >
-                semana
+                Semana
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -113,7 +116,7 @@ const StatsScreen = (): JSX.Element => {
                   selectedPeriod === "month" && styles.activePeriodText,
                 ]}
               >
-                mês
+                Mês
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -187,10 +190,12 @@ const StatsScreen = (): JSX.Element => {
                 style={styles.chart}
                 formatYLabel={(value) => {
                   const moodValues: Record<string, string> = {
-                    "4": "Heureux",
-                    "3": "Neutre",
-                    "2": "Triste",
-                    "1": "En colère",
+                    "6": "Feliz",
+                    "5": "Triste",
+                    "4": "Enfurecido",
+                    "3": "Assustado",
+                    "2": "Calmo",
+                    "1": "Surpreso",
                   };
                   return moodValues[value] || "";
                 }}

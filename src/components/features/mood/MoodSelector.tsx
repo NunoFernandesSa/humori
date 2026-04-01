@@ -45,11 +45,12 @@ const styles = StyleSheet.create({
   },
   moodGrid: {
     flexDirection: "row",
+    flexWrap: "wrap",
     justifyContent: "space-between",
     gap: 12,
   },
   moodButton: {
-    flex: 1,
+    width: "30%",
     alignItems: "center",
     padding: 12,
     borderRadius: 12,

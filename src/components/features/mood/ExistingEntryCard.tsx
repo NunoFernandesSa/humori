@@ -18,11 +18,10 @@ export default function ExistingEntryCard({
   return (
     <View style={styles.updateMessage}>
       <View style={styles.updateHeader}>
-        <Text style={styles.updateIcon}>✏️</Text>
         <Text style={styles.updateTitle}>Atualização do humor de hoje</Text>
       </View>
       <View style={styles.updateDetails}>
-        <Text style={styles.updateText}>Você já registrou seu humor hoje.</Text>
+        <Text style={styles.updateText}>Já registaste o teu humor hoje.</Text>
         <View style={styles.currentMoodContainer}>
           <Text style={styles.currentMoodLabel}>Humor atual :</Text>
           <View
@@ -48,7 +47,7 @@ export default function ExistingEntryCard({
           </View>
         )}
         <Text style={styles.updateHint}>
-          Você pode modificar seu humor e sua nota abaixo
+          Podes modificar o teu humor e a tua nota abaixo
         </Text>
       </View>
     </View>
