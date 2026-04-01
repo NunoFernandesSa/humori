@@ -21,8 +21,8 @@ export default function TabsLayout(): JSX.Element {
 
   const handleDeleteAll = () => {
     Alert.alert(
-      "Confirmação",
-      "Tem a certeza de que pretende eliminar todos os dados? Esta ação é irreversível.",
+      "Apagar tudo?",
+      "Tem certeza de que deseja excluir todos os dados? Todas as emoções serão suprimidas. Esta ação é irreversível.",
       [
         { text: "Cancelar", style: "cancel" },
         {

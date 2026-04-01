@@ -138,28 +138,15 @@ export const useMoodStats = () => {
     return "😠";
   }, [getFilteredEntries]);
 
-  const deleteAllEntries = useCallback(() => {
-    Alert.alert(
-      "Confirmação",
-      "Tem certeza de que deseja excluir todos os dados? Esta ação é irreversível.",
-      [
-        { text: "Cancelar", style: "cancel" },
-        {
-          text: "Suprimir",
-          style: "destructive",
-          onPress: async () => {
-            try {
-              await storageService.deleteAllEntries();
-              await loadEntries();
-              Alert.alert("Sucesso", "Todos os dados foram excluídos");
-            } catch (error) {
-              console.error("Error deleting all entries:", error);
-              Alert.alert("Erro", "Não foi possível excluir os dados");
-            }
-          },
-        },
-      ],
-    );
+  const deleteAllEntries = useCallback(async () => {
+    try {
+      await storageService.deleteAllEntries();
+      await loadEntries();
+      Alert.alert("Sucesso", "Todos os dados foram excluídos");
+    } catch (error) {
+      console.error("Error deleting all entries:", error);
+      Alert.alert("Erro", "Não foi possível excluir os dados");
+    }
   }, []);
 
   return {
