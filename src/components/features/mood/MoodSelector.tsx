@@ -14,20 +14,22 @@ export const MoodSelector: React.FC<MoodSelectorProps> = ({
     <View style={styles.container}>
       <Text style={styles.label}>{title}</Text>
       <View style={styles.moodGrid}>
-        {MOODS.map((mood) => (
-          <TouchableOpacity
-            key={mood.value}
-            style={[
-              styles.moodButton,
-              selectedMood === mood.value && styles.selectedMood,
-              { borderColor: mood.color },
-            ]}
-            onPress={() => onSelect(mood.value)}
-          >
-            <Text style={styles.moodEmoji}>{mood.emoji}</Text>
-            <Text style={styles.moodLabel}>{mood.label}</Text>
-          </TouchableOpacity>
-        ))}
+        {MOODS.map((mood) => {
+          return (
+            <TouchableOpacity
+              key={mood.value}
+              style={[
+                styles.moodButton,
+                selectedMood === mood.value && styles.selectedMood,
+                { borderColor: mood.color },
+              ]}
+              onPress={() => onSelect(mood.value)}
+            >
+              <Text style={styles.moodEmoji}>{mood.emoji}</Text>
+              <Text style={styles.moodLabel}>{mood.label}</Text>
+            </TouchableOpacity>
+          );
+        })}
       </View>
     </View>
   );

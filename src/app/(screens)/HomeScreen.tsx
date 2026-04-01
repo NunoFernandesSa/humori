@@ -144,7 +144,7 @@ const HomeScreen = (): JSX.Element => {
 
             {/* Mood selector component for mood selection */}
             <MoodSelector
-              selectedMood={selectedMood}
+              selectedMood={selectedMood as Mood}
               onSelect={setSelectedMood}
             />
 

@@ -42,7 +42,7 @@ export default function ExistingEntryCard({
           <View style={styles.currentNoteContainer}>
             <Text style={styles.currentNoteLabel}>Nota atual :</Text>
             <Text style={styles.currentNoteText} numberOfLines={2}>
-              "{todaysEntry.note}"
+              {todaysEntry.note}
             </Text>
           </View>
         )}
