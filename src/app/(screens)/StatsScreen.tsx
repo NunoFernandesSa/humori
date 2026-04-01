@@ -80,10 +80,7 @@ const StatsScreen = (): JSX.Element => {
         }
       >
         <Container>
-          <Title
-            title="Estatísticas do teu humor"
-            style={{ color: "#4CAF50" }}
-          />
+          <Title title="Tendências do teu humor" style={{ color: "#4CAF50" }} />
 
           {/* filters */}
           <View style={styles.periodSelector}>

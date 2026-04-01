@@ -69,7 +69,7 @@ export default function TabsLayout(): JSX.Element {
           options={{
             headerShown: true,
             headerTitle: () => (
-              <Text style={{ color: "gray", fontWeight: "bold" }}>Inicio</Text>
+              <Text style={{ color: "gray", fontWeight: "bold" }}>Início</Text>
             ),
             headerLeft: () => (
               <Image
@@ -90,7 +90,7 @@ export default function TabsLayout(): JSX.Element {
             headerBackground: () => (
               <View style={{ backgroundColor: "white" }} />
             ),
-            tabBarLabel: ({ color }) => <Text style={{ color }}>Inicio</Text>,
+            tabBarLabel: ({ color }) => <Text style={{ color }}>Início</Text>,
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="home" color={color} size={size} />
             ),
@@ -103,7 +103,7 @@ export default function TabsLayout(): JSX.Element {
             headerShown: true,
             headerTitle: () => (
               <Text style={{ color: "gray", fontWeight: "bold" }}>
-                Estatísticas
+                Tendências
               </Text>
             ),
             headerLeft: () => (
@@ -116,7 +116,7 @@ export default function TabsLayout(): JSX.Element {
               <View style={{ backgroundColor: "white" }} />
             ),
             tabBarLabel: ({ color }) => (
-              <Text style={{ color }}>Estatísticas</Text>
+              <Text style={{ color }}>Tendências</Text>
             ),
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="stats-chart" color={color} size={size} />
