@@ -1,7 +1,6 @@
 # Humori
 
-**Humori** is a modern, minimalist mood tracking app built with **React Native** and **Expo**.  
-It helps users record their daily emotions, add notes, and review their mood trends over time through a clean and intuitive interface.
+**Humori** is a **React Native** and **Expo** MVP that helps children log their daily mood and notes, while giving parents a simple way to review weekly emotional trends.
 
 ## 🚀 Features
 
