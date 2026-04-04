@@ -1,64 +1,65 @@
 # Humori
 
-**Humori** is a modern, minimalist mood tracking application built with **React Native** and **Expo**. It helps users monitor their emotional well-being over time with a clean interface and insightful statistics.
+**Humori** is a React Native MVP designed to help children log their daily mood and add a short note, while giving parents a simple way to review emotional trends over time.
+
+Built with **Expo**, **TypeScript**, and **React Native**, the app focuses on simplicity, clarity, and a smooth user experience.
+
+## ✨ Why I built this
+
+I created Humori as a personal project for my 8-year-old son, who enjoys selecting his mood and adding a note every day.
+
+The goal was to build a lightweight family tool that makes it easier to track emotions, identify weekly patterns, and better understand what may not be going well.
 
 ## 🚀 Features
 
-- **Daily Mood Tracking**: Easily record your mood with intuitive emoji-based selections.
-- **Detailed Statistics**: Visualize your emotional patterns over time with interactive charts.
-- **Local Persistence**: Your data is stored securely on your device using `AsyncStorage`.
-- **Haptic Feedback**: Enhanced user experience with tactile responses during interactions.
-- **Responsive Design**: Optimized for both iOS and Android platforms.
-- **Modern Animations**: Smooth transitions and animations powered by `react-native-reanimated`.
+- **Daily Mood Tracking**: Log one mood per day with an intuitive emoji-based flow.
+- **Mood Notes**: Add a short note to capture the context behind each emotion.
+- **Weekly Insights**: Review emotional trends over time with simple charts and statistics.
+- **Local Persistence**: Data is stored locally on the device using `AsyncStorage`.
+- **Haptic Feedback**: Small tactile interactions for a more engaging experience.
+- **Responsive UI**: Optimized for both iOS and Android.
+- **Smooth Animations**: Powered by `react-native-reanimated`.
 
 ## 🛠️ Tech Stack
 
 - **Framework**: [Expo](https://expo.dev/) (SDK 54)
 - **Language**: [TypeScript](https://www.typescriptlang.org/)
-- **Navigation**: [Expo Router](https://docs.expo.dev/router/introduction/) (File-based routing)
+- **Navigation**: [Expo Router](https://docs.expo.dev/router/introduction/)
 - **State Management**: [Zustand](https://github.com/pmndrs/zustand)
 - **Styling**: React Native StyleSheet
-- **Icons**: [Expo Vector Icons](https://docs.expo.dev/guides/icons/) & SVG support
+- **Icons**: [Expo Vector Icons](https://docs.expo.dev/guides/icons/) and SVG support
 - **Animations**: [React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/)
-- **Data Visualization**: [React Native Chart Kit](https://github.com/indiespirit/react-native-chart-kit)
+- **Charts**: [React Native Chart Kit](https://github.com/indiespirit/react-native-chart-kit)
 - **Storage**: [Async Storage](https://react-native-async-storage.github.io/async-storage/)
 
 ## 📦 Getting Started
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) (v18 or newer)
+- [Node.js](https://nodejs.org/) v18 or newer
 - [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
-- [Expo Go](https://expo.dev/go) app installed on your physical device or an emulator/simulator
+- [Expo Go](https://expo.dev/go) installed on a physical device, or an emulator/simulator
 
 ### Installation
 
-1.  **Clone the repository**:
+```bash
+git clone <repository-url>
+cd mood
+npm install
+```
 
-    ```bash
-    git clone <repository-url>
-    cd mood
-    ```
-
-2.  **Install dependencies**:
-    ```bash
-    npm install
-    ```
-
-### Running the App
-
-Start the development server:
+### Running the app
 
 ```bash
 npm start
 ```
 
-Once the server is running:
+Then you can:
 
-- **iOS**: Press `i` to open in iOS Simulator (requires macOS and Xcode).
-- **Android**: Press `a` to open in Android Emulator (requires Android Studio).
-- **Physical Device**: Scan the QR code displayed in the terminal using the Expo Go app.
-- **Web**: Press `w` to open in your browser.
+- Press `i` to open the app in the iOS Simulator.
+- Press `a` to open the app in the Android Emulator.
+- Scan the QR code with Expo Go on a physical device.
+- Press `w` to open the app in the browser.
 
 ## 📂 Project Structure
 
@@ -70,14 +71,14 @@ src/
 │   └── _layout.tsx  # Root layout
 ├── assets/          # Emojis, images, and fonts
 ├── components/      # Reusable UI components
-│   ├── common/      # Shared components (Buttons, Headers, etc.)
-│   └── features/    # Domain-specific components (Mood, Stats)
+│   ├── common/      # Shared components
+│   └── features/    # Domain-specific components
 ├── constants/       # App constants and configuration
 ├── helpers/         # Utility functions
 ├── hooks/           # Custom React hooks
-├── services/        # External services (Storage)
-├── store/           # State management (Zustand stores)
-└── types/           # TypeScript interfaces and types
+├── services/        # Storage and external services
+├── store/           # Zustand stores
+└── types/           # TypeScript types
 ```
 
 ## 📜 Available Scripts
@@ -85,9 +86,9 @@ src/
 - `npm start`: Starts the Expo development server.
 - `npm run ios`: Runs the app in the iOS Simulator.
 - `npm run android`: Runs the app in the Android Emulator.
-- `npm run web`: Runs the app in the web browser.
+- `npm run web`: Runs the app in the browser.
 - `npm run lint`: Runs ESLint for code quality checks.
 
 ## 📄 License
 
-This project is private and intended for personal development.
+This project is a personal MVP and is intended for private development.
