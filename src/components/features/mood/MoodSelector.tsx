@@ -8,7 +8,8 @@ export const MoodSelector: React.FC<MoodSelectorProps> = ({
   onSelect,
 }) => {
   // ----- VARIABLES -----
-  const title = "Escolhe o teu humor";
+  const title =
+    "Escolhe o teu humor e adicione uma breve nota sobre o teu dia.";
 
   return (
     <View style={styles.container}>
@@ -56,14 +57,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 12,
     borderRadius: 16,
-    borderWidth: 2,
+    borderWidth: 3,
     borderColor: "#E0E0E0",
     backgroundColor: "#FFF",
     gap: 8,
   },
   selectedMood: {
-    backgroundColor: "#edfcc7",
-    borderWidth: 2,
+    backgroundColor: "#4CAF5043",
+    borderWidth: 3,
   },
   moodEmoji: {
     fontSize: 32,

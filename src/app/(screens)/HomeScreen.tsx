@@ -47,6 +47,12 @@ const HomeScreen = (): JSX.Element => {
 
   // ----- VARIABLES -----
   const homeTitle = "Como te sentes hoje?";
+  const date = new Date();
+  const formattedDate = date.toLocaleDateString("pt-PT", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
 
   // Handle text area focus
   const handleFocus = () => {
@@ -66,8 +72,8 @@ const HomeScreen = (): JSX.Element => {
   const handleSubmit = async () => {
     if (!selectedMood) {
       Alert.alert(
-        "Por favor, selecione um humor.",
-        "Você deve selecionar um humor para enviar.",
+        "Oops! 🎈",
+        "Escolhe primeiro o teu humor antes de continuar.",
       );
       return;
     }
@@ -86,15 +92,15 @@ const HomeScreen = (): JSX.Element => {
       await saveEntry(newEntry);
 
       Alert.alert(
-        "Sucesso",
+        "🎉 Sucesso!",
         entryIsValid
-          ? "Seu humor foi atualizado!"
-          : "Seu humor foi registrado!",
+          ? "O teu humor foi atualizado!"
+          : "O teu humor foi registrado!",
       );
     } catch (error) {
       Alert.alert(
-        "Erro",
-        "Não foi possível registrar seu humor. Por favor, tente mais novamente.",
+        "Ops! 😕",
+        "Não foi possível registrar teu humor. Tenta novamente!",
       );
       console.error("Submit error:", error);
     } finally {
@@ -142,6 +148,9 @@ const HomeScreen = (): JSX.Element => {
                 color: "#4CAF50",
               }}
             />
+            <Text style={{ textAlign: "center", color: "#666" }}>
+              {formattedDate}
+            </Text>
 
             {/* display existing entry if there is one for today */}
             {entryIsValid && currentMoodValue && todaysEntry && (
@@ -160,7 +169,7 @@ const HomeScreen = (): JSX.Element => {
             <TextInput
               ref={textAreaRef}
               style={styles.moodNote}
-              placeholder="Adiciona uma breve nota sobre o teu dia..."
+              placeholder="Queres partilhar mais alguma coisa? (opcional)"
               multiline={true}
               numberOfLines={4}
               value={moodNote}
@@ -168,6 +177,8 @@ const HomeScreen = (): JSX.Element => {
               onFocus={handleFocus}
               editable={!isSubmitting}
               maxLength={500}
+              accessibilityLabel="Nota sobre o teu dia"
+              accessibilityHint="Escreve uma breve nota sobre como foi o teu dia"
             />
 
             {typeof moodNote === "string" && moodNote.length > 0 && (
