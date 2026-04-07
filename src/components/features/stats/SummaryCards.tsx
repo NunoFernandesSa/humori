@@ -10,7 +10,7 @@ export default function SummaryCards({
     <View style={styles.summaryContainer}>
       <View style={styles.summaryCard}>
         <Text style={styles.summaryNumber}>{totalEntries}</Text>
-        <Text style={styles.summaryLabel}>Número total de entradas</Text>
+        <Text style={styles.summaryLabel}>Número total de humores</Text>
       </View>
       <View style={styles.summaryCard}>
         <Text style={styles.summaryNumber}>{averageMood}</Text>

@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
   periodSelector: {
     flexDirection: "row",
     justifyContent: "center",
-    gap: 12,
+    gap: 6,
     marginVertical: 20,
   },
   periodButton: {
