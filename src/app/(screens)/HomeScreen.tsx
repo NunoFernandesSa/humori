@@ -148,7 +148,16 @@ const HomeScreen = (): JSX.Element => {
                 color: "#4CAF50",
               }}
             />
-            <Text style={{ textAlign: "center", color: "#666" }}>
+            <Text
+              style={{
+                textAlign: "center",
+                color: "#666",
+                backgroundColor: "#F5F5F5",
+                padding: 10,
+                borderRadius: 10,
+                marginVertical: 10,
+              }}
+            >
               {formattedDate}
             </Text>
 

@@ -165,7 +165,7 @@ const StatsScreen = (): JSX.Element => {
               <Text style={styles.chartTitle}>Alterações de humor</Text>
               <LineChart
                 data={getChartData()}
-                width={Dimensions.get("window").width - 48}
+                width={Dimensions.get("window").width - 42}
                 height={220}
                 chartConfig={{
                   backgroundColor: "#ffffff",
@@ -181,6 +181,10 @@ const StatsScreen = (): JSX.Element => {
                     r: "6",
                     strokeWidth: "2",
                     stroke: "#4CAF50",
+                  },
+                  propsForLabels: {
+                    fontSize: 10,
+                    fontWeight: "400",
                   },
                 }}
                 bezier
@@ -250,6 +254,9 @@ const styles = StyleSheet.create({
   chartContainer: {
     marginBottom: 24,
     alignItems: "center",
+    backgroundColor: "#F5F5F5",
+    padding: 16,
+    borderRadius: 16,
   },
   chartTitle: {
     fontSize: 18,
