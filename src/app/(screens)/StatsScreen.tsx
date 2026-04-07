@@ -191,12 +191,12 @@ const StatsScreen = (): JSX.Element => {
                 style={styles.chart}
                 formatYLabel={(value) => {
                   const moodValues: Record<string, string> = {
-                    "6": "Feliz",
-                    "5": "Triste",
-                    "4": "Enfurecido",
-                    "3": "Assustado",
-                    "2": "Calmo",
-                    "1": "Surpreso",
+                    "6": "😊 Feliz",
+                    "5": "😢 Triste",
+                    "4": "😡 Enfur.",
+                    "3": "😨 Assust.",
+                    "2": "😌 Calmo",
+                    "1": "😲 Surpr.",
                   };
                   return moodValues[value] || "";
                 }}
