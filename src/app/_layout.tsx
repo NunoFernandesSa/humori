@@ -12,44 +12,46 @@ export default function RootLayout() {
   const [isUpdating, setIsUpdating] = useState(false);
 
   useEffect(() => {
-    async function checkForUpdates() {
-      try {
-        const update = await Updates.checkForUpdateAsync();
+    if (!__DEV__) {
+      checkForUpdates();
+    }
+    return;
+  }, []);
 
-        // Check if there is an update available
-        if (update.isAvailable) {
-          // If there is an update available, set isUpdating to true
-          setIsUpdating(true);
-          // Fetch the update package from the server
-          await Updates.fetchUpdateAsync();
-          // After fetching the update package, set isUpdating to false
-          setIsUpdating(false);
-          // Show an alert to the user about the available update
-          Alert.alert(
-            "Nova versão disponível! 🎉",
-            "Uma atualização foi descarregada. Queres reiniciar agora para aplicar?",
-            [
-              {
-                text: "Mais tarde",
-                style: "cancel",
-              },
-              {
-                text: "Reiniciar agora",
-                onPress: () => Updates.reloadAsync(),
-              },
-            ],
-          );
-        }
-      } catch (error) {
-        // If there is an error checking for updates, log it in development mode
-        if (__DEV__) {
-          console.error("Error checking for updates:", error);
-        }
+  const checkForUpdates = async () => {
+    try {
+      const update = await Updates.checkForUpdateAsync();
+
+      // Check if there is an update available
+      if (update.isAvailable) {
+        setIsUpdating(true); // If there is an update available, set isUpdating to true
+
+        await Updates.fetchUpdateAsync(); // Fetch the update package from the server
+
+        setIsUpdating(false); // After fetching the update package, set isUpdating to false
+        // Show an alert to the user about the available update
+        Alert.alert(
+          "Nova versão disponível! 🎉",
+          "Uma atualização foi descarregada. Queres reiniciar agora para aplicar?",
+          [
+            {
+              text: "Mais tarde",
+              style: "cancel",
+            },
+            {
+              text: "Reiniciar agora",
+              onPress: () => Updates.reloadAsync(),
+            },
+          ],
+        );
+      }
+    } catch (error) {
+      // If there is an error checking for updates, log it in development mode
+      if (__DEV__) {
+        console.error("Error checking for updates:", error);
       }
     }
-
-    checkForUpdates();
-  }, []);
+  };
 
   // If isUpdating is true, render a loading indicator
   // Otherwise, render the main navigation stack

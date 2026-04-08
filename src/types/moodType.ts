@@ -1,5 +1,7 @@
+// ----- PROPS FOR MOOD TYPE -----
 export type Mood = "happy" | "sad" | "angry" | "scared" | "calm" | "surprised";
 
+// ----- PROPS FOR ENTRY ON MOODS ARRAY -----
 export type MoodEntry = {
   id: string;
   mood: Mood;
@@ -8,6 +10,7 @@ export type MoodEntry = {
   timestamp: number;
 };
 
+// ----- PROPS FOR MOODS ARRAY STATS -----
 export type MoodStats = {
   total: number;
   average: number;
@@ -15,6 +18,7 @@ export type MoodStats = {
   recentEntries: MoodEntry[];
 };
 
+// ----- PROPS FOR MOODS ARRAY STATE -----
 export type MoodState = {
   moods: MoodEntry[];
   loadMoods: (moods: MoodEntry[]) => void;
