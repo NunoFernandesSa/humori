@@ -1,5 +1,6 @@
 import { COLORS_PALETTE } from "@/src/constants/colors";
 import { MOODS } from "@/src/constants/moods";
+import { formatDateKey, getLocalDateKey } from "@/src/utils/date";
 import React, { JSX } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
@@ -19,20 +20,17 @@ export default function RecentEntries({
 }: RecentEntriesProps): JSX.Element {
   return (
     <View style={styles.recentContainer}>
-      <Text style={styles.recentTitle}>Últimos humores</Text>
+      <Text style={styles.recentTitle}>
+        Últimos humores ({filteredEntries.length})
+      </Text>
       {filteredEntries.slice(0, 5).map((entry: any) => {
         const mood = MOODS.find((m) => m.value === entry.mood);
+        const entryDateKey = getLocalDateKey(new Date(entry.date));
+        const formattedDate = formatDateKey(entryDateKey);
         return (
           <View key={entry.id} style={styles.recentEntry}>
             <View style={styles.recentHeader}>
-              <Text style={styles.recentDate}>
-                {new Date(entry.date).toLocaleDateString("pt-PT", {
-                  weekday: "short",
-                  year: "numeric",
-                  month: "long",
-                  day: "numeric",
-                })}
-              </Text>
+              <Text style={styles.recentDate}>{formattedDate}</Text>
               <Text style={[styles.recentMood, { color: mood?.color }]}>
                 {mood?.emoji} {mood?.label}
               </Text>
