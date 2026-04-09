@@ -109,10 +109,19 @@ export const useMoodStats = () => {
 
   const getAverageMood = useCallback(() => {
     const filtered = getFilteredEntries();
+
+    // if no entries, return "-"
     if (filtered.length === 0) return "-";
 
-    const moodValues = MOOD_VALUES;
+    // if only one entry, return the mood emoji
+    if (filtered.length === 1) {
+      const singleMood = filtered[0].mood;
+      const moodConfig = MOODS.find((m) => m.value === singleMood);
+      return moodConfig?.emoji || "-";
+    }
 
+    // if multiple entries, calculate average mood
+    const moodValues = MOOD_VALUES;
     const sum = filtered.reduce(
       (acc, entry) => acc + moodValues[entry.mood],
       0,

@@ -147,10 +147,9 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   noteBox: {
-    backgroundColor: COLORS_PALETTE.CARD_BG,
     borderWidth: 1.5,
-    borderColor: COLORS_PALETTE.BORDER_DEFAULT,
-    borderRadius: 12,
+    borderColor: COLORS_PALETTE.SELECTION_BG,
+    borderRadius: 6,
     padding: 12,
   },
   currentNoteText: {
