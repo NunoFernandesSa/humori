@@ -128,11 +128,14 @@ export const useMoodStats = () => {
     );
     const average = sum / filtered.length;
 
-    if (average >= 4.5) return "😊";
-    if (average >= 3.5) return "🙂";
-    if (average >= 2.5) return "😐";
-    if (average >= 1.5) return "😢";
-    return "😠";
+    if (average >= 7.5) return "😊";
+    if (average >= 6.5) return "🤩";
+    if (average >= 5.5) return "😌";
+    if (average >= 4.5) return "😢";
+    if (average >= 3.5) return "😠";
+    if (average >= 2.5) return "😨";
+    if (average >= 1.5) return "😴";
+    return "😲";
   }, [getFilteredEntries]);
 
   const deleteAllEntries = useCallback(async () => {
