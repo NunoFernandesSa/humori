@@ -46,11 +46,12 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     marginBottom: 12,
     color: COLORS_PALETTE.TEXT_PRIMARY,
+    textAlign: "center",
   },
   moodGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "space-between",
+    justifyContent: "center",
     gap: 12,
   },
   moodButton: {
@@ -59,12 +60,11 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 16,
     borderWidth: 3,
-    borderColor: "#E0E0E0",
-    backgroundColor: "#FFF",
+    backgroundColor: COLORS_PALETTE.CARD_BG,
     gap: 8,
   },
   selectedMood: {
-    backgroundColor: "#4CAF5043",
+    backgroundColor: COLORS_PALETTE.ACCENT_3,
     borderWidth: 3,
   },
   moodEmoji: {
@@ -73,6 +73,6 @@ const styles = StyleSheet.create({
   moodLabel: {
     fontSize: 12,
     fontWeight: "500",
-    color: "#666",
+    color: COLORS_PALETTE.TEXT_PRIMARY,
   },
 });
