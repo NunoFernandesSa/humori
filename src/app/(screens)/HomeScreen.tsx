@@ -22,7 +22,9 @@ import { useMoodStore } from "@/src/store/useMoodStore";
 // ----- TYPES -----
 import { Mood, MoodEntry } from "@/src/types/moodType";
 // ----- HELPERS -----
+import { COLORS_PALETTE } from "@/src/constants/colors";
 import { getCurrentMood, isValidEntry } from "@/src/helpers/helpers";
+import Ionicons from "@expo/vector-icons/Ionicons";
 
 /**
  * HomeScreen component for mood tracking.
@@ -123,7 +125,7 @@ const HomeScreen = (): JSX.Element => {
   if (isLoading) {
     return (
       <SafeAreaView style={styles.centerContainer}>
-        <ActivityIndicator size="large" color="#4CAF50" />
+        <ActivityIndicator size="large" color={COLORS_PALETTE.ACCENT_2} />
       </SafeAreaView>
     );
   }
@@ -142,24 +144,22 @@ const HomeScreen = (): JSX.Element => {
           contentContainerStyle={styles.scrollContent}
         >
           <Container>
+            {/* Display the current date in the top of the screen */}
+            <Text style={styles.dateContainer}>
+              <Ionicons
+                name="calendar"
+                size={18}
+                color={COLORS_PALETTE.ACCENT_2}
+              />{" "}
+              {formattedDate}
+            </Text>
+
             <Title
               title={homeTitle}
               style={{
-                color: "#4CAF50",
+                color: COLORS_PALETTE.ACCENT_2,
               }}
             />
-            <Text
-              style={{
-                textAlign: "center",
-                color: "#666",
-                backgroundColor: "#F5F5F5",
-                padding: 10,
-                borderRadius: 10,
-                marginVertical: 10,
-              }}
-            >
-              {formattedDate}
-            </Text>
 
             {/* display existing entry if there is one for today */}
             {entryIsValid && currentMoodValue && todaysEntry && (
@@ -213,10 +213,24 @@ const HomeScreen = (): JSX.Element => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFF",
+    backgroundColor: COLORS_PALETTE.BACKGROUND,
   },
   scrollContent: {
     flexGrow: 1,
+  },
+  dateContainer: {
+    textAlign: "center",
+    color: COLORS_PALETTE.ACCENT_2,
+    backgroundColor: COLORS_PALETTE.CARD_BG,
+    fontWeight: "bold",
+    borderRadius: 10,
+    marginVertical: 10,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    gap: 16,
+    alignSelf: "center",
+    borderColor: COLORS_PALETTE.BORDER_DEFAULT,
+    borderWidth: 1,
   },
   centerContainer: {
     flex: 1,
@@ -225,18 +239,19 @@ const styles = StyleSheet.create({
   },
   moodNote: {
     borderWidth: 1,
-    borderColor: "#E0E0E0",
+    borderColor: COLORS_PALETTE.BORDER_DEFAULT,
     borderRadius: 12,
     padding: 12,
     minHeight: 100,
     textAlignVertical: "top",
     fontSize: 16,
     marginVertical: 20,
-    backgroundColor: "#FFF",
+    backgroundColor: COLORS_PALETTE.CARD_BG,
+    color: COLORS_PALETTE.TEXT_SECONDARY,
   },
   charCount: {
     fontSize: 12,
-    color: "#999",
+    color: COLORS_PALETTE.TEXT_SECONDARY,
     textAlign: "right",
     marginTop: -12,
     marginBottom: 12,

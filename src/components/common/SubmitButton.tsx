@@ -1,3 +1,4 @@
+import { COLORS_PALETTE } from "@/src/constants/colors";
 import { SubmitButtonProps } from "@/src/types/submit-button-props-types";
 import React from "react";
 import {
@@ -19,7 +20,7 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({
       disabled={disabled}
     >
       {disabled ? (
-        <ActivityIndicator color="#FFF" />
+        <ActivityIndicator color={COLORS_PALETTE.ACCENT_2} />
       ) : (
         <Text style={styles.buttonText}>{text}</Text>
       )}
@@ -29,17 +30,17 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: "#4CAF50",
+    backgroundColor: COLORS_PALETTE.BUTTON_SECONDARY,
     padding: 16,
     borderRadius: 12,
     alignItems: "center",
     marginTop: 20,
   },
   disabledButton: {
-    backgroundColor: "#C8E6C9",
+    backgroundColor: COLORS_PALETTE.BUTTON_TEXT,
   },
   buttonText: {
-    color: "#FFF",
+    color: COLORS_PALETTE.BUTTON_TEXT,
     fontSize: 16,
     fontWeight: "600",
   },

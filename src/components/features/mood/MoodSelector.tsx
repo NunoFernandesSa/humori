@@ -1,3 +1,4 @@
+import { COLORS_PALETTE } from "@/src/constants/colors";
 import { MOODS } from "@/src/constants/moods";
 import { MoodSelectorProps } from "@/src/types/mood-selector-props-types";
 import React from "react";
@@ -9,7 +10,7 @@ export const MoodSelector: React.FC<MoodSelectorProps> = ({
 }) => {
   // ----- VARIABLES -----
   const title =
-    "Escolhe o teu humor e adicione uma breve nota sobre o teu dia.";
+    "Escolhe o teu humor e adiciona uma breve nota sobre o teu dia.";
 
   return (
     <View style={styles.container}>
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
     marginBottom: 12,
-    color: "#333333",
+    color: COLORS_PALETTE.TEXT_PRIMARY,
   },
   moodGrid: {
     flexDirection: "row",

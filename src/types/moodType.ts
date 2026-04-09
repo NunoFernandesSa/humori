@@ -1,5 +1,13 @@
 // ----- PROPS FOR MOOD TYPE -----
-export type Mood = "happy" | "sad" | "angry" | "scared" | "calm" | "surprised";
+export type Mood =
+  | "happy"
+  | "excited"
+  | "calm"
+  | "sad"
+  | "angry"
+  | "scared"
+  | "tired"
+  | "surprised";
 
 // ----- PROPS FOR ENTRY ON MOODS ARRAY -----
 export type MoodEntry = {

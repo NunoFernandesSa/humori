@@ -3,6 +3,7 @@ import * as Updates from "expo-updates";
 import { useEffect, useState } from "react";
 import { ActivityIndicator, Alert, StyleSheet, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import { COLORS_PALETTE } from "../constants/colors";
 
 /**
  * Root layout component that checks for and applies OTA updates on mount.
@@ -58,7 +59,10 @@ export default function RootLayout() {
   if (isUpdating) {
     return (
       <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#4CAF50" />
+        <ActivityIndicator
+          size="large"
+          color={COLORS_PALETTE.BUTTON_SECONDARY}
+        />
       </View>
     );
   }
@@ -78,6 +82,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#FFF",
+    backgroundColor: COLORS_PALETTE.BACKGROUND,
   },
 });

@@ -8,6 +8,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 // ----- HOOKS -----
 import { useMoodStore } from "@/src/store/useMoodStore";
 
+import { COLORS_PALETTE } from "@/src/constants/colors";
 import { StatusBar } from "expo-status-bar";
 
 /**
@@ -34,6 +35,7 @@ export default function TabsLayout(): JSX.Element {
               await deleteAllEntries();
               Alert.alert("Sucesso", "Todos os dados foram apagados.");
             } catch (error) {
+              console.error("Error deleting all entries:", error); // TODO: DELETE ON PRODUCTION
               Alert.alert(
                 "Erro",
                 "Não foi possível eliminar os dados. Por favor, tente mais novamente.",
@@ -51,10 +53,10 @@ export default function TabsLayout(): JSX.Element {
 
       <Tabs
         screenOptions={{
-          tabBarActiveTintColor: "#4CAF50",
+          tabBarActiveTintColor: COLORS_PALETTE.ACCENT_2,
           tabBarStyle: {
-            backgroundColor: "#FFF",
-            borderTopColor: "#E0E0E0",
+            backgroundColor: COLORS_PALETTE.CARD_BG,
+            borderTopColor: COLORS_PALETTE.BORDER_DEFAULT,
             elevation: 0,
             shadowOpacity: 0,
             minHeight: 100,
