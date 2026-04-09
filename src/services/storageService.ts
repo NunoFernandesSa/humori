@@ -1,33 +1,43 @@
 import { MoodEntry } from "@/src/types/moodType";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { STORAGE_KEY } from "../constants/LocalStorage";
+import { getLocalDateKey } from "../utils/date";
 
 export const storageService = {
   /**
-   * save entry will check if an entry for the same date already exists, if it does, it will update it, otherwise it will create a new one
+   * Save entry: check whether this data entry already exists (local fuse time)
+   * If exists, update. If not, create new.
    */
   async saveEntry(entry: MoodEntry): Promise<void> {
     try {
       const entries = await this.getEntries();
-      const entryDate = entry.date.split("T")[0];
 
-      // Check if an entry for the same date already exists
-      const existingEntryIndex = entries.findIndex(
-        (e) => e.date.split("T")[0] === entryDate,
-      );
+      // Use local user data (not UTC)
+      const entryDateKey = getLocalDateKey(new Date(entry.date));
+
+      // Find existing entry for this date
+      const existingEntryIndex = entries.findIndex((e) => {
+        const existingDateKey = getLocalDateKey(new Date(e.date));
+        return existingDateKey === entryDateKey;
+      });
 
       if (existingEntryIndex !== -1) {
-        // update existing entry
+        // Update existing entry
         entries[existingEntryIndex] = {
           ...entry,
-          id: entries[existingEntryIndex].id, // Safe to keep the same ID for the same date
+          id: entries[existingEntryIndex].id,
+          timestamp: Date.now(),
         };
-        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
       } else {
-        // add new entry
-        entries.push(entry);
-        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
+        // Create new entry
+        entries.push({
+          ...entry,
+          id: entry.id || Date.now().toString(),
+          timestamp: Date.now(),
+        });
       }
+
+      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
     } catch (error) {
       console.error("Error saving entry:", error);
       throw error;
@@ -35,7 +45,7 @@ export const storageService = {
   },
 
   /**
-   * Find all entries in storage and return them as an array of MoodEntry
+   * Get all entries
    */
   async getEntries(): Promise<MoodEntry[]> {
     try {
@@ -48,7 +58,7 @@ export const storageService = {
   },
 
   /**
-   * Update a specific entry by its ID
+   * Update an entry specific to the ID
    */
   async updateEntry(entry: MoodEntry): Promise<void> {
     try {
@@ -68,15 +78,19 @@ export const storageService = {
   },
 
   /**
-   * Find the entry for today
+   * Get today's entry (local fuse time)
    */
   async getTodaysEntry(): Promise<MoodEntry | null> {
     try {
       const entries = await this.getEntries();
-      const today = new Date().toISOString().split("T")[0];
-      return (
-        entries.find((entry) => entry.date.split("T")[0] === today) || null
-      );
+      const todayKey = getLocalDateKey();
+
+      const todayEntry = entries.find((entry) => {
+        const entryDateKey = getLocalDateKey(new Date(entry.date));
+        return entryDateKey === todayKey;
+      });
+
+      return todayEntry || null;
     } catch (error) {
       console.error("Error getting today's entry:", error);
       return null;
@@ -96,13 +110,17 @@ export const storageService = {
   },
 
   /**
-   * Check if an entry exists for a given date
+   * Check if today has an entry (local fuse time)
    */
-  async hasEntryForDate(date: string): Promise<boolean> {
+  async hasTodayEntry(): Promise<boolean> {
     try {
       const entries = await this.getEntries();
-      const targetDate = date.split("T")[0];
-      return entries.some((entry) => entry.date.split("T")[0] === targetDate);
+      const todayKey = getLocalDateKey();
+
+      return entries.some((entry) => {
+        const entryDateKey = getLocalDateKey(new Date(entry.date));
+        return entryDateKey === todayKey;
+      });
     } catch (error) {
       console.error("Error checking entry existence:", error);
       return false;
@@ -110,7 +128,7 @@ export const storageService = {
   },
 
   /**
-   * Find entries for a specific date range
+   * Get entries in a date range interval
    */
   async getEntriesByDateRange(
     startDate: Date,
@@ -129,7 +147,7 @@ export const storageService = {
   },
 
   /**
-   * Count the total number of entries
+   * Count total entries
    */
   async getEntryCount(): Promise<number> {
     try {
