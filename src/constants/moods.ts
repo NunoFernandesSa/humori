@@ -42,3 +42,14 @@ export const MOODS: {
     color: COLORS_PALETTE.TIRED,
   },
 ];
+
+export const MOOD_VALUES: Record<Mood, number> = {
+  surprised: 1,
+  tired: 2,
+  scared: 3,
+  angry: 4,
+  sad: 5,
+  calm: 6,
+  excited: 7,
+  happy: 8,
+};

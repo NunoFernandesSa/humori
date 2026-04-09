@@ -34,3 +34,10 @@ export type MoodState = {
   deleteMood: (id: string) => void;
   clearMoods: () => void;
 };
+
+//
+
+export type MoodValues = {
+  mood: Mood;
+  value: number;
+};

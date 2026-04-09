@@ -2,7 +2,7 @@ import { storageService } from "@/src/services/storageService";
 import { Mood, MoodEntry } from "@/src/types/moodType";
 import { useCallback, useState } from "react";
 import { Alert } from "react-native";
-import { MOODS } from "../constants/moods";
+import { MOOD_VALUES, MOODS } from "../constants/moods";
 
 export const useMoodStats = () => {
   const [entries, setEntries] = useState<MoodEntry[]>([]);
@@ -54,12 +54,14 @@ export const useMoodStats = () => {
   const getMoodCounts = useCallback(() => {
     const filtered = getFilteredEntries();
     const counts: Record<Mood, number> = {
-      happy: 0,
-      sad: 0,
-      angry: 0,
-      scared: 0,
-      calm: 0,
       surprised: 0,
+      tired: 0,
+      scared: 0,
+      angry: 0,
+      sad: 0,
+      calm: 0,
+      excited: 0,
+      happy: 0,
     };
 
     filtered.forEach((entry) => {
@@ -80,14 +82,7 @@ export const useMoodStats = () => {
 
   const getChartData = useCallback(() => {
     const filtered = getFilteredEntries();
-    const moodValues: Record<Mood, number> = {
-      happy: 6,
-      sad: 5,
-      angry: 4,
-      scared: 3,
-      calm: 2,
-      surprised: 1,
-    };
+    const moodValues = MOOD_VALUES;
 
     return {
       labels: filtered.map((entry) =>
@@ -116,14 +111,7 @@ export const useMoodStats = () => {
     const filtered = getFilteredEntries();
     if (filtered.length === 0) return "-";
 
-    const moodValues: Record<Mood, number> = {
-      happy: 6,
-      calm: 5,
-      surprised: 4,
-      sad: 3,
-      scared: 2,
-      angry: 1,
-    };
+    const moodValues = MOOD_VALUES;
 
     const sum = filtered.reduce(
       (acc, entry) => acc + moodValues[entry.mood],
@@ -147,7 +135,7 @@ export const useMoodStats = () => {
       console.error("Error deleting all entries:", error);
       Alert.alert("Erro", "Não foi possível excluir os dados");
     }
-  }, []);
+  }, [loadEntries]);
 
   return {
     entries,
