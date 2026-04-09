@@ -1,7 +1,6 @@
 import { MoodEntry } from "@/src/types/moodType";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-const STORAGE_KEY = "@mood_entries";
+import { STORAGE_KEY } from "../constants/LocalStorage";
 
 export const storageService = {
   /**
@@ -64,25 +63,6 @@ export const storageService = {
       }
     } catch (error) {
       console.error("Error updating entry:", error);
-      throw error;
-    }
-  },
-
-  /**
-   * Delete a specific entry by its ID
-   */
-  async deleteEntry(id: string): Promise<void> {
-    try {
-      const entries = await this.getEntries();
-      const filtered = entries.filter((entry) => entry.id !== id);
-
-      if (filtered.length === entries.length) {
-        throw new Error(`Entrada com id ${id} não encontrada.`);
-      }
-
-      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(filtered));
-    } catch (error) {
-      console.error("Error deleting entry:", error);
       throw error;
     }
   },

@@ -14,10 +14,9 @@ interface MoodState {
   loadEntries: () => Promise<void>;
   loadTodaysEntry: () => Promise<void>;
   saveEntry: (entry: MoodEntry) => Promise<void>;
-  deleteEntry: (id: string) => Promise<void>;
   deleteAllEntries: () => Promise<void>;
   refreshData: () => Promise<void>;
-  cleanInvalidData: () => Promise<void>; // Nouvelle fonction
+  cleanInvalidData: () => Promise<void>;
 }
 
 export const useMoodStore = create<MoodState>()(
@@ -31,23 +30,20 @@ export const useMoodStore = create<MoodState>()(
       // Nettoyer les données invalides
       cleanInvalidData: async () => {
         try {
-          // Récupérer les entrées depuis le service (source de vérité)
+          // Get entries from storageService (Local Storage)
           const validEntries = await storageService.getEntries();
-
-          // Filtrer les entrées invalides (sans mood)
+          // Filter entries
           const cleanEntries = validEntries.filter(
             (entry) => entry && entry.mood && Object.keys(entry).length > 0,
           );
-
-          // Mettre à jour le store
+          // Update store
           set({
             entries: cleanEntries.sort((a, b) => b.timestamp - a.timestamp),
           });
-
-          // Recharger l'entrée du jour
+          // Reload today's entry
           await get().loadTodaysEntry();
 
-          // Si des entrées ont été nettoyées, sauvegarder les données propres
+          // Save clean entries
           if (cleanEntries.length !== validEntries.length) {
             await AsyncStorage.setItem(
               "mood-storage",
@@ -65,7 +61,7 @@ export const useMoodStore = create<MoodState>()(
         }
       },
 
-      // Actions
+      // Load entries from storageService (Local Storage)
       loadEntries: async () => {
         set({ isLoading: true });
         try {
@@ -84,10 +80,11 @@ export const useMoodStore = create<MoodState>()(
         }
       },
 
+      // Load today's entry from storageService (Local Storage)
       loadTodaysEntry: async () => {
         try {
           const entry = await storageService.getTodaysEntry();
-          // Vérifier que l'entrée est valide
+          // Check if entry is valid
           if (entry && entry.mood && Object.keys(entry).length > 0) {
             set({ todaysEntry: entry });
           } else {
@@ -99,6 +96,7 @@ export const useMoodStore = create<MoodState>()(
         }
       },
 
+      // Save entry to storageService (Local Storage)
       saveEntry: async (entry: MoodEntry) => {
         try {
           await storageService.saveEntry(entry);
@@ -110,17 +108,7 @@ export const useMoodStore = create<MoodState>()(
         }
       },
 
-      deleteEntry: async (id: string) => {
-        try {
-          await storageService.deleteEntry(id);
-          await get().loadEntries();
-          await get().loadTodaysEntry();
-        } catch (error) {
-          console.error("Error deleting entry:", error);
-          throw error;
-        }
-      },
-
+      // Delete all entries from storageService (Local Storage)
       deleteAllEntries: async () => {
         try {
           await storageService.deleteAllEntries();
@@ -132,6 +120,7 @@ export const useMoodStore = create<MoodState>()(
         }
       },
 
+      // Refresh data from storageService (Local Storage)
       refreshData: async () => {
         await get().loadEntries();
         await get().loadTodaysEntry();
