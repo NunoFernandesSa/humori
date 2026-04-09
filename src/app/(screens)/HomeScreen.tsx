@@ -24,6 +24,7 @@ import { Mood, MoodEntry } from "@/src/types/moodType";
 // ----- HELPERS -----
 import { COLORS_PALETTE } from "@/src/constants/colors";
 import { getCurrentMood, isValidEntry } from "@/src/helpers/helpers";
+import { storageService } from "@/src/services/storageService";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 /**
@@ -72,6 +73,10 @@ const HomeScreen = (): JSX.Element => {
 
   // Handle form submission
   const handleSubmit = async () => {
+    /**
+     * ----- VERIFICATIONS BEFORE SUBMIT -----
+     */
+
     if (!selectedMood) {
       Alert.alert(
         "Oops! 🎈",
@@ -80,8 +85,23 @@ const HomeScreen = (): JSX.Element => {
       return;
     }
 
-    setIsSubmitting(true);
+    const alreadyExists = await storageService.hasTodayEntry();
 
+    // This should not happen, but it's a good practice
+    // to check if the entry already exists before submitting.
+    if (alreadyExists && !entryIsValid) {
+      Alert.alert(
+        "Atenção! ⚠️",
+        "Já registaste o teu humor hoje. Só podes ter uma entrada por dia!",
+        [{ text: "OK" }],
+      );
+      return;
+    }
+    /**
+     * ----- END VERIFICATIONS BEFORE SUBMIT -----
+     */
+
+    setIsSubmitting(true);
     try {
       const newEntry: MoodEntry = {
         id: todaysEntry?.id || Date.now().toString(),
