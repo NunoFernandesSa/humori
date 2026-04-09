@@ -68,159 +68,158 @@ const StatsScreen = (): JSX.Element => {
   const moodCounts = getMoodCounts();
 
   return (
-    <SafeAreaView style={styles.container}>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            colors={[COLORS_PALETTE.ACCENT_2]}
-            tintColor={COLORS_PALETTE.ACCENT_2}
-          />
-        }
-      >
-        <Container>
-          <Title
-            title="Tendências do teu humor"
-            style={{ color: COLORS_PALETTE.ACCENT_2 }}
-          />
+    <ScrollView
+      showsVerticalScrollIndicator={false}
+      refreshControl={
+        <RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+          colors={[COLORS_PALETTE.ACCENT_2]}
+          tintColor={COLORS_PALETTE.ACCENT_2}
+        />
+      }
+      style={styles.container}
+    >
+      <Container style={styles.content}>
+        <Title
+          title="Tendências do teu humor"
+          style={{ color: COLORS_PALETTE.ACCENT_2 }}
+        />
 
-          {/* filters */}
-          <View style={styles.periodSelector}>
-            <TouchableOpacity
+        {/* filters */}
+        <View style={styles.periodSelector}>
+          <TouchableOpacity
+            style={[
+              styles.periodButton,
+              selectedPeriod === "week" && styles.activePeriod,
+            ]}
+            onPress={() => setSelectedPeriod("week")}
+          >
+            <Text
               style={[
-                styles.periodButton,
-                selectedPeriod === "week" && styles.activePeriod,
+                styles.periodText,
+                selectedPeriod === "week" && styles.activePeriodText,
               ]}
-              onPress={() => setSelectedPeriod("week")}
             >
-              <Text
-                style={[
-                  styles.periodText,
-                  selectedPeriod === "week" && styles.activePeriodText,
-                ]}
-              >
-                Semana
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
+              Semana
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.periodButton,
+              selectedPeriod === "month" && styles.activePeriod,
+            ]}
+            onPress={() => setSelectedPeriod("month")}
+          >
+            <Text
               style={[
-                styles.periodButton,
-                selectedPeriod === "month" && styles.activePeriod,
+                styles.periodText,
+                selectedPeriod === "month" && styles.activePeriodText,
               ]}
-              onPress={() => setSelectedPeriod("month")}
             >
-              <Text
-                style={[
-                  styles.periodText,
-                  selectedPeriod === "month" && styles.activePeriodText,
-                ]}
-              >
-                Mês
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
+              Mês
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[
+              styles.periodButton,
+              selectedPeriod === "all" && styles.activePeriod,
+            ]}
+            onPress={() => setSelectedPeriod("all")}
+          >
+            <Text
               style={[
-                styles.periodButton,
-                selectedPeriod === "all" && styles.activePeriod,
+                styles.periodText,
+                selectedPeriod === "all" && styles.activePeriodText,
               ]}
-              onPress={() => setSelectedPeriod("all")}
             >
-              <Text
-                style={[
-                  styles.periodText,
-                  selectedPeriod === "all" && styles.activePeriodText,
-                ]}
-              >
-                Todos os períodos
-              </Text>
-            </TouchableOpacity>
+              Todos os períodos
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Summary Cards */}
+        <SummaryCards
+          totalEntries={filteredEntries.length}
+          averageMood={getAverageMood()}
+        />
+
+        {/* Pie Chart */}
+        {getPieChartData().length > 0 && (
+          <View style={styles.chartContainer}>
+            <Text style={styles.chartTitle}>Distribuição dos humores</Text>
+            <PieChart
+              data={getPieChartData()}
+              width={Dimensions.get("window").width - 48}
+              height={200}
+              chartConfig={{
+                color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+              }}
+              accessor="count"
+              backgroundColor="transparent"
+              paddingLeft="15"
+              absolute
+            />
           </View>
+        )}
 
-          {/* Summary Cards */}
-          <SummaryCards
-            totalEntries={filteredEntries.length}
-            averageMood={getAverageMood()}
-          />
+        {/* Line Chart */}
+        {filteredEntries.length > 1 && (
+          <View style={styles.chartContainer}>
+            <Text style={styles.chartTitle}>Alterações de humor</Text>
+            <LineChart
+              data={getChartData()}
+              width={Dimensions.get("window").width - 42}
+              height={220}
+              chartConfig={{
+                backgroundColor: COLORS_PALETTE.CARD_BG,
+                backgroundGradientFrom: COLORS_PALETTE.CARD_BG,
+                backgroundGradientTo: COLORS_PALETTE.CARD_BG,
+                decimalPlaces: 0,
+                color: (opacity = 1) => `rgba(76, 175, 80, ${opacity})`,
+                labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                style: {
+                  borderRadius: 16,
+                },
+                propsForDots: {
+                  r: "6",
+                  strokeWidth: "2",
+                  stroke: COLORS_PALETTE.ACCENT_2,
+                },
+                propsForLabels: {
+                  fontSize: 10,
+                  fontWeight: "400",
+                },
+              }}
+              bezier
+              style={styles.chart}
+              formatYLabel={(value) => {
+                const moodValues: Record<string, string> = {
+                  "8": "😊 Feliz",
+                  "7": "😊 Excitado",
+                  "6": "😊 Calmo",
+                  "5": "😢 Triste",
+                  "4": "😡 Enfur.",
+                  "3": "😨 Assust.",
+                  "2": "😴 Cansad.",
+                  "1": "😲 Surpr.",
+                };
+                return moodValues[value] || "";
+              }}
+            />
+          </View>
+        )}
 
-          {/* Pie Chart */}
-          {getPieChartData().length > 0 && (
-            <View style={styles.chartContainer}>
-              <Text style={styles.chartTitle}>Distribuição dos humores</Text>
-              <PieChart
-                data={getPieChartData()}
-                width={Dimensions.get("window").width - 48}
-                height={200}
-                chartConfig={{
-                  color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                }}
-                accessor="count"
-                backgroundColor="transparent"
-                paddingLeft="15"
-                absolute
-              />
-            </View>
-          )}
+        {/* Mood Breakdown */}
+        <MoodBreakdown
+          moodCounts={moodCounts}
+          getMoodPercentage={getMoodPercentage}
+        />
 
-          {/* Line Chart */}
-          {filteredEntries.length > 1 && (
-            <View style={styles.chartContainer}>
-              <Text style={styles.chartTitle}>Alterações de humor</Text>
-              <LineChart
-                data={getChartData()}
-                width={Dimensions.get("window").width - 42}
-                height={220}
-                chartConfig={{
-                  backgroundColor: COLORS_PALETTE.CARD_BG,
-                  backgroundGradientFrom: COLORS_PALETTE.CARD_BG,
-                  backgroundGradientTo: COLORS_PALETTE.CARD_BG,
-                  decimalPlaces: 0,
-                  color: (opacity = 1) => `rgba(76, 175, 80, ${opacity})`,
-                  labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-                  style: {
-                    borderRadius: 16,
-                  },
-                  propsForDots: {
-                    r: "6",
-                    strokeWidth: "2",
-                    stroke: COLORS_PALETTE.ACCENT_2,
-                  },
-                  propsForLabels: {
-                    fontSize: 10,
-                    fontWeight: "400",
-                  },
-                }}
-                bezier
-                style={styles.chart}
-                formatYLabel={(value) => {
-                  const moodValues: Record<string, string> = {
-                    "8": "😊 Feliz",
-                    "7": "😊 Excitado",
-                    "6": "😊 Calmo",
-                    "5": "😢 Triste",
-                    "4": "😡 Enfur.",
-                    "3": "😨 Assust.",
-                    "2": "😴 Cansad.",
-                    "1": "😲 Surpr.",
-                  };
-                  return moodValues[value] || "";
-                }}
-              />
-            </View>
-          )}
-
-          {/* Mood Breakdown */}
-          <MoodBreakdown
-            moodCounts={moodCounts}
-            getMoodPercentage={getMoodPercentage}
-          />
-
-          {/* Recent Entries */}
-          <RecentEntries filteredEntries={filteredEntries} />
-        </Container>
-      </ScrollView>
-    </SafeAreaView>
+        {/* Recent Entries */}
+        <RecentEntries filteredEntries={filteredEntries} />
+      </Container>
+    </ScrollView>
   );
 };
 
@@ -228,6 +227,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: COLORS_PALETTE.BACKGROUND,
+  },
+  content: {
+    paddingVertical: 40,
   },
   centerContainer: {
     flex: 1,

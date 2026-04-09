@@ -1,5 +1,5 @@
 import React, { JSX } from "react";
-import { View } from "react-native";
+import { View, ViewStyle } from "react-native";
 
 /**
  * Container component that wraps its children with consistent padding.
@@ -15,10 +15,12 @@ import { View } from "react-native";
 
 const Container = ({
   children,
+  style,
 }: {
   children: React.ReactNode;
+  style?: ViewStyle;
 }): JSX.Element => {
-  return <View style={{ padding: 12 }}>{children}</View>;
+  return <View style={[{ padding: 12 }, style]}>{children}</View>;
 };
 
 export default Container;

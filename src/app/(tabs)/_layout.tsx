@@ -1,6 +1,6 @@
 // ----- REACT NATIVE -----
 import React, { JSX } from "react";
-import { Alert, Image, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Image, Text, TouchableOpacity } from "react-native";
 // ----- EXPO -----
 import { Tabs } from "expo-router";
 // ----- ICONS -----
@@ -71,13 +71,27 @@ export default function TabsLayout(): JSX.Element {
           name="index"
           options={{
             headerShown: true,
+            headerStyle: {
+              backgroundColor: COLORS_PALETTE.BACKGROUND,
+            },
             headerTitle: () => (
-              <Text style={{ color: "gray", fontWeight: "bold" }}>Início</Text>
+              <Text
+                style={{
+                  color: COLORS_PALETTE.TEXT_PRIMARY,
+                  fontWeight: "bold",
+                }}
+              >
+                Início
+              </Text>
             ),
             headerLeft: () => (
               <Image
                 source={require("../../assets/images/icon.png")}
-                style={{ width: 40, height: 40, marginHorizontal: 16 }}
+                style={{
+                  width: 56,
+                  height: 56,
+                  marginHorizontal: 16,
+                }}
               />
             ),
             headerRight: () => (
@@ -85,13 +99,15 @@ export default function TabsLayout(): JSX.Element {
                 <Ionicons
                   name="trash-outline"
                   size={22}
-                  color="gray"
-                  style={{ marginHorizontal: 16 }}
+                  style={{
+                    marginHorizontal: 16,
+                    color: COLORS_PALETTE.TEXT_SECONDARY,
+                    backgroundColor: COLORS_PALETTE.BACKGROUND,
+                    borderRadius: 12,
+                    padding: 8,
+                  }}
                 />
               </TouchableOpacity>
-            ),
-            headerBackground: () => (
-              <View style={{ backgroundColor: "white" }} />
             ),
             tabBarLabel: ({ color }) => <Text style={{ color }}>Início</Text>,
             tabBarIcon: ({ color, size }) => (
@@ -104,19 +120,24 @@ export default function TabsLayout(): JSX.Element {
           name="stats"
           options={{
             headerShown: true,
+            headerStyle: {
+              backgroundColor: COLORS_PALETTE.BACKGROUND,
+            },
             headerTitle: () => (
-              <Text style={{ color: "gray", fontWeight: "bold" }}>
+              <Text
+                style={{
+                  color: COLORS_PALETTE.TEXT_PRIMARY,
+                  fontWeight: "bold",
+                }}
+              >
                 Tendências
               </Text>
             ),
             headerLeft: () => (
               <Image
                 source={require("../../assets/images/icon.png")}
-                style={{ width: 40, height: 40, marginHorizontal: 16 }}
+                style={{ width: 56, height: 56, marginHorizontal: 16 }}
               />
-            ),
-            headerBackground: () => (
-              <View style={{ backgroundColor: "white" }} />
             ),
             tabBarLabel: ({ color }) => (
               <Text style={{ color }}>Tendências</Text>

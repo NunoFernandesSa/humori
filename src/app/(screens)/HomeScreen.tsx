@@ -131,82 +131,80 @@ const HomeScreen = (): JSX.Element => {
   }
 
   return (
-    <SafeAreaView style={styles.container}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
-        style={{ flex: 1 }}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
+      style={styles.container}
+    >
+      <ScrollView
+        ref={scrollViewRef}
+        keyboardShouldPersistTaps="handled"
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
       >
-        <ScrollView
-          ref={scrollViewRef}
-          keyboardShouldPersistTaps="handled"
-          showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.scrollContent}
-        >
-          <Container>
-            {/* Display the current date in the top of the screen */}
-            <Text style={styles.dateContainer}>
-              <Ionicons
-                name="calendar"
-                size={18}
-                color={COLORS_PALETTE.ACCENT_2}
-              />{" "}
-              {formattedDate}
+        <Container>
+          {/* Display the current date in the top of the screen */}
+          <Text style={styles.dateContainer}>
+            <Ionicons
+              name="calendar"
+              size={18}
+              color={COLORS_PALETTE.ACCENT_2}
+            />{" "}
+            {formattedDate}
+          </Text>
+
+          <Title
+            title={homeTitle}
+            style={{
+              color: COLORS_PALETTE.ACCENT_2,
+            }}
+          />
+
+          {/* display existing entry if there is one for today */}
+          {entryIsValid && currentMoodValue && todaysEntry && (
+            <ExistingEntryCard
+              currentMood={currentMoodValue}
+              todaysEntry={todaysEntry}
+            />
+          )}
+
+          {/* Mood selector component for mood selection */}
+          <MoodSelector
+            selectedMood={selectedMood as Mood}
+            onSelect={setSelectedMood}
+          />
+
+          <TextInput
+            ref={textAreaRef}
+            style={styles.moodNote}
+            placeholder="Queres partilhar mais alguma coisa? (opcional)"
+            multiline={true}
+            numberOfLines={4}
+            value={moodNote}
+            onChangeText={setMoodNote}
+            onFocus={handleFocus}
+            editable={!isSubmitting}
+            maxLength={500}
+            accessibilityLabel="Nota sobre o teu dia"
+            accessibilityHint="Escreve uma breve nota sobre como foi o teu dia"
+          />
+
+          {typeof moodNote === "string" && moodNote.length > 0 && (
+            <Text style={styles.charCount}>
+              {moodNote.length}/500 caracteres
             </Text>
+          )}
 
-            <Title
-              title={homeTitle}
-              style={{
-                color: COLORS_PALETTE.ACCENT_2,
-              }}
-            />
-
-            {/* display existing entry if there is one for today */}
-            {entryIsValid && currentMoodValue && todaysEntry && (
-              <ExistingEntryCard
-                currentMood={currentMoodValue}
-                todaysEntry={todaysEntry}
-              />
-            )}
-
-            {/* Mood selector component for mood selection */}
-            <MoodSelector
-              selectedMood={selectedMood as Mood}
-              onSelect={setSelectedMood}
-            />
-
-            <TextInput
-              ref={textAreaRef}
-              style={styles.moodNote}
-              placeholder="Queres partilhar mais alguma coisa? (opcional)"
-              multiline={true}
-              numberOfLines={4}
-              value={moodNote}
-              onChangeText={setMoodNote}
-              onFocus={handleFocus}
-              editable={!isSubmitting}
-              maxLength={500}
-              accessibilityLabel="Nota sobre o teu dia"
-              accessibilityHint="Escreve uma breve nota sobre como foi o teu dia"
-            />
-
-            {typeof moodNote === "string" && moodNote.length > 0 && (
-              <Text style={styles.charCount}>
-                {moodNote.length}/500 caracteres
-              </Text>
-            )}
-
-            <SubmitButton
-              text={
-                entryIsValid ? "Atualizar o meu humor" : "Registrar o meu humor"
-              }
-              handleSubmit={handleSubmit}
-              disabled={isSubmitting}
-            />
-          </Container>
-        </ScrollView>
-      </KeyboardAvoidingView>
-    </SafeAreaView>
+          <SubmitButton
+            text={
+              entryIsValid ? "Atualizar o meu humor" : "Registrar o meu humor"
+            }
+            handleSubmit={handleSubmit}
+            disabled={isSubmitting}
+          />
+        </Container>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -217,6 +215,7 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
+    paddingVertical: 30,
   },
   dateContainer: {
     textAlign: "center",
