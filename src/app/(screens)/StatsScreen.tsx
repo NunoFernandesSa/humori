@@ -21,6 +21,7 @@ import SummaryCards from "@/src/components/features/stats/SummaryCards";
 // ----- EXPO -----
 import { useFocusEffect } from "expo-router";
 // ----- HOOKS -----
+import { COLORS_PALETTE } from "@/src/constants/colors";
 import { useMoodStats } from "@/src/hooks/useMoodStats";
 
 /**
@@ -58,7 +59,7 @@ const StatsScreen = (): JSX.Element => {
   if (isLoading) {
     return (
       <SafeAreaView style={styles.centerContainer}>
-        <ActivityIndicator size="large" color="#4CAF50" />
+        <ActivityIndicator size="large" color={COLORS_PALETTE.ACCENT_2} />
       </SafeAreaView>
     );
   }
@@ -74,13 +75,16 @@ const StatsScreen = (): JSX.Element => {
           <RefreshControl
             refreshing={refreshing}
             onRefresh={onRefresh}
-            colors={["#4CAF50"]}
-            tintColor="#4CAF50"
+            colors={[COLORS_PALETTE.ACCENT_2]}
+            tintColor={COLORS_PALETTE.ACCENT_2}
           />
         }
       >
         <Container>
-          <Title title="Tendências do teu humor" style={{ color: "#4CAF50" }} />
+          <Title
+            title="Tendências do teu humor"
+            style={{ color: COLORS_PALETTE.ACCENT_2 }}
+          />
 
           {/* filters */}
           <View style={styles.periodSelector}>
@@ -168,9 +172,9 @@ const StatsScreen = (): JSX.Element => {
                 width={Dimensions.get("window").width - 42}
                 height={220}
                 chartConfig={{
-                  backgroundColor: "#ffffff",
-                  backgroundGradientFrom: "#ffffff",
-                  backgroundGradientTo: "#ffffff",
+                  backgroundColor: COLORS_PALETTE.CARD_BG,
+                  backgroundGradientFrom: COLORS_PALETTE.CARD_BG,
+                  backgroundGradientTo: COLORS_PALETTE.CARD_BG,
                   decimalPlaces: 0,
                   color: (opacity = 1) => `rgba(76, 175, 80, ${opacity})`,
                   labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
@@ -180,7 +184,7 @@ const StatsScreen = (): JSX.Element => {
                   propsForDots: {
                     r: "6",
                     strokeWidth: "2",
-                    stroke: "#4CAF50",
+                    stroke: COLORS_PALETTE.ACCENT_2,
                   },
                   propsForLabels: {
                     fontSize: 10,
@@ -191,11 +195,13 @@ const StatsScreen = (): JSX.Element => {
                 style={styles.chart}
                 formatYLabel={(value) => {
                   const moodValues: Record<string, string> = {
-                    "6": "😊 Feliz",
+                    "8": "😊 Feliz",
+                    "7": "😊 Excitado",
+                    "6": "😊 Calmo",
                     "5": "😢 Triste",
                     "4": "😡 Enfur.",
                     "3": "😨 Assust.",
-                    "2": "😌 Calmo",
+                    "2": "😴 Cansad.",
                     "1": "😲 Surpr.",
                   };
                   return moodValues[value] || "";
@@ -221,7 +227,7 @@ const StatsScreen = (): JSX.Element => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFF",
+    backgroundColor: COLORS_PALETTE.BACKGROUND,
   },
   centerContainer: {
     flex: 1,
@@ -238,23 +244,25 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingVertical: 8,
     borderRadius: 20,
-    backgroundColor: "#F5F5F5",
+    backgroundColor: COLORS_PALETTE.CARD_BG,
+    borderWidth: 1,
+    borderColor: COLORS_PALETTE.BORDER_FOCUS,
   },
   activePeriod: {
-    backgroundColor: "#4CAF50",
+    backgroundColor: COLORS_PALETTE.ACCENT_2,
   },
   periodText: {
     fontSize: 14,
-    color: "#666",
+    color: COLORS_PALETTE.TEXT_PRIMARY,
   },
   activePeriodText: {
-    color: "#FFF",
+    color: COLORS_PALETTE.TEXT_LIGHT,
     fontWeight: "600",
   },
   chartContainer: {
     marginBottom: 24,
     alignItems: "center",
-    backgroundColor: "#F5F5F5",
+    backgroundColor: COLORS_PALETTE.CARD_BG,
     padding: 16,
     borderRadius: 16,
   },
@@ -262,7 +270,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "600",
     marginBottom: 16,
-    color: "#333",
+    color: COLORS_PALETTE.TEXT_SECONDARY,
   },
   chart: {
     marginVertical: 8,

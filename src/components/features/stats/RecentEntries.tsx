@@ -1,3 +1,4 @@
+import { COLORS_PALETTE } from "@/src/constants/colors";
 import { MOODS } from "@/src/constants/moods";
 import React, { JSX } from "react";
 import { StyleSheet, Text, View } from "react-native";
@@ -59,10 +60,12 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "600",
     marginBottom: 16,
-    color: "#333",
+    color: COLORS_PALETTE.TEXT_SECONDARY,
   },
   recentEntry: {
-    backgroundColor: "#F8F9FA",
+    backgroundColor: COLORS_PALETTE.CARD_BG,
+    borderWidth: 1,
+    borderColor: COLORS_PALETTE.ACCENT_1,
     borderRadius: 12,
     padding: 12,
     marginBottom: 12,
@@ -75,7 +78,7 @@ const styles = StyleSheet.create({
   },
   recentDate: {
     fontSize: 14,
-    color: "#666",
+    color: COLORS_PALETTE.TEXT_SECONDARY,
   },
   recentMood: {
     fontSize: 14,
@@ -83,7 +86,7 @@ const styles = StyleSheet.create({
   },
   recentNote: {
     fontSize: 14,
-    color: "#666",
+    color: COLORS_PALETTE.TEXT_SECONDARY,
     marginTop: 4,
   },
 });

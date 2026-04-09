@@ -1,3 +1,4 @@
+import { COLORS_PALETTE } from "@/src/constants/colors";
 import { SummaryCardsProps } from "@/src/types/summary-cards-types";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
@@ -28,19 +29,21 @@ const styles = StyleSheet.create({
   },
   summaryCard: {
     flex: 1,
-    backgroundColor: "#F5F5F5",
+    backgroundColor: COLORS_PALETTE.CARD_BG,
     borderRadius: 12,
     padding: 16,
     alignItems: "center",
+    borderWidth: 1,
+    borderColor: COLORS_PALETTE.ACCENT_1,
   },
   summaryNumber: {
-    fontSize: 24,
+    fontSize: 32,
     fontWeight: "bold",
-    color: "#333",
+    color: COLORS_PALETTE.TEXT_SECONDARY,
     marginBottom: 8,
   },
   summaryLabel: {
     fontSize: 14,
-    color: "#666",
+    color: COLORS_PALETTE.TEXT_SECONDARY,
   },
 });

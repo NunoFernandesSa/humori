@@ -35,4 +35,10 @@ export const MOODS: {
     emoji: "😲",
     color: COLORS_PALETTE.SURPRISED,
   },
+  {
+    value: "tired",
+    label: "Cansado",
+    emoji: "😴",
+    color: COLORS_PALETTE.TIRED,
+  },
 ];

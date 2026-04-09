@@ -1,3 +1,4 @@
+import { COLORS_PALETTE } from "@/src/constants/colors";
 import { MOODS } from "@/src/constants/moods";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "600",
     marginBottom: 16,
-    color: "#333",
+    color: COLORS_PALETTE.TEXT_SECONDARY,
   },
   moodRow: {
     flexDirection: "row",
@@ -54,7 +55,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 12,
     borderBottomWidth: 1,
-    borderBottomColor: "#F0F0F0",
+    borderBottomColor: COLORS_PALETTE.ACCENT_1,
+    backgroundColor: COLORS_PALETTE.CARD_BG,
+    paddingHorizontal: 12,
   },
   moodInfo: {
     flexDirection: "row",
@@ -62,11 +65,11 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   moodEmoji: {
-    fontSize: 24,
+    fontSize: 26,
   },
   moodName: {
     fontSize: 16,
-    color: "#333",
+    color: COLORS_PALETTE.TEXT_PRIMARY,
   },
   moodStats: {
     flexDirection: "row",
@@ -74,11 +77,11 @@ const styles = StyleSheet.create({
   },
   moodCount: {
     fontSize: 14,
-    color: "#666",
+    color: COLORS_PALETTE.TEXT_SECONDARY,
   },
   moodPercentage: {
     fontSize: 14,
     fontWeight: "600",
-    color: "#4CAF50",
+    color: COLORS_PALETTE.ACCENT_2,
   },
 });
