@@ -13,8 +13,6 @@ interface RecentEntriesProps {
  * @param {RecentEntriesProps} props - The component props.
  * @param {any[]} props.filteredEntries - The filtered entries to display.
  * @returns {JSX.Element} The RecentEntries component.
- * @example
- * <RecentEntries filteredEntries={filteredEntries} />
  */
 export default function RecentEntries({
   filteredEntries,
@@ -86,7 +84,8 @@ const styles = StyleSheet.create({
   },
   recentNote: {
     fontSize: 14,
-    color: COLORS_PALETTE.TEXT_SECONDARY,
+    color: COLORS_PALETTE.TEXT_PRIMARY,
     marginTop: 4,
+    fontStyle: "italic",
   },
 });
