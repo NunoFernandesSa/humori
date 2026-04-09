@@ -1,19 +1,65 @@
 import { COLORS_PALETTE } from "@/src/constants/colors";
 import { MOODS } from "@/src/constants/moods";
 import { MoodSelectorProps } from "@/src/types/mood-selector-props-types";
-import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Mood } from "@/src/types/moodType";
+import React, { useState } from "react";
+import {
+  Dimensions,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import ConfettiCannon from "react-native-confetti-cannon";
 
 export const MoodSelector: React.FC<MoodSelectorProps> = ({
   selectedMood,
   onSelect,
 }) => {
+  //
+  // ----- STATE'S -----
+  //
+  const [confettiKey, setConfettiKey] = useState(0);
+  const [hasClicked, setHasClicked] = useState(false);
+
+  //
   // ----- VARIABLES -----
+  //
   const title =
     "Escolhe o teu humor e adiciona uma breve nota sobre o teu dia.";
 
+  //
+  // ----- FUNCTIONS -----
+  //
+  const handleSelect = (mood: string) => {
+    onSelect(mood as Mood);
+    setHasClicked(true);
+    setConfettiKey((prev) => prev + 1);
+  };
+
+  // Calculate the center position of the screen for the confetti
+  const screenWidth = Dimensions.get("window").width;
+
   return (
     <View style={styles.container}>
+      {/* 👈 confetti show after first click */}
+      {hasClicked && (
+        <ConfettiCannon
+          key={confettiKey}
+          count={100}
+          origin={{ x: screenWidth / 2, y: -100 }}
+          fadeOut={true}
+          fallSpeed={1500}
+          colors={[
+            COLORS_PALETTE.HAPPY,
+            COLORS_PALETTE.EXCITED,
+            COLORS_PALETTE.CALM,
+            COLORS_PALETTE.ACCENT_1,
+            COLORS_PALETTE.ACCENT_2,
+          ]}
+        />
+      )}
+
       <Text style={styles.label}>{title}</Text>
       <View style={styles.moodGrid}>
         {MOODS.map((mood) => {
@@ -25,7 +71,7 @@ export const MoodSelector: React.FC<MoodSelectorProps> = ({
                 selectedMood === mood.value && styles.selectedMood,
                 { borderColor: mood.color },
               ]}
-              onPress={() => onSelect(mood.value)}
+              onPress={() => handleSelect(mood.value)}
             >
               <Text style={styles.moodEmoji}>{mood.emoji}</Text>
               <Text style={styles.moodLabel}>{mood.label}</Text>
