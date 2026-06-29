@@ -27,6 +27,11 @@ import { Mood, MoodEntry } from "@/src/types/moodType";
 import { COLORS_PALETTE } from "@/src/constants/colors";
 import { MOODS } from "@/src/constants/moods";
 import { getCurrentMood, isValidEntry } from "@/src/helpers/helpers";
+import {
+  getCurrentStreak,
+  getLongestStreak,
+  getWeeklyCompletion,
+} from "@/src/helpers/progress";
 import { storageService } from "@/src/services/storageService";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
@@ -41,7 +46,7 @@ const HomeScreen = (): JSX.Element => {
   const [moodNote, setMoodNote] = useState<string>("");
   const [selectedMood, setSelectedMood] = useState<Mood | "">("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { todaysEntry, isLoading, saveEntry } = useMoodStore();
+  const { todaysEntry, entries, isLoading, saveEntry } = useMoodStore();
   const scrollViewRef = useRef<ScrollView>(null);
   const textAreaRef = useRef<TextInput>(null);
   const entryIsValid = isValidEntry(todaysEntry);
@@ -62,6 +67,12 @@ const HomeScreen = (): JSX.Element => {
     "Aconteceu algo inesperado",
     "Quero falar sobre isto depois",
   ];
+  const currentStreak = useMemo(() => getCurrentStreak(entries), [entries]);
+  const longestStreak = useMemo(() => getLongestStreak(entries), [entries]);
+  const weeklyCompletion = useMemo(
+    () => getWeeklyCompletion(entries),
+    [entries],
+  );
 
   const handleFocus = () => {
     if (textAreaRef.current && scrollViewRef.current) {
@@ -192,8 +203,8 @@ const HomeScreen = (): JSX.Element => {
 
               <Title title="Como te sentes hoje?" />
               <Text style={styles.heroSubtitle}>
-                Faz o teu check-in em menos de um minuto. Escolhe a emoção, adiciona
-                um contexto se quiseres e guarda o momento.
+                Faz o teu check-in em menos de um minuto. Escolhe a emoção,
+                adiciona um contexto se quiseres e guarda o momento.
               </Text>
 
               <View style={styles.heroHighlights}>
@@ -224,6 +235,44 @@ const HomeScreen = (): JSX.Element => {
               </View>
             </View>
 
+            <View style={styles.progressCard}>
+              <View style={styles.progressHeader}>
+                <View>
+                  <Text style={styles.progressEyebrow}>Progressão</Text>
+                  <Text style={styles.progressTitle}>
+                    O teu ritmo emocional
+                  </Text>
+                </View>
+                <View style={styles.progressBadge}>
+                  <Ionicons
+                    name="flame"
+                    size={16}
+                    color={COLORS_PALETTE.ACCENT_1}
+                  />
+                  <Text style={styles.progressBadgeText}>
+                    {currentStreak} dias seguidos
+                  </Text>
+                </View>
+              </View>
+
+              <View style={styles.progressStatsRow}>
+                <View style={styles.progressStat}>
+                  <Text style={styles.progressStatValue}>
+                    {weeklyCompletion}%
+                  </Text>
+                  <Text style={styles.progressStatLabel}>semana concluída</Text>
+                </View>
+                <View style={styles.progressStat}>
+                  <Text style={styles.progressStatValue}>{longestStreak}</Text>
+                  <Text style={styles.progressStatLabel}>melhor série</Text>
+                </View>
+                <View style={styles.progressStat}>
+                  <Text style={styles.progressStatValue}>{entries.length}</Text>
+                  <Text style={styles.progressStatLabel}>check-ins</Text>
+                </View>
+              </View>
+            </View>
+
             {entryIsValid && currentMoodValue && todaysEntry && (
               <ExistingEntryCard
                 currentMood={currentMoodValue}
@@ -238,7 +287,9 @@ const HomeScreen = (): JSX.Element => {
 
             <View style={styles.noteCard}>
               <Text style={styles.sectionEyebrow}>Etapa 2</Text>
-              <Text style={styles.sectionTitle}>Queres acrescentar um contexto?</Text>
+              <Text style={styles.sectionTitle}>
+                Queres acrescentar um contexto?
+              </Text>
               <Text style={styles.sectionSubtitle}>
                 A nota é opcional, mas ajuda a perceber melhor o teu dia.
               </Text>
@@ -283,9 +334,12 @@ const HomeScreen = (): JSX.Element => {
 
             <View style={styles.ctaCard}>
               <View style={styles.ctaTextBlock}>
-                <Text style={styles.ctaTitle}>Pronto para guardar este momento?</Text>
+                <Text style={styles.ctaTitle}>
+                  Pronto para guardar este momento?
+                </Text>
                 <Text style={styles.ctaSubtitle}>
-                  Vais poder rever tendências e voltar a editar a entrada de hoje.
+                  Vais poder rever tendências e voltar a editar a entrada de
+                  hoje.
                 </Text>
               </View>
 
@@ -392,6 +446,72 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: "700",
     color: COLORS_PALETTE.TEXT_PRIMARY,
+  },
+  progressCard: {
+    backgroundColor: COLORS_PALETTE.CARD_BG,
+    borderRadius: 28,
+    borderWidth: 1,
+    borderColor: COLORS_PALETTE.BORDER_DEFAULT,
+    padding: 20,
+    marginBottom: 18,
+  },
+  progressHeader: {
+    flexDirection: "row",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+    gap: 12,
+    marginBottom: 16,
+  },
+  progressEyebrow: {
+    fontSize: 12,
+    fontWeight: "800",
+    color: COLORS_PALETTE.ACCENT_2,
+    textTransform: "uppercase",
+    letterSpacing: 1.1,
+    marginBottom: 6,
+  },
+  progressTitle: {
+    fontSize: 20,
+    lineHeight: 26,
+    fontWeight: "800",
+    color: COLORS_PALETTE.TEXT_PRIMARY,
+  },
+  progressBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    borderRadius: 999,
+    backgroundColor: COLORS_PALETTE.WARNING_BG,
+  },
+  progressBadgeText: {
+    fontSize: 12,
+    fontWeight: "800",
+    color: COLORS_PALETTE.TEXT_PRIMARY,
+  },
+  progressStatsRow: {
+    flexDirection: "row",
+    gap: 10,
+  },
+  progressStat: {
+    flex: 1,
+    backgroundColor: COLORS_PALETTE.BACKGROUND_ALT,
+    borderRadius: 20,
+    paddingVertical: 16,
+    paddingHorizontal: 12,
+  },
+  progressStatValue: {
+    fontSize: 24,
+    fontWeight: "800",
+    color: COLORS_PALETTE.TEXT_PRIMARY,
+    marginBottom: 6,
+  },
+  progressStatLabel: {
+    fontSize: 12,
+    lineHeight: 16,
+    fontWeight: "700",
+    color: COLORS_PALETTE.TEXT_SECONDARY,
   },
   noteCard: {
     backgroundColor: COLORS_PALETTE.CARD_BG,

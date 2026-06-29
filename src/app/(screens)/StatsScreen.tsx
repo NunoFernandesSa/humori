@@ -16,6 +16,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Container from "@/src/components/common/Container";
 import { Title } from "@/src/components/common/Title";
 import MoodBreakdown from "@/src/components/features/stats/MoodBreakdown";
+import MoodCalendar from "@/src/components/features/stats/MoodCalendar";
 import RecentEntries from "@/src/components/features/stats/RecentEntries";
 import SummaryCards from "@/src/components/features/stats/SummaryCards";
 // ----- EXPO -----
@@ -23,6 +24,7 @@ import { useFocusEffect } from "expo-router";
 // ----- HOOKS -----
 import { COLORS_PALETTE } from "@/src/constants/colors";
 import { MOODS } from "@/src/constants/moods";
+import { getCurrentStreak, getWeeklyCompletion } from "@/src/helpers/progress";
 import { useMoodStats } from "@/src/hooks/useMoodStats";
 
 /**
@@ -77,6 +79,8 @@ const StatsScreen = (): JSX.Element => {
   const insightText = dominantMood
     ? `${dominantMood.emoji} ${dominantMood.label} apareceu mais vezes neste período.`
     : "Ainda não tens dados suficientes para gerar uma leitura emocional.";
+  const currentStreak = getCurrentStreak(filteredEntries);
+  const weeklyCompletion = getWeeklyCompletion(filteredEntries);
 
   return (
     <ScrollView
@@ -163,6 +167,19 @@ const StatsScreen = (): JSX.Element => {
           totalEntries={filteredEntries.length}
           averageMood={getAverageMood()}
         />
+
+        <View style={styles.miniInsightsRow}>
+          <View style={styles.miniInsightCard}>
+            <Text style={styles.miniInsightValue}>{currentStreak}</Text>
+            <Text style={styles.miniInsightLabel}>dias seguidos neste recorte</Text>
+          </View>
+          <View style={styles.miniInsightCard}>
+            <Text style={styles.miniInsightValue}>{weeklyCompletion}%</Text>
+            <Text style={styles.miniInsightLabel}>consistência semanal</Text>
+          </View>
+        </View>
+
+        <MoodCalendar entries={filteredEntries} />
 
         {getPieChartData().length > 0 && (
           <View style={styles.chartContainer}>
@@ -339,6 +356,31 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     marginBottom: 16,
     color: COLORS_PALETTE.TEXT_PRIMARY,
+  },
+  miniInsightsRow: {
+    flexDirection: "row",
+    gap: 12,
+    marginBottom: 24,
+  },
+  miniInsightCard: {
+    flex: 1,
+    backgroundColor: COLORS_PALETTE.CARD_BG,
+    borderRadius: 24,
+    borderWidth: 1,
+    borderColor: COLORS_PALETTE.BORDER_DEFAULT,
+    padding: 18,
+  },
+  miniInsightValue: {
+    fontSize: 30,
+    fontWeight: "800",
+    color: COLORS_PALETTE.TEXT_PRIMARY,
+    marginBottom: 8,
+  },
+  miniInsightLabel: {
+    fontSize: 13,
+    lineHeight: 18,
+    fontWeight: "700",
+    color: COLORS_PALETTE.TEXT_SECONDARY,
   },
   chart: {
     marginVertical: 8,

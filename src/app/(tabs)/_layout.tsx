@@ -217,6 +217,63 @@ export default function TabsLayout(): JSX.Element {
             ),
           }}
         />
+
+        <Tabs.Screen
+          name="universe"
+          options={{
+            headerShown: true,
+            headerStyle: {
+              backgroundColor: COLORS_PALETTE.BACKGROUND,
+            },
+            headerTitle: () => (
+              <View style={{ alignItems: "center" }}>
+                <Text
+                  style={{
+                    color: COLORS_PALETTE.TEXT_SECONDARY,
+                    fontSize: 12,
+                    fontWeight: "700",
+                    textTransform: "uppercase",
+                    letterSpacing: 1,
+                  }}
+                >
+                  Humori
+                </Text>
+                <Text
+                  style={{
+                    color: COLORS_PALETTE.TEXT_PRIMARY,
+                    fontWeight: "800",
+                    fontSize: 20,
+                  }}
+                >
+                  Meu universo
+                </Text>
+              </View>
+            ),
+            headerLeft: () => (
+              <View
+                style={{
+                  width: 44,
+                  height: 44,
+                  marginHorizontal: 18,
+                  borderRadius: 16,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: COLORS_PALETTE.CARD_SOFT,
+                }}
+              >
+                <Ionicons
+                  name="planet"
+                  size={20}
+                  color={COLORS_PALETTE.ACCENT_2}
+                />
+              </View>
+            ),
+            tabBarLabel: ({ color }) => <Text style={{ color }}>Univers</Text>,
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="planet" color={color} size={size} />
+            ),
+          }}
+        />
       </Tabs>
     </>
   );
