@@ -11,7 +11,10 @@ import {
   View,
 } from "react-native";
 import { LineChart, PieChart } from "react-native-chart-kit";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 // ----- COMPONENTS -----
 import Container from "@/src/components/common/Container";
 import { Title } from "@/src/components/common/Title";
@@ -23,6 +26,10 @@ import SummaryCards from "@/src/components/features/stats/SummaryCards";
 import { useFocusEffect } from "expo-router";
 // ----- HOOKS -----
 import { COLORS_PALETTE } from "@/src/constants/colors";
+import {
+  getContentBottomPadding,
+  SCREEN_CONTENT_TOP,
+} from "@/src/constants/layout";
 import { MOODS } from "@/src/constants/moods";
 import { getCurrentStreak, getWeeklyCompletion } from "@/src/helpers/progress";
 import { useMoodStats } from "@/src/hooks/useMoodStats";
@@ -38,6 +45,7 @@ import { useMoodStats } from "@/src/hooks/useMoodStats";
  * @returns {JSX.Element} A JSX element representing the StatsScreen component.
  */
 const StatsScreen = (): JSX.Element => {
+  const insets = useSafeAreaInsets();
   const {
     isLoading,
     refreshing,
@@ -67,6 +75,7 @@ const StatsScreen = (): JSX.Element => {
     );
   }
 
+  const contentBottomPadding = getContentBottomPadding(insets.bottom);
   const filteredEntries = getFilteredEntries();
   const moodCounts = getMoodCounts();
   const dominantMoodEntry = Object.entries(moodCounts).sort(
@@ -83,191 +92,200 @@ const StatsScreen = (): JSX.Element => {
   const weeklyCompletion = getWeeklyCompletion(filteredEntries);
 
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={styles.scrollContent}
-      refreshControl={
-        <RefreshControl
-          refreshing={refreshing}
-          onRefresh={onRefresh}
-          colors={[COLORS_PALETTE.BUTTON_PRIMARY]}
-          tintColor={COLORS_PALETTE.BUTTON_PRIMARY}
-        />
-      }
-      style={styles.container}
-    >
-      <Container style={styles.content}>
-        <View style={styles.heroCard}>
-          <Text style={styles.heroEyebrow}>Leitura rápida</Text>
-          <Title title="Tendências do teu humor" />
-          <Text style={styles.heroSubtitle}>
-            Vê padrões, repete o que corre bem e identifica dias que pedem mais
-            atenção.
-          </Text>
+    <SafeAreaView style={styles.safeArea}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={[
+          styles.scrollContent,
+          {
+            paddingTop: SCREEN_CONTENT_TOP,
+            paddingBottom: contentBottomPadding,
+          },
+        ]}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            colors={[COLORS_PALETTE.BUTTON_PRIMARY]}
+            tintColor={COLORS_PALETTE.BUTTON_PRIMARY}
+          />
+        }
+        style={styles.container}
+      >
+        <Container>
+          <View style={styles.heroCard}>
+            <Text style={styles.heroEyebrow}>Leitura rápida</Text>
+            <Title title="Tendências do teu humor" />
+            <Text style={styles.heroSubtitle}>
+              Vê padrões, repete o que corre bem e identifica dias que pedem
+              mais atenção.
+            </Text>
 
-          <View style={styles.insightCard}>
-            <Text style={styles.insightTitle}>Insight do momento</Text>
-            <Text style={styles.insightText}>{insightText}</Text>
+            <View style={styles.insightCard}>
+              <Text style={styles.insightTitle}>Insight do momento</Text>
+              <Text style={styles.insightText}>{insightText}</Text>
+            </View>
           </View>
-        </View>
 
-        <View style={styles.periodSelector}>
-          <TouchableOpacity
-            style={[
-              styles.periodButton,
-              selectedPeriod === "week" && styles.activePeriod,
-            ]}
-            onPress={() => setSelectedPeriod("week")}
-          >
-            <Text
+          <View style={styles.periodSelector}>
+            <TouchableOpacity
               style={[
-                styles.periodText,
-                selectedPeriod === "week" && styles.activePeriodText,
+                styles.periodButton,
+                selectedPeriod === "week" && styles.activePeriod,
               ]}
+              onPress={() => setSelectedPeriod("week")}
             >
-              Semana
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.periodButton,
-              selectedPeriod === "month" && styles.activePeriod,
-            ]}
-            onPress={() => setSelectedPeriod("month")}
-          >
-            <Text
+              <Text
+                style={[
+                  styles.periodText,
+                  selectedPeriod === "week" && styles.activePeriodText,
+                ]}
+              >
+                Semana
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
               style={[
-                styles.periodText,
-                selectedPeriod === "month" && styles.activePeriodText,
+                styles.periodButton,
+                selectedPeriod === "month" && styles.activePeriod,
               ]}
+              onPress={() => setSelectedPeriod("month")}
             >
-              Mês
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[
-              styles.periodButton,
-              selectedPeriod === "all" && styles.activePeriod,
-            ]}
-            onPress={() => setSelectedPeriod("all")}
-          >
-            <Text
+              <Text
+                style={[
+                  styles.periodText,
+                  selectedPeriod === "month" && styles.activePeriodText,
+                ]}
+              >
+                Mês
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity
               style={[
-                styles.periodText,
-                selectedPeriod === "all" && styles.activePeriodText,
+                styles.periodButton,
+                selectedPeriod === "all" && styles.activePeriod,
               ]}
+              onPress={() => setSelectedPeriod("all")}
             >
-              Todos os períodos
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        {/* Summary Cards */}
-        <SummaryCards
-          totalEntries={filteredEntries.length}
-          averageMood={getAverageMood()}
-        />
-
-        <View style={styles.miniInsightsRow}>
-          <View style={styles.miniInsightCard}>
-            <Text style={styles.miniInsightValue}>{currentStreak}</Text>
-            <Text style={styles.miniInsightLabel}>
-              dias seguidos neste recorte
-            </Text>
+              <Text
+                style={[
+                  styles.periodText,
+                  selectedPeriod === "all" && styles.activePeriodText,
+                ]}
+              >
+                Todos os períodos
+              </Text>
+            </TouchableOpacity>
           </View>
-          <View style={styles.miniInsightCard}>
-            <Text style={styles.miniInsightValue}>{weeklyCompletion}%</Text>
-            <Text style={styles.miniInsightLabel}>consistência semanal</Text>
+
+          {/* Summary Cards */}
+          <SummaryCards
+            totalEntries={filteredEntries.length}
+            averageMood={getAverageMood()}
+          />
+
+          <View style={styles.miniInsightsRow}>
+            <View style={styles.miniInsightCard}>
+              <Text style={styles.miniInsightValue}>{currentStreak}</Text>
+              <Text style={styles.miniInsightLabel}>
+                dias seguidos neste recorte
+              </Text>
+            </View>
+            <View style={styles.miniInsightCard}>
+              <Text style={styles.miniInsightValue}>{weeklyCompletion}%</Text>
+              <Text style={styles.miniInsightLabel}>consistência semanal</Text>
+            </View>
           </View>
-        </View>
 
-        <MoodCalendar entries={filteredEntries} />
+          <MoodCalendar entries={filteredEntries} />
 
-        {getPieChartData().length > 0 && (
-          <View style={styles.chartContainer}>
-            <Text style={styles.chartTitle}>Distribuição dos humores</Text>
-            <PieChart
-              data={getPieChartData()}
-              width={Dimensions.get("window").width - 48}
-              height={200}
-              chartConfig={{
-                color: (opacity = 1) => `rgba(31, 36, 64, ${opacity})`,
-              }}
-              accessor="count"
-              backgroundColor="transparent"
-              paddingLeft="15"
-              absolute
-            />
-          </View>
-        )}
+          {getPieChartData().length > 0 && (
+            <View style={styles.chartContainer}>
+              <Text style={styles.chartTitle}>Distribuição dos humores</Text>
+              <PieChart
+                data={getPieChartData()}
+                width={Dimensions.get("window").width - 48}
+                height={200}
+                chartConfig={{
+                  color: (opacity = 1) => `rgba(31, 36, 64, ${opacity})`,
+                }}
+                accessor="count"
+                backgroundColor="transparent"
+                paddingLeft="15"
+                absolute
+              />
+            </View>
+          )}
 
-        {filteredEntries.length > 1 && (
-          <View style={styles.chartContainer}>
-            <Text style={styles.chartTitle}>Alterações de humor</Text>
-            <LineChart
-              data={getChartData()}
-              width={Dimensions.get("window").width - 42}
-              height={220}
-              chartConfig={{
-                backgroundColor: COLORS_PALETTE.CARD_BG,
-                backgroundGradientFrom: COLORS_PALETTE.CARD_BG,
-                backgroundGradientTo: COLORS_PALETTE.CARD_BG,
-                decimalPlaces: 0,
-                color: (opacity = 1) => `rgba(108, 99, 255, ${opacity})`,
-                labelColor: (opacity = 1) => `rgba(92, 99, 132, ${opacity})`,
-                style: {
-                  borderRadius: 16,
-                },
-                propsForDots: {
-                  r: "6",
-                  strokeWidth: "2",
-                  stroke: COLORS_PALETTE.ACCENT_3,
-                },
-                propsForLabels: {
-                  fontSize: 10,
-                  fontWeight: "400",
-                },
-              }}
-              bezier
-              style={styles.chart}
-              formatYLabel={(value) => {
-                const moodValues: Record<string, string> = {
-                  "8": "😊 Feliz",
-                  "7": "😊 Excitado",
-                  "6": "😊 Calmo",
-                  "5": "😢 Triste",
-                  "4": "😡 Enfur.",
-                  "3": "😨 Assust.",
-                  "2": "😴 Cansad.",
-                  "1": "😲 Surpr.",
-                };
-                return moodValues[value] || "";
-              }}
-            />
-          </View>
-        )}
+          {filteredEntries.length > 1 && (
+            <View style={styles.chartContainer}>
+              <Text style={styles.chartTitle}>Alterações de humor</Text>
+              <LineChart
+                data={getChartData()}
+                width={Dimensions.get("window").width - 42}
+                height={220}
+                chartConfig={{
+                  backgroundColor: COLORS_PALETTE.CARD_BG,
+                  backgroundGradientFrom: COLORS_PALETTE.CARD_BG,
+                  backgroundGradientTo: COLORS_PALETTE.CARD_BG,
+                  decimalPlaces: 0,
+                  color: (opacity = 1) => `rgba(108, 99, 255, ${opacity})`,
+                  labelColor: (opacity = 1) => `rgba(92, 99, 132, ${opacity})`,
+                  style: {
+                    borderRadius: 16,
+                  },
+                  propsForDots: {
+                    r: "6",
+                    strokeWidth: "2",
+                    stroke: COLORS_PALETTE.ACCENT_3,
+                  },
+                  propsForLabels: {
+                    fontSize: 10,
+                    fontWeight: "400",
+                  },
+                }}
+                bezier
+                style={styles.chart}
+                formatYLabel={(value) => {
+                  const moodValues: Record<string, string> = {
+                    "8": "😊 Feliz",
+                    "7": "😊 Excitado",
+                    "6": "😊 Calmo",
+                    "5": "😢 Triste",
+                    "4": "😡 Enfur.",
+                    "3": "😨 Assust.",
+                    "2": "😴 Cansad.",
+                    "1": "😲 Surpr.",
+                  };
+                  return moodValues[value] || "";
+                }}
+              />
+            </View>
+          )}
 
-        <MoodBreakdown
-          moodCounts={moodCounts}
-          getMoodPercentage={getMoodPercentage}
-        />
+          <MoodBreakdown
+            moodCounts={moodCounts}
+            getMoodPercentage={getMoodPercentage}
+          />
 
-        <RecentEntries filteredEntries={filteredEntries} />
-      </Container>
-    </ScrollView>
+          <RecentEntries filteredEntries={filteredEntries} />
+        </Container>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: COLORS_PALETTE.BACKGROUND,
+  },
   container: {
     flex: 1,
     backgroundColor: COLORS_PALETTE.BACKGROUND,
   },
   scrollContent: {
-    paddingBottom: 116,
-  },
-  content: {
-    paddingVertical: 18,
+    flexGrow: 1,
   },
   centerContainer: {
     flex: 1,

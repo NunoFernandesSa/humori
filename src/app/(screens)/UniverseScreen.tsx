@@ -2,6 +2,10 @@ import Container from "@/src/components/common/Container";
 import { Title } from "@/src/components/common/Title";
 import { COLORS_PALETTE } from "@/src/constants/colors";
 import {
+  getContentBottomPadding,
+  SCREEN_CONTENT_TOP,
+} from "@/src/constants/layout";
+import {
   FONT_FAMILIES,
   RADII,
   SHADOWS,
@@ -16,20 +20,29 @@ import {
 } from "@/src/helpers/progress";
 import { useMoodStore } from "@/src/store/useMoodStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import React, { JSX } from "react";
+import React, { JSX, useMemo } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import Animated, { FadeInDown, ZoomIn } from "react-native-reanimated";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 
 /**
  * Universe screen.
  * Displays the universe screen with the user's progress and badges.
  */
 export default function UniverseScreen(): JSX.Element {
+  const insets = useSafeAreaInsets();
   const { entries } = useMoodStore();
   const currentStreak = getCurrentStreak(entries);
   const longestStreak = getLongestStreak(entries);
   const weeklyCompletion = getWeeklyCompletion(entries);
   const dominantMood = getDominantMood(entries);
+  const contentBottomPadding = useMemo(
+    () => getContentBottomPadding(insets.bottom),
+    [insets.bottom],
+  );
 
   const badges = [
     {
@@ -63,118 +76,140 @@ export default function UniverseScreen(): JSX.Element {
   ];
 
   return (
-    <ScrollView
-      style={styles.container}
-      contentContainerStyle={styles.scrollContent}
-    >
-      <Container>
-        <View style={styles.heroCard}>
-          <Text style={styles.eyebrow}>Meu universo</Text>
-          <Title title="A tua progressão emocional" />
-          <Text style={styles.heroText}>
-            Aqui encontras a tua regularidade, os teus badges e a energia
-            dominante do teu diário.
-          </Text>
-        </View>
-
-        <View style={styles.metricsRow}>
-          <View style={styles.metricCard}>
-            <Text style={styles.metricValue}>{currentStreak}</Text>
-            <Text style={styles.metricLabel}>dias seguidos</Text>
-          </View>
-          <View style={styles.metricCard}>
-            <Text style={styles.metricValue}>{weeklyCompletion}%</Text>
-            <Text style={styles.metricLabel}>semana concluída</Text>
-          </View>
-        </View>
-
-        <View style={styles.storyCard}>
-          <View style={styles.storyHeader}>
-            <Ionicons name="planet" size={20} color={COLORS_PALETTE.ACCENT_2} />
-            <Text style={styles.storyTitle}>A tua energia dominante</Text>
-          </View>
-          <Text style={styles.storyText}>
-            {dominantMood
-              ? `${dominantMood.emoji} ${dominantMood.label} aparece mais vezes nas tuas entradas. ${dominantMood.description}`
-              : "Começa o teu diário para revelar a tua energia dominante."}
-          </Text>
-          <View style={styles.storyStats}>
-            <Text style={styles.storyChip}>
-              Total de check-ins: {entries.length}
+    <SafeAreaView style={styles.safeArea}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={[
+          styles.scrollContent,
+          {
+            paddingTop: SCREEN_CONTENT_TOP,
+            paddingBottom: contentBottomPadding,
+          },
+        ]}
+        showsVerticalScrollIndicator={false}
+      >
+        <Container>
+          <View style={styles.heroCard}>
+            <Text style={styles.eyebrow}>Meu universo</Text>
+            <Title title="A tua progressão emocional" />
+            <Text style={styles.heroText}>
+              Aqui encontras a tua regularidade, os teus badges e a energia
+              dominante do teu diário.
             </Text>
-            <Text style={styles.storyChip}>Melhor série: {longestStreak}</Text>
           </View>
-        </View>
 
-        <Animated.View
-          entering={FadeInDown.delay(120).duration(450)}
-          style={styles.badgesCard}
-        >
-          <Text style={styles.sectionTitle}>Badges</Text>
-          <Text style={styles.sectionText}>
-            Uma progressão suave e positiva, sem julgamento.
-          </Text>
+          <View style={styles.metricsRow}>
+            <View style={styles.metricCard}>
+              <Text style={styles.metricValue}>{currentStreak}</Text>
+              <Text style={styles.metricLabel}>dias seguidos</Text>
+            </View>
+            <View style={styles.metricCard}>
+              <Text style={styles.metricValue}>{weeklyCompletion}%</Text>
+              <Text style={styles.metricLabel}>semana concluída</Text>
+            </View>
+          </View>
 
-          <View style={styles.badgesGrid}>
-            {badges.map((badge, index) => (
-            <Animated.View
-              key={badge.id}
-              entering={ZoomIn.delay(180 + index * 60).duration(320)}
-              style={[
-                styles.badgeCard,
-                !badge.unlocked && styles.badgeRowLocked,
-              ]}
-            >
-              <View
-                style={[
-                  styles.badgeMedal,
-                  badge.unlocked
-                    ? styles.badgeMedalUnlocked
-                    : styles.badgeMedalLocked,
-                ]}
-              >
-                <View
+          <View style={styles.storyCard}>
+            <View style={styles.storyHeader}>
+              <Ionicons
+                name="planet"
+                size={20}
+                color={COLORS_PALETTE.ACCENT_2}
+              />
+              <Text style={styles.storyTitle}>A tua energia dominante</Text>
+            </View>
+            <Text style={styles.storyText}>
+              {dominantMood
+                ? `${dominantMood.emoji} ${dominantMood.label} aparece mais vezes nas tuas entradas. ${dominantMood.description}`
+                : "Começa o teu diário para revelar a tua energia dominante."}
+            </Text>
+            <View style={styles.storyStats}>
+              <Text style={styles.storyChip}>
+                Total de check-ins: {entries.length}
+              </Text>
+              <Text style={styles.storyChip}>
+                Melhor série: {longestStreak}
+              </Text>
+            </View>
+          </View>
+
+          <Animated.View
+            entering={FadeInDown.delay(120).duration(450)}
+            style={styles.badgesCard}
+          >
+            <Text style={styles.sectionTitle}>Badges</Text>
+            <Text style={styles.sectionText}>
+              Uma progressão suave e positiva, sem julgamento.
+            </Text>
+
+            <View style={styles.badgesGrid}>
+              {badges.map((badge, index) => (
+                <Animated.View
+                  key={badge.id}
+                  entering={ZoomIn.delay(180 + index * 60).duration(320)}
                   style={[
-                    styles.badgeCore,
-                    badge.unlocked ? styles.badgeCoreUnlocked : styles.badgeCoreLocked,
+                    styles.badgeCard,
+                    !badge.unlocked && styles.badgeRowLocked,
                   ]}
                 >
-                <Ionicons
-                  name={badge.icon as keyof typeof Ionicons.glyphMap}
-                  size={22}
-                  color={
-                    badge.unlocked
-                      ? COLORS_PALETTE.TEXT_LIGHT
-                      : COLORS_PALETTE.TEXT_TERTIARY
-                  }
-                />
-                </View>
-              </View>
-              <View style={styles.badgeContent}>
-                <Text style={styles.badgeTitle}>
-                  {badge.title}{" "}
-                  {badge.unlocked ? "• desbloqueado" : "• por conquistar"}
-                </Text>
-                <Text style={styles.badgeDescription}>{badge.description}</Text>
-              </View>
-            </Animated.View>
-          ))}
-          </View>
-        </Animated.View>
-      </Container>
-    </ScrollView>
+                  <View
+                    style={[
+                      styles.badgeMedal,
+                      badge.unlocked
+                        ? styles.badgeMedalUnlocked
+                        : styles.badgeMedalLocked,
+                    ]}
+                  >
+                    <View
+                      style={[
+                        styles.badgeCore,
+                        badge.unlocked
+                          ? styles.badgeCoreUnlocked
+                          : styles.badgeCoreLocked,
+                      ]}
+                    >
+                      <Ionicons
+                        name={badge.icon as keyof typeof Ionicons.glyphMap}
+                        size={22}
+                        color={
+                          badge.unlocked
+                            ? COLORS_PALETTE.TEXT_LIGHT
+                            : COLORS_PALETTE.TEXT_TERTIARY
+                        }
+                      />
+                    </View>
+                  </View>
+                  <View style={styles.badgeContent}>
+                    <Text style={styles.badgeTitle}>
+                      {badge.title}{" "}
+                      {badge.unlocked ? "• desbloqueado" : "• por conquistar"}
+                    </Text>
+                    <Text style={styles.badgeDescription}>
+                      {badge.description}
+                    </Text>
+                  </View>
+                </Animated.View>
+              ))}
+            </View>
+          </Animated.View>
+        </Container>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
 // ---- Styles ----
 const styles = StyleSheet.create({
+  safeArea: {
+    flex: 1,
+    backgroundColor: COLORS_PALETTE.BACKGROUND,
+  },
   container: {
     flex: 1,
     backgroundColor: COLORS_PALETTE.BACKGROUND,
   },
   scrollContent: {
-    paddingTop: 18,
-    paddingBottom: 116,
+    flexGrow: 1,
   },
   heroCard: {
     backgroundColor: COLORS_PALETTE.CARD_BG,

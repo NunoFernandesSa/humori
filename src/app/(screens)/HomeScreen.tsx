@@ -12,7 +12,7 @@ import {
   TextInput,
   View,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
 // ----- COMPONENTS -----
 import Container from "@/src/components/common/Container";
 import SubmitButton from "@/src/components/common/SubmitButton";
@@ -25,6 +25,7 @@ import { useMoodStore } from "@/src/store/useMoodStore";
 import { Mood, MoodEntry } from "@/src/types/moodType";
 // ----- HELPERS -----
 import { COLORS_PALETTE } from "@/src/constants/colors";
+import { getContentBottomPadding, SCREEN_CONTENT_TOP } from "@/src/constants/layout";
 import { MOODS } from "@/src/constants/moods";
 import { FONT_FAMILIES } from "@/src/constants/theme";
 import { getCurrentMood, isValidEntry } from "@/src/helpers/helpers";
@@ -52,6 +53,7 @@ import Animated, {
  * @returns {JSX.Element} The rendered HomeScreen component
  */
 const HomeScreen = (): JSX.Element => {
+  const insets = useSafeAreaInsets();
   const [moodNote, setMoodNote] = useState<string>("");
   const [selectedMood, setSelectedMood] = useState<Mood | "">("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -183,6 +185,10 @@ const HomeScreen = (): JSX.Element => {
   const pulseStyle = useAnimatedStyle(() => ({
     transform: [{ scale: pulseScale.value }],
   }));
+  const contentBottomPadding = useMemo(
+    () => getContentBottomPadding(insets.bottom),
+    [insets.bottom],
+  );
 
   if (isLoading) {
     return (
@@ -208,7 +214,10 @@ const HomeScreen = (): JSX.Element => {
           ref={scrollViewRef}
           keyboardShouldPersistTaps="handled"
           showsVerticalScrollIndicator={false}
-          contentContainerStyle={styles.scrollContent}
+          contentContainerStyle={[
+            styles.scrollContent,
+            { paddingTop: SCREEN_CONTENT_TOP, paddingBottom: contentBottomPadding },
+          ]}
         >
           <Container>
             <Animated.View
@@ -268,7 +277,7 @@ const HomeScreen = (): JSX.Element => {
               style={styles.progressCard}
             >
               <View style={styles.progressHeader}>
-                <View>
+                <View style={styles.progressHeaderLeft}>
                   <Text style={styles.progressEyebrow}>Progressão</Text>
                   <Text style={styles.progressTitle}>
                     O teu ritmo emocional
@@ -280,7 +289,11 @@ const HomeScreen = (): JSX.Element => {
                     size={16}
                     color={COLORS_PALETTE.ACCENT_1}
                   />
-                  <Text style={styles.progressBadgeText}>
+                  <Text
+                    style={styles.progressBadgeText}
+                    numberOfLines={1}
+                    ellipsizeMode="tail"
+                  >
                     {currentStreak} dias seguidos
                   </Text>
                 </Animated.View>
@@ -404,7 +417,6 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-    paddingVertical: 18,
   },
   centerContainer: {
     flex: 1,
@@ -500,6 +512,10 @@ const styles = StyleSheet.create({
     gap: 12,
     marginBottom: 16,
   },
+  progressHeaderLeft: {
+    flex: 1,
+    minWidth: 0,
+  },
   progressEyebrow: {
     fontFamily: FONT_FAMILIES.headingExtraBold,
     fontSize: 12,
@@ -522,11 +538,15 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     borderRadius: 999,
     backgroundColor: COLORS_PALETTE.WARNING_BG,
+    maxWidth: "55%",
+    flexShrink: 1,
+    alignSelf: "flex-start",
   },
   progressBadgeText: {
     fontFamily: FONT_FAMILIES.headingExtraBold,
     fontSize: 12,
     color: COLORS_PALETTE.TEXT_PRIMARY,
+    flexShrink: 1,
   },
   progressStatsRow: {
     flexDirection: "row",

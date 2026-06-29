@@ -19,11 +19,13 @@ export default function ExistingEntryCard({
   return (
     <View style={styles.card}>
       <View style={styles.topRow}>
-        <View>
+        <View style={styles.topRowLeft}>
           <Text style={styles.eyebrow}>Hoje</Text>
           <Text style={styles.title}>O teu check-in já está guardado</Text>
         </View>
-        <Text style={styles.badge}>Editável</Text>
+        <Text style={styles.badge} numberOfLines={1} ellipsizeMode="tail">
+          Editável
+        </Text>
       </View>
 
       <Text style={styles.supportingText}>
@@ -83,6 +85,13 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     justifyContent: "space-between",
     gap: 12,
+    flexWrap: "wrap",
+  },
+  topRowLeft: {
+    flexGrow: 1,
+    flexShrink: 1,
+    flexBasis: 220,
+    minWidth: 0,
   },
   eyebrow: {
     fontSize: 12,
@@ -99,6 +108,7 @@ const styles = StyleSheet.create({
     color: COLORS_PALETTE.TEXT_PRIMARY,
   },
   badge: {
+    alignSelf: "flex-start",
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 999,
@@ -106,6 +116,7 @@ const styles = StyleSheet.create({
     color: COLORS_PALETTE.TEXT_PRIMARY,
     fontSize: 12,
     fontWeight: "700",
+    maxWidth: "100%",
   },
   supportingText: {
     fontSize: 14,

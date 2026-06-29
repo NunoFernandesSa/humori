@@ -7,6 +7,7 @@ import { router, Tabs } from "expo-router";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
 import { COLORS_PALETTE } from "@/src/constants/colors";
+import { getTabBarBottom } from "@/src/constants/layout";
 import { FONT_FAMILIES } from "@/src/constants/theme";
 import { StatusBar } from "expo-status-bar";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -19,7 +20,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
  */
 export default function TabsLayout(): JSX.Element {
   const insets = useSafeAreaInsets();
-  const tabBarBottom = Math.max(18, insets.bottom + 12);
+  const tabBarBottom = getTabBarBottom(insets.bottom);
 
   return (
     <>
