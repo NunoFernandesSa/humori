@@ -121,7 +121,7 @@ const HomeScreen = (): JSX.Element => {
   const handleSubmit = async () => {
     if (!selectedMood) {
       Alert.alert(
-        "Oops! 🎈",
+        "Ups! 🎈",
         "Escolhe primeiro o teu humor antes de continuar.",
       );
       return;
@@ -151,15 +151,15 @@ const HomeScreen = (): JSX.Element => {
       await saveEntry(newEntry);
 
       Alert.alert(
-        "🎉 Sucesso!",
+        "Sucesso",
         entryIsValid
           ? "O teu humor foi atualizado!"
-          : "O teu humor foi registrado!",
+          : "O teu humor foi registado!",
       );
     } catch (error) {
       Alert.alert(
-        "Ops! 😕",
-        "Não foi possível registrar teu humor. Tenta novamente!",
+        "Ups! 😕",
+        "Não foi possível registar o teu humor. Tenta novamente!",
       );
       console.error("Submit error:", error);
     } finally {
@@ -249,7 +249,7 @@ const HomeScreen = (): JSX.Element => {
 
               <Title title="Como te sentes hoje?" />
               <Text style={styles.heroSubtitle}>
-                Faz o teu check-in em menos de um minuto. Escolhe a emoção,
+                Faz o teu registo em menos de um minuto. Escolhe a emoção,
                 adiciona um contexto se quiseres e guarda o momento.
               </Text>
 
@@ -268,7 +268,7 @@ const HomeScreen = (): JSX.Element => {
                     size={16}
                     color={COLORS_PALETTE.ACCENT_3}
                   />
-                  <Text style={styles.highlightChipText}>Táctil</Text>
+                  <Text style={styles.highlightChipText}>Tátil</Text>
                 </View>
                 <View style={styles.highlightChip}>
                   <Ionicons
@@ -321,7 +321,7 @@ const HomeScreen = (): JSX.Element => {
                 </View>
                 <View style={styles.progressStat}>
                   <Text style={styles.progressStatValue}>{entries.length}</Text>
-                  <Text style={styles.progressStatLabel}>check-ins</Text>
+                  <Text style={styles.progressStatLabel}>registos</Text>
                 </View>
               </View>
             </Animated.View>
@@ -405,8 +405,8 @@ const HomeScreen = (): JSX.Element => {
               <SubmitButton
                 text={
                   entryIsValid
-                    ? "Atualizar o meu check-in"
-                    : "Guardar o meu check-in"
+                    ? "Atualizar o meu registo"
+                    : "Guardar o meu registo"
                 }
                 handleSubmit={handleSubmit}
                 disabled={isSubmitting}

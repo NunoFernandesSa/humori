@@ -122,7 +122,7 @@ const StatsScreen = (): JSX.Element => {
             </Text>
 
             <View style={styles.insightCard}>
-              <Text style={styles.insightTitle}>Insight do momento</Text>
+              <Text style={styles.insightTitle}>Destaque do momento</Text>
               <Text style={styles.insightText}>{insightText}</Text>
             </View>
           </View>
@@ -188,7 +188,7 @@ const StatsScreen = (): JSX.Element => {
             <View style={styles.miniInsightCard}>
               <Text style={styles.miniInsightValue}>{currentStreak}</Text>
               <Text style={styles.miniInsightLabel}>
-                dias seguidos neste recorte
+                dias seguidos neste período
               </Text>
             </View>
             <View style={styles.miniInsightCard}>
@@ -249,12 +249,12 @@ const StatsScreen = (): JSX.Element => {
                 formatYLabel={(value) => {
                   const moodValues: Record<string, string> = {
                     "8": "😊 Feliz",
-                    "7": "😊 Excitado",
+                    "7": "😊 Entus.",
                     "6": "😊 Calmo",
                     "5": "😢 Triste",
-                    "4": "😡 Enfur.",
+                    "4": "😡 Zang.",
                     "3": "😨 Assust.",
-                    "2": "😴 Cansad.",
+                    "2": "😴 Cans.",
                     "1": "😲 Surpr.",
                   };
                   return moodValues[value] || "";

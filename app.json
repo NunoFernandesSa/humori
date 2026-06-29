@@ -43,7 +43,7 @@
         "projectId": "d6ccc04e-85c5-4fad-8a26-35c32d54fae9"
       }
     },
-    "description": "Registe o seu humor todos os dias. O seu diário de emoções.",
+    "description": "Regista o teu humor todos os dias. O teu diário emocional.",
     "owner": "nfdev",
     "assetBundlePatterns": ["**/*"],
     "runtimeVersion": {

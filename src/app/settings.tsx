@@ -64,7 +64,7 @@ export default function SettingsScreen(): JSX.Element {
             </Pressable>
             <View style={styles.headerCopy}>
               <Text style={styles.eyebrow}>Definições</Text>
-              <Title title="Controle dos dados" />
+              <Title title="Gestão dos dados" />
             </View>
           </View>
 
@@ -79,8 +79,8 @@ export default function SettingsScreen(): JSX.Element {
           <View style={styles.card}>
             <Text style={styles.cardTitle}>Zona segura</Text>
             <Text style={styles.cardText}>
-              Coloquei aqui a ação destrutiva para a retirar da página de
-              tendências e evitar toques acidentais.
+              A ação de apagar tudo fica aqui para evitar toques acidentais e
+              manter as tendências focadas na leitura do teu histórico.
             </Text>
 
             <Pressable style={styles.dangerButton} onPress={handleDeleteAll}>

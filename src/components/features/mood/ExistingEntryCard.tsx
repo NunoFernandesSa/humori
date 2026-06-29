@@ -21,7 +21,7 @@ export default function ExistingEntryCard({
       <View style={styles.topRow}>
         <View style={styles.topRowLeft}>
           <Text style={styles.eyebrow}>Hoje</Text>
-          <Text style={styles.title}>O teu check-in já está guardado</Text>
+          <Text style={styles.title}>O teu registo já está guardado</Text>
         </View>
         <Text style={styles.badge} numberOfLines={1} ellipsizeMode="tail">
           Editável
@@ -60,7 +60,7 @@ export default function ExistingEntryCard({
       )}
 
       <Text style={styles.updateHint}>
-        Dica: seleciona outra carta mais abaixo para atualizar como te sentes.
+        Dica: seleciona outra carta mais abaixo para atualizar o teu registo.
       </Text>
     </View>
   );

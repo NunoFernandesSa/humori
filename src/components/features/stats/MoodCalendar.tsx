@@ -16,10 +16,10 @@ export default function MoodCalendar({
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Régularité des 28 derniers jours</Text>
+      <Text style={styles.title}>Regularidade dos últimos 28 dias</Text>
       <Text style={styles.subtitle}>
-        Chaque case représente un jour. Plus la couleur est vive, plus ton
-        journal émotionnel prend vie.
+        Cada bloco representa um dia. Quanto mais viva for a cor, mais ativo
+        está o teu diário emocional.
       </Text>
 
       <View style={styles.grid}>
@@ -48,7 +48,7 @@ export default function MoodCalendar({
       <View style={styles.legendRow}>
         <View style={styles.legendItem}>
           <View style={[styles.legendDot, styles.emptyDayCell]} />
-          <Text style={styles.legendText}>Sans entrée</Text>
+          <Text style={styles.legendText}>Sem registo</Text>
         </View>
         <View style={styles.legendItem}>
           <View
@@ -57,7 +57,7 @@ export default function MoodCalendar({
               { backgroundColor: COLORS_PALETTE.ACCENT_2 },
             ]}
           />
-          <Text style={styles.legendText}>Jour complété</Text>
+          <Text style={styles.legendText}>Dia concluído</Text>
         </View>
       </View>
     </View>

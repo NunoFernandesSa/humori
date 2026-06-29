@@ -84,7 +84,7 @@ export default function OnboardingScreen(): JSX.Element {
         </View>
 
         <Pressable style={styles.ctaButton} onPress={handleContinue}>
-          <Text style={styles.ctaText}>Começar a minha aventura</Text>
+          <Text style={styles.ctaText}>Começar</Text>
         </Pressable>
       </ScrollView>
     </SafeAreaView>

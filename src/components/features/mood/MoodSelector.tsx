@@ -81,7 +81,7 @@ export const MoodSelector: React.FC<MoodSelectorProps> = ({
               Nenhuma emoção selecionada
             </Text>
             <Text style={styles.emptyBannerText}>
-              Toca numa carta para começar o teu check-in.
+              Toca numa carta para começar o teu registo.
             </Text>
           </View>
         )}

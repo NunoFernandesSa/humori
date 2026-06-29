@@ -49,14 +49,15 @@ export default function UniverseScreen(): JSX.Element {
       id: "first-entry",
       icon: "sparkles",
       title: "Primeiro passo",
-      description: "Desbloqueado depois do teu primeiro check-in.",
+      description: "Desbloqueado após o teu primeiro registo.",
       unlocked: entries.length >= 1,
     },
     {
       id: "three-day-streak",
       icon: "flame",
       title: "Série de 3 dias",
-      description: "Voltas para partilhar o teu humor em vários dias seguidos.",
+      description:
+        "Voltaste para registar o teu humor em vários dias seguidos.",
       unlocked: longestStreak >= 3,
     },
     {
@@ -70,7 +71,7 @@ export default function UniverseScreen(): JSX.Element {
       id: "mood-explorer",
       icon: "planet",
       title: "Explorador emocional",
-      description: "Já preencheste 14 dias de acompanhamento.",
+      description: "Já completaste 14 dias de acompanhamento.",
       unlocked: entries.length >= 14,
     },
   ];
@@ -90,7 +91,7 @@ export default function UniverseScreen(): JSX.Element {
       >
         <Container>
           <View style={styles.heroCard}>
-            <Text style={styles.eyebrow}>Meu universo</Text>
+            <Text style={styles.eyebrow}>O teu universo</Text>
             <Title title="A tua progressão emocional" />
             <Text style={styles.heroText}>
               Aqui encontras a tua regularidade, os teus badges e a energia
@@ -125,7 +126,7 @@ export default function UniverseScreen(): JSX.Element {
             </Text>
             <View style={styles.storyStats}>
               <Text style={styles.storyChip}>
-                Total de check-ins: {entries.length}
+                Total de registos: {entries.length}
               </Text>
               <Text style={styles.storyChip}>
                 Melhor série: {longestStreak}

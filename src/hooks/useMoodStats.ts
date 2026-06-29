@@ -20,7 +20,7 @@ export const useMoodStats = () => {
       console.error("Error loading entries:", error);
       Alert.alert(
         "Erro",
-        "Erro ao carregar as estatísticas. Por favor, tente novamente.",
+        "Não foi possível carregar as estatísticas. Tenta novamente.",
       );
     } finally {
       setIsLoading(false);
@@ -142,10 +142,10 @@ export const useMoodStats = () => {
     try {
       await storageService.deleteAllEntries();
       await loadEntries();
-      Alert.alert("Sucesso", "Todos os dados foram excluídos");
+      Alert.alert("Sucesso", "Todos os dados foram apagados.");
     } catch (error) {
       console.error("Error deleting all entries:", error);
-      Alert.alert("Erro", "Não foi possível excluir os dados");
+      Alert.alert("Erro", "Não foi possível apagar os dados.");
     }
   }, [loadEntries]);
 

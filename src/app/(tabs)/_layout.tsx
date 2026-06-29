@@ -252,7 +252,7 @@ export default function TabsLayout(): JSX.Element {
                     fontSize: 20,
                   }}
                 >
-                  Meu universo
+                  O teu universo
                 </Text>
               </View>
             ),

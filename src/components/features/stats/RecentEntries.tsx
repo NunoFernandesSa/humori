@@ -22,7 +22,7 @@ export default function RecentEntries({
   return (
     <View style={styles.recentContainer}>
       <Text style={styles.recentTitle}>
-        Entradas recentes ({filteredEntries.length})
+        Registos recentes ({filteredEntries.length})
       </Text>
       {filteredEntries.slice(0, 5).map((entry) => {
         const mood = MOODS.find((m) => m.value === entry.mood);
