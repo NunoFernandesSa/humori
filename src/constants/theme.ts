@@ -1,5 +1,13 @@
 import { COLORS_PALETTE } from "./colors";
 
+export const FONT_FAMILIES = {
+  display: "Fredoka_700Bold",
+  heading: "PlusJakartaSans_700Bold",
+  headingExtraBold: "PlusJakartaSans_800ExtraBold",
+  body: "PlusJakartaSans_500Medium",
+  bodySemiBold: "PlusJakartaSans_600SemiBold",
+} as const;
+
 export const SPACING = {
   xs: 6,
   sm: 10,
@@ -21,32 +29,33 @@ export const RADII = {
 export const TYPOGRAPHY = {
   eyebrow: {
     fontSize: 12,
-    fontWeight: "800" as const,
+    fontFamily: FONT_FAMILIES.headingExtraBold,
     letterSpacing: 1.1,
     textTransform: "uppercase" as const,
   },
   titleLg: {
+    fontFamily: FONT_FAMILIES.display,
     fontSize: 30,
     lineHeight: 36,
-    fontWeight: "800" as const,
     letterSpacing: -0.8,
     color: COLORS_PALETTE.TEXT_PRIMARY,
   },
   titleMd: {
+    fontFamily: FONT_FAMILIES.headingExtraBold,
     fontSize: 22,
     lineHeight: 28,
-    fontWeight: "800" as const,
     color: COLORS_PALETTE.TEXT_PRIMARY,
   },
   body: {
+    fontFamily: FONT_FAMILIES.body,
     fontSize: 14,
     lineHeight: 20,
     color: COLORS_PALETTE.TEXT_SECONDARY,
   },
   bodyStrong: {
+    fontFamily: FONT_FAMILIES.bodySemiBold,
     fontSize: 14,
     lineHeight: 20,
-    fontWeight: "700" as const,
     color: COLORS_PALETTE.TEXT_PRIMARY,
   },
 } as const;

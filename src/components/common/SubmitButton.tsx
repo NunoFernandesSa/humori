@@ -1,4 +1,5 @@
 import { COLORS_PALETTE } from "@/src/constants/colors";
+import { FONT_FAMILIES } from "@/src/constants/theme";
 import { SubmitButtonProps } from "@/src/types/submit-button-props-types";
 import React from "react";
 import {
@@ -48,9 +49,9 @@ const styles = StyleSheet.create({
     elevation: 0,
   },
   buttonText: {
+    fontFamily: FONT_FAMILIES.headingExtraBold,
     color: COLORS_PALETTE.BUTTON_TEXT,
     fontSize: 16,
-    fontWeight: "800",
     letterSpacing: 0.2,
   },
 });

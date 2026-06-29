@@ -1,14 +1,13 @@
 // ----- REACT NATIVE -----
 import React, { JSX } from "react";
-import { Alert, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 // ----- EXPO -----
-import { Tabs } from "expo-router";
+import { router, Tabs } from "expo-router";
 // ----- ICONS -----
 import Ionicons from "@expo/vector-icons/Ionicons";
-// ----- HOOKS -----
-import { useMoodStore } from "@/src/store/useMoodStore";
 
 import { COLORS_PALETTE } from "@/src/constants/colors";
+import { FONT_FAMILIES } from "@/src/constants/theme";
 import { StatusBar } from "expo-status-bar";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
@@ -19,36 +18,8 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
  * @returns {JSX.Element} The tab navigator layout for the app.
  */
 export default function TabsLayout(): JSX.Element {
-  const { deleteAllEntries } = useMoodStore();
   const insets = useSafeAreaInsets();
-  const tabBarBottom = Math.max(18, insets.bottom + 6);
-
-  // Handle deleting all entries
-  const handleDeleteAll = () => {
-    Alert.alert(
-      "Apagar tudo?",
-      "Tem certeza de que deseja excluir todos os dados? Todas as emoções serão suprimidas. Esta ação é irreversível.",
-      [
-        { text: "Cancelar", style: "cancel" },
-        {
-          text: "Eliminar",
-          style: "destructive",
-          onPress: async () => {
-            try {
-              await deleteAllEntries();
-              Alert.alert("Sucesso", "Todos os dados foram apagados.");
-            } catch (error) {
-              console.error("Error deleting all entries:", error); // TODO: DELETE ON PRODUCTION
-              Alert.alert(
-                "Erro",
-                "Não foi possível eliminar os dados. Por favor, tente mais novamente.",
-              );
-            }
-          },
-        },
-      ],
-    );
-  };
+  const tabBarBottom = Math.max(18, insets.bottom + 12);
 
   return (
     <>
@@ -76,8 +47,8 @@ export default function TabsLayout(): JSX.Element {
             shadowRadius: 20,
           },
           tabBarLabelStyle: {
+            fontFamily: FONT_FAMILIES.bodySemiBold,
             fontSize: 12,
-            fontWeight: "700",
             marginBottom: 4,
           },
           tabBarItemStyle: {
@@ -95,12 +66,12 @@ export default function TabsLayout(): JSX.Element {
               backgroundColor: COLORS_PALETTE.BACKGROUND,
             },
             headerTitle: () => (
-              <View style={{ alignItems: "center" }}>
+              <View style={{ alignItems: "flex-start" }}>
                 <Text
                   style={{
+                    fontFamily: FONT_FAMILIES.headingExtraBold,
                     color: COLORS_PALETTE.TEXT_SECONDARY,
                     fontSize: 12,
-                    fontWeight: "700",
                     textTransform: "uppercase",
                     letterSpacing: 1,
                   }}
@@ -109,8 +80,8 @@ export default function TabsLayout(): JSX.Element {
                 </Text>
                 <Text
                   style={{
+                    fontFamily: FONT_FAMILIES.headingExtraBold,
                     color: COLORS_PALETTE.TEXT_PRIMARY,
-                    fontWeight: "800",
                     fontSize: 20,
                   }}
                 >
@@ -130,10 +101,40 @@ export default function TabsLayout(): JSX.Element {
                   backgroundColor: COLORS_PALETTE.CARD_SOFT,
                 }}
               >
-                <Text style={{ fontSize: 20 }}>H</Text>
+                <Ionicons
+                  name="home"
+                  size={20}
+                  color={COLORS_PALETTE.ACCENT_2}
+                />
               </View>
             ),
-            tabBarLabel: ({ color }) => <Text style={{ color }}>Início</Text>,
+            headerRight: () => (
+              <TouchableOpacity
+                onPress={() => router.push("/settings")}
+                style={{
+                  marginRight: 18,
+                  width: 44,
+                  height: 44,
+                  borderRadius: 16,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: COLORS_PALETTE.CARD_BG,
+                  borderWidth: 1,
+                  borderColor: COLORS_PALETTE.BORDER_DEFAULT,
+                }}
+              >
+                <Ionicons
+                  name="settings-outline"
+                  size={20}
+                  color={COLORS_PALETTE.TEXT_SECONDARY}
+                />
+              </TouchableOpacity>
+            ),
+            tabBarLabel: ({ color }) => (
+              <Text style={{ color, fontFamily: FONT_FAMILIES.bodySemiBold }}>
+                Início
+              </Text>
+            ),
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="home" color={color} size={size} />
             ),
@@ -148,12 +149,12 @@ export default function TabsLayout(): JSX.Element {
               backgroundColor: COLORS_PALETTE.BACKGROUND,
             },
             headerTitle: () => (
-              <View style={{ alignItems: "center" }}>
+              <View style={{ alignItems: "flex-start" }}>
                 <Text
                   style={{
+                    fontFamily: FONT_FAMILIES.headingExtraBold,
                     color: COLORS_PALETTE.TEXT_SECONDARY,
                     fontSize: 12,
-                    fontWeight: "700",
                     textTransform: "uppercase",
                     letterSpacing: 1,
                   }}
@@ -162,8 +163,8 @@ export default function TabsLayout(): JSX.Element {
                 </Text>
                 <Text
                   style={{
+                    fontFamily: FONT_FAMILIES.headingExtraBold,
                     color: COLORS_PALETTE.TEXT_PRIMARY,
-                    fontWeight: "800",
                     fontSize: 20,
                   }}
                 >
@@ -192,7 +193,7 @@ export default function TabsLayout(): JSX.Element {
             ),
             headerRight: () => (
               <TouchableOpacity
-                onPress={() => handleDeleteAll()}
+                onPress={() => router.push("/settings")}
                 style={{
                   marginRight: 18,
                   width: 44,
@@ -206,14 +207,16 @@ export default function TabsLayout(): JSX.Element {
                 }}
               >
                 <Ionicons
-                  name="trash-outline"
+                  name="settings-outline"
                   size={20}
                   color={COLORS_PALETTE.TEXT_SECONDARY}
                 />
               </TouchableOpacity>
             ),
             tabBarLabel: ({ color }) => (
-              <Text style={{ color }}>Tendências</Text>
+              <Text style={{ color, fontFamily: FONT_FAMILIES.bodySemiBold }}>
+                Tendências
+              </Text>
             ),
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="stats-chart" color={color} size={size} />
@@ -229,12 +232,12 @@ export default function TabsLayout(): JSX.Element {
               backgroundColor: COLORS_PALETTE.BACKGROUND,
             },
             headerTitle: () => (
-              <View style={{ alignItems: "center" }}>
+              <View style={{ alignItems: "flex-start" }}>
                 <Text
                   style={{
+                    fontFamily: FONT_FAMILIES.headingExtraBold,
                     color: COLORS_PALETTE.TEXT_SECONDARY,
                     fontSize: 12,
-                    fontWeight: "700",
                     textTransform: "uppercase",
                     letterSpacing: 1,
                   }}
@@ -243,8 +246,8 @@ export default function TabsLayout(): JSX.Element {
                 </Text>
                 <Text
                   style={{
+                    fontFamily: FONT_FAMILIES.headingExtraBold,
                     color: COLORS_PALETTE.TEXT_PRIMARY,
-                    fontWeight: "800",
                     fontSize: 20,
                   }}
                 >
@@ -271,7 +274,33 @@ export default function TabsLayout(): JSX.Element {
                 />
               </View>
             ),
-            tabBarLabel: ({ color }) => <Text style={{ color }}>Univers</Text>,
+            headerRight: () => (
+              <TouchableOpacity
+                onPress={() => router.push("/settings")}
+                style={{
+                  marginRight: 18,
+                  width: 44,
+                  height: 44,
+                  borderRadius: 16,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: COLORS_PALETTE.CARD_BG,
+                  borderWidth: 1,
+                  borderColor: COLORS_PALETTE.BORDER_DEFAULT,
+                }}
+              >
+                <Ionicons
+                  name="settings-outline"
+                  size={20}
+                  color={COLORS_PALETTE.TEXT_SECONDARY}
+                />
+              </TouchableOpacity>
+            ),
+            tabBarLabel: ({ color }) => (
+              <Text style={{ color, fontFamily: FONT_FAMILIES.bodySemiBold }}>
+                Univers
+              </Text>
+            ),
             tabBarIcon: ({ color, size }) => (
               <Ionicons name="planet" color={color} size={size} />
             ),

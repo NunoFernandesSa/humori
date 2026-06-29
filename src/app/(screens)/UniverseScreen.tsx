@@ -1,7 +1,13 @@
 import Container from "@/src/components/common/Container";
 import { Title } from "@/src/components/common/Title";
 import { COLORS_PALETTE } from "@/src/constants/colors";
-import { RADII, SHADOWS, SPACING, TYPOGRAPHY } from "@/src/constants/theme";
+import {
+  FONT_FAMILIES,
+  RADII,
+  SHADOWS,
+  SPACING,
+  TYPOGRAPHY,
+} from "@/src/constants/theme";
 import {
   getCurrentStreak,
   getDominantMood,
@@ -12,6 +18,7 @@ import { useMoodStore } from "@/src/store/useMoodStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React, { JSX } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
+import Animated, { FadeInDown, ZoomIn } from "react-native-reanimated";
 
 /**
  * Universe screen.
@@ -99,37 +106,49 @@ export default function UniverseScreen(): JSX.Element {
           </View>
         </View>
 
-        <View style={styles.badgesCard}>
+        <Animated.View
+          entering={FadeInDown.delay(120).duration(450)}
+          style={styles.badgesCard}
+        >
           <Text style={styles.sectionTitle}>Badges</Text>
           <Text style={styles.sectionText}>
             Uma progressão suave e positiva, sem julgamento.
           </Text>
 
-          {badges.map((badge) => (
-            <View
+          <View style={styles.badgesGrid}>
+            {badges.map((badge, index) => (
+            <Animated.View
               key={badge.id}
+              entering={ZoomIn.delay(180 + index * 60).duration(320)}
               style={[
-                styles.badgeRow,
+                styles.badgeCard,
                 !badge.unlocked && styles.badgeRowLocked,
               ]}
             >
               <View
                 style={[
-                  styles.badgeIcon,
+                  styles.badgeMedal,
                   badge.unlocked
-                    ? styles.badgeIconUnlocked
-                    : styles.badgeIconLocked,
+                    ? styles.badgeMedalUnlocked
+                    : styles.badgeMedalLocked,
                 ]}
               >
+                <View
+                  style={[
+                    styles.badgeCore,
+                    badge.unlocked ? styles.badgeCoreUnlocked : styles.badgeCoreLocked,
+                  ]}
+                >
                 <Ionicons
                   name={badge.icon as keyof typeof Ionicons.glyphMap}
-                  size={18}
+                  size={22}
                   color={
                     badge.unlocked
                       ? COLORS_PALETTE.TEXT_LIGHT
                       : COLORS_PALETTE.TEXT_TERTIARY
                   }
                 />
+                </View>
               </View>
               <View style={styles.badgeContent}>
                 <Text style={styles.badgeTitle}>
@@ -138,9 +157,10 @@ export default function UniverseScreen(): JSX.Element {
                 </Text>
                 <Text style={styles.badgeDescription}>{badge.description}</Text>
               </View>
-            </View>
+            </Animated.View>
           ))}
-        </View>
+          </View>
+        </Animated.View>
       </Container>
     </ScrollView>
   );
@@ -238,6 +258,12 @@ const styles = StyleSheet.create({
     padding: SPACING.xl,
     ...SHADOWS.card,
   },
+  badgesGrid: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+    rowGap: 12,
+  },
   sectionTitle: {
     ...TYPOGRAPHY.titleMd,
     fontSize: 20,
@@ -247,28 +273,45 @@ const styles = StyleSheet.create({
     ...TYPOGRAPHY.body,
     marginBottom: 18,
   },
-  badgeRow: {
-    flexDirection: "row",
-    gap: 14,
-    paddingVertical: 12,
-    borderTopWidth: 1,
-    borderTopColor: COLORS_PALETTE.BORDER_DEFAULT,
+  badgeCard: {
+    width: "48.2%",
+    borderRadius: 24,
+    padding: 16,
+    borderWidth: 1,
+    borderColor: COLORS_PALETTE.BORDER_DEFAULT,
+    backgroundColor: COLORS_PALETTE.BACKGROUND_ALT,
   },
   badgeRowLocked: {
     opacity: 0.72,
   },
-  badgeIcon: {
-    width: 42,
-    height: 42,
-    borderRadius: 16,
+  badgeMedal: {
+    width: 64,
+    height: 64,
+    borderRadius: 24,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: 14,
+  },
+  badgeMedalUnlocked: {
+    backgroundColor: COLORS_PALETTE.ACCENT_2,
+  },
+  badgeMedalLocked: {
+    backgroundColor: COLORS_PALETTE.BACKGROUND_ALT,
+    borderWidth: 1,
+    borderColor: COLORS_PALETTE.BORDER_DEFAULT,
+  },
+  badgeCore: {
+    width: 44,
+    height: 44,
+    borderRadius: 18,
     alignItems: "center",
     justifyContent: "center",
   },
-  badgeIconUnlocked: {
-    backgroundColor: COLORS_PALETTE.ACCENT_2,
+  badgeCoreUnlocked: {
+    backgroundColor: COLORS_PALETTE.ACCENT_4,
   },
-  badgeIconLocked: {
-    backgroundColor: COLORS_PALETTE.BACKGROUND_ALT,
+  badgeCoreLocked: {
+    backgroundColor: COLORS_PALETTE.CARD_BG,
   },
   badgeContent: {
     flex: 1,
@@ -276,8 +319,11 @@ const styles = StyleSheet.create({
   badgeTitle: {
     ...TYPOGRAPHY.bodyStrong,
     marginBottom: 4,
+    fontFamily: FONT_FAMILIES.bodySemiBold,
   },
   badgeDescription: {
     ...TYPOGRAPHY.body,
+    fontSize: 13,
+    lineHeight: 18,
   },
 });

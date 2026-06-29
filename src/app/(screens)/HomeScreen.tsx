@@ -26,6 +26,7 @@ import { Mood, MoodEntry } from "@/src/types/moodType";
 // ----- HELPERS -----
 import { COLORS_PALETTE } from "@/src/constants/colors";
 import { MOODS } from "@/src/constants/moods";
+import { FONT_FAMILIES } from "@/src/constants/theme";
 import { getCurrentMood, isValidEntry } from "@/src/helpers/helpers";
 import {
   getCurrentStreak,
@@ -34,6 +35,14 @@ import {
 } from "@/src/helpers/progress";
 import { storageService } from "@/src/services/storageService";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import Animated, {
+  FadeInDown,
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withSequence,
+  withTiming,
+} from "react-native-reanimated";
 
 /**
  * HomeScreen component for mood tracking.
@@ -73,6 +82,7 @@ const HomeScreen = (): JSX.Element => {
     () => getWeeklyCompletion(entries),
     [entries],
   );
+  const pulseScale = useSharedValue(1);
 
   const handleFocus = () => {
     if (textAreaRef.current && scrollViewRef.current) {
@@ -159,6 +169,21 @@ const HomeScreen = (): JSX.Element => {
     }
   }, [todaysEntry, entryIsValid]);
 
+  useEffect(() => {
+    pulseScale.value = withRepeat(
+      withSequence(
+        withTiming(1.04, { duration: 900 }),
+        withTiming(1, { duration: 900 }),
+      ),
+      -1,
+      false,
+    );
+  }, [pulseScale]);
+
+  const pulseStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: pulseScale.value }],
+  }));
+
   if (isLoading) {
     return (
       <SafeAreaView style={styles.centerContainer}>
@@ -186,7 +211,10 @@ const HomeScreen = (): JSX.Element => {
           contentContainerStyle={styles.scrollContent}
         >
           <Container>
-            <View style={styles.heroCard}>
+            <Animated.View
+              entering={FadeInDown.duration(420)}
+              style={styles.heroCard}
+            >
               <View style={styles.heroTopRow}>
                 <View style={styles.datePill}>
                   <Ionicons
@@ -233,9 +261,12 @@ const HomeScreen = (): JSX.Element => {
                   <Text style={styles.highlightChipText}>Expressivo</Text>
                 </View>
               </View>
-            </View>
+            </Animated.View>
 
-            <View style={styles.progressCard}>
+            <Animated.View
+              entering={FadeInDown.delay(70).duration(420)}
+              style={styles.progressCard}
+            >
               <View style={styles.progressHeader}>
                 <View>
                   <Text style={styles.progressEyebrow}>Progressão</Text>
@@ -243,7 +274,7 @@ const HomeScreen = (): JSX.Element => {
                     O teu ritmo emocional
                   </Text>
                 </View>
-                <View style={styles.progressBadge}>
+                <Animated.View style={[styles.progressBadge, pulseStyle]}>
                   <Ionicons
                     name="flame"
                     size={16}
@@ -252,7 +283,7 @@ const HomeScreen = (): JSX.Element => {
                   <Text style={styles.progressBadgeText}>
                     {currentStreak} dias seguidos
                   </Text>
-                </View>
+                </Animated.View>
               </View>
 
               <View style={styles.progressStatsRow}>
@@ -271,7 +302,7 @@ const HomeScreen = (): JSX.Element => {
                   <Text style={styles.progressStatLabel}>check-ins</Text>
                 </View>
               </View>
-            </View>
+            </Animated.View>
 
             {entryIsValid && currentMoodValue && todaysEntry && (
               <ExistingEntryCard
@@ -285,7 +316,10 @@ const HomeScreen = (): JSX.Element => {
               onSelect={setSelectedMood}
             />
 
-            <View style={styles.noteCard}>
+            <Animated.View
+              entering={FadeInDown.delay(140).duration(420)}
+              style={styles.noteCard}
+            >
               <Text style={styles.sectionEyebrow}>Etapa 2</Text>
               <Text style={styles.sectionTitle}>
                 Queres acrescentar um contexto?
@@ -330,9 +364,12 @@ const HomeScreen = (): JSX.Element => {
                 </Text>
                 <Text style={styles.charCount}>{moodNote.length}/500</Text>
               </View>
-            </View>
+            </Animated.View>
 
-            <View style={styles.ctaCard}>
+            <Animated.View
+              entering={FadeInDown.delay(210).duration(420)}
+              style={styles.ctaCard}
+            >
               <View style={styles.ctaTextBlock}>
                 <Text style={styles.ctaTitle}>
                   Pronto para guardar este momento?
@@ -352,7 +389,7 @@ const HomeScreen = (): JSX.Element => {
                 handleSubmit={handleSubmit}
                 disabled={isSubmitting}
               />
-            </View>
+            </Animated.View>
           </Container>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -404,9 +441,9 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS_PALETTE.CARD_HIGHLIGHT,
   },
   dateText: {
+    fontFamily: FONT_FAMILIES.bodySemiBold,
     color: COLORS_PALETTE.TEXT_PRIMARY,
     fontSize: 13,
-    fontWeight: "700",
   },
   oneEntryPill: {
     paddingHorizontal: 12,
@@ -415,11 +452,12 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS_PALETTE.CARD_SOFT,
   },
   oneEntryText: {
+    fontFamily: FONT_FAMILIES.bodySemiBold,
     fontSize: 12,
-    fontWeight: "700",
     color: COLORS_PALETTE.TEXT_SECONDARY,
   },
   heroSubtitle: {
+    fontFamily: FONT_FAMILIES.body,
     marginTop: 10,
     fontSize: 15,
     lineHeight: 22,
@@ -443,8 +481,8 @@ const styles = StyleSheet.create({
     borderColor: COLORS_PALETTE.BORDER_DEFAULT,
   },
   highlightChipText: {
+    fontFamily: FONT_FAMILIES.bodySemiBold,
     fontSize: 13,
-    fontWeight: "700",
     color: COLORS_PALETTE.TEXT_PRIMARY,
   },
   progressCard: {
@@ -463,17 +501,17 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   progressEyebrow: {
+    fontFamily: FONT_FAMILIES.headingExtraBold,
     fontSize: 12,
-    fontWeight: "800",
     color: COLORS_PALETTE.ACCENT_2,
     textTransform: "uppercase",
     letterSpacing: 1.1,
     marginBottom: 6,
   },
   progressTitle: {
+    fontFamily: FONT_FAMILIES.headingExtraBold,
     fontSize: 20,
     lineHeight: 26,
-    fontWeight: "800",
     color: COLORS_PALETTE.TEXT_PRIMARY,
   },
   progressBadge: {
@@ -486,8 +524,8 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS_PALETTE.WARNING_BG,
   },
   progressBadgeText: {
+    fontFamily: FONT_FAMILIES.headingExtraBold,
     fontSize: 12,
-    fontWeight: "800",
     color: COLORS_PALETTE.TEXT_PRIMARY,
   },
   progressStatsRow: {
@@ -502,15 +540,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
   },
   progressStatValue: {
+    fontFamily: FONT_FAMILIES.headingExtraBold,
     fontSize: 24,
-    fontWeight: "800",
     color: COLORS_PALETTE.TEXT_PRIMARY,
     marginBottom: 6,
   },
   progressStatLabel: {
+    fontFamily: FONT_FAMILIES.bodySemiBold,
     fontSize: 12,
     lineHeight: 16,
-    fontWeight: "700",
     color: COLORS_PALETTE.TEXT_SECONDARY,
   },
   noteCard: {
@@ -522,20 +560,21 @@ const styles = StyleSheet.create({
     marginBottom: 18,
   },
   sectionEyebrow: {
+    fontFamily: FONT_FAMILIES.headingExtraBold,
     fontSize: 12,
-    fontWeight: "800",
     color: COLORS_PALETTE.ACCENT_2,
     textTransform: "uppercase",
     letterSpacing: 1.1,
     marginBottom: 8,
   },
   sectionTitle: {
+    fontFamily: FONT_FAMILIES.headingExtraBold,
     fontSize: 22,
     lineHeight: 28,
-    fontWeight: "800",
     color: COLORS_PALETTE.TEXT_PRIMARY,
   },
   sectionSubtitle: {
+    fontFamily: FONT_FAMILIES.body,
     marginTop: 8,
     fontSize: 14,
     lineHeight: 20,
@@ -557,11 +596,12 @@ const styles = StyleSheet.create({
     borderColor: COLORS_PALETTE.BORDER_DEFAULT,
   },
   quickNoteText: {
+    fontFamily: FONT_FAMILIES.bodySemiBold,
     fontSize: 13,
-    fontWeight: "700",
     color: COLORS_PALETTE.TEXT_PRIMARY,
   },
   moodNote: {
+    fontFamily: FONT_FAMILIES.body,
     borderWidth: 1,
     borderColor: COLORS_PALETTE.BORDER_DEFAULT,
     borderRadius: 22,
@@ -582,16 +622,16 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   noteHint: {
+    fontFamily: FONT_FAMILIES.bodySemiBold,
     flex: 1,
     fontSize: 13,
     lineHeight: 18,
     color: COLORS_PALETTE.TEXT_SECONDARY,
-    fontWeight: "600",
   },
   charCount: {
+    fontFamily: FONT_FAMILIES.bodySemiBold,
     fontSize: 12,
     color: COLORS_PALETTE.TEXT_TERTIARY,
-    fontWeight: "700",
   },
   ctaCard: {
     backgroundColor: COLORS_PALETTE.CARD_BG,
@@ -604,13 +644,14 @@ const styles = StyleSheet.create({
     marginBottom: 4,
   },
   ctaTitle: {
+    fontFamily: FONT_FAMILIES.headingExtraBold,
     fontSize: 20,
     lineHeight: 26,
-    fontWeight: "800",
     color: COLORS_PALETTE.TEXT_PRIMARY,
     marginBottom: 6,
   },
   ctaSubtitle: {
+    fontFamily: FONT_FAMILIES.body,
     fontSize: 14,
     lineHeight: 20,
     color: COLORS_PALETTE.TEXT_SECONDARY,
