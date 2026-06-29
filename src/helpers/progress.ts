@@ -4,10 +4,20 @@ import { getLocalDateKey } from "@/src/utils/date";
 
 const DAY_IN_MS = 24 * 60 * 60 * 1000;
 
+/**
+ * Normalize the entries by sorting them by timestamp.
+ * @param entries The entries to normalize.
+ * @returns The normalized entries.
+ */
 const normalizeEntries = (entries: MoodEntry[]): MoodEntry[] => {
   return [...entries].sort((a, b) => a.timestamp - b.timestamp);
 };
 
+/**
+ * Get the current streak of consecutive days with the same mood.
+ * @param entries The entries to analyze.
+ * @returns The current streak of consecutive days with the same mood.
+ */
 export const getCurrentStreak = (entries: MoodEntry[]): number => {
   if (entries.length === 0) return 0;
 
@@ -46,12 +56,19 @@ export const getCurrentStreak = (entries: MoodEntry[]): number => {
   return streak;
 };
 
+/**
+ * Get the longest streak of consecutive days with the same mood.
+ * @param entries The entries to analyze.
+ * @returns The longest streak of consecutive days with the same mood.
+ */
 export const getLongestStreak = (entries: MoodEntry[]): number => {
   if (entries.length === 0) return 0;
 
   const uniqueDays = Array.from(
     new Set(
-      normalizeEntries(entries).map((entry) => getLocalDateKey(new Date(entry.date))),
+      normalizeEntries(entries).map((entry) =>
+        getLocalDateKey(new Date(entry.date)),
+      ),
     ),
   ).sort();
 
@@ -76,6 +93,11 @@ export const getLongestStreak = (entries: MoodEntry[]): number => {
   return longest;
 };
 
+/**
+ * Get the weekly completion of the mood entries.
+ * @param entries The entries to analyze.
+ * @returns The weekly completion of the mood entries.
+ */
 export const getWeeklyCompletion = (entries: MoodEntry[]): number => {
   if (entries.length === 0) return 0;
 
@@ -91,7 +113,14 @@ export const getWeeklyCompletion = (entries: MoodEntry[]): number => {
   return Math.min(100, Math.round((count / 7) * 100));
 };
 
-export const getMoodCountsMap = (entries: MoodEntry[]): Record<Mood, number> => {
+/**
+ * Get the mood counts map of the mood entries.
+ * @param entries The entries to analyze.
+ * @returns The mood counts map of the mood entries.
+ */
+export const getMoodCountsMap = (
+  entries: MoodEntry[],
+): Record<Mood, number> => {
   const initialCounts: Record<Mood, number> = {
     surprised: 0,
     tired: 0,
@@ -110,6 +139,11 @@ export const getMoodCountsMap = (entries: MoodEntry[]): Record<Mood, number> => 
   return initialCounts;
 };
 
+/**
+ * Get the dominant mood of the mood entries.
+ * @param entries The entries to analyze.
+ * @returns The dominant mood of the mood entries.
+ */
 export const getDominantMood = (entries: MoodEntry[]) => {
   if (entries.length === 0) return null;
 
@@ -123,6 +157,12 @@ export const getDominantMood = (entries: MoodEntry[]) => {
   return MOODS.find((mood) => mood.value === dominantEntry[0]) ?? null;
 };
 
+/**
+ * Get the recent calendar days of the mood entries.
+ * @param entries The entries to analyze.
+ * @param totalDays The total number of days to return.
+ * @returns The recent calendar days of the mood entries.
+ */
 export const getRecentCalendarDays = (
   entries: MoodEntry[],
   totalDays: number = 28,
@@ -139,7 +179,7 @@ export const getRecentCalendarDays = (
     const key = getLocalDateKey(date);
     const entry = map.get(key);
     const moodMeta = entry
-      ? MOODS.find((mood) => mood.value === entry.mood) ?? null
+      ? (MOODS.find((mood) => mood.value === entry.mood) ?? null)
       : null;
 
     return {
