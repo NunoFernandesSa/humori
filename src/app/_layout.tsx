@@ -1,7 +1,7 @@
+import { checkForUpdates } from "@/src/helpers/check-for-updates";
 import { Stack } from "expo-router";
-import * as Updates from "expo-updates";
 import { useEffect, useState } from "react";
-import { ActivityIndicator, Alert, StyleSheet, View } from "react-native";
+import { ActivityIndicator, StyleSheet, View } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { COLORS_PALETTE } from "../constants/colors";
 
@@ -14,45 +14,46 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (!__DEV__) {
-      checkForUpdates();
+      checkForUpdates(setIsUpdating);
     }
     return;
   }, []);
 
-  const checkForUpdates = async () => {
-    try {
-      const update = await Updates.checkForUpdateAsync();
+  // TODO ; delete this code
+  // const checkForUpdates = async () => {
+  //   try {
+  //     const update = await Updates.checkForUpdateAsync();
 
-      // Check if there is an update available
-      if (update.isAvailable) {
-        setIsUpdating(true); // If there is an update available, set isUpdating to true
+  //     // Check if there is an update available
+  //     if (update.isAvailable) {
+  //       setIsUpdating(true); // If there is an update available, set isUpdating to true
 
-        await Updates.fetchUpdateAsync(); // Fetch the update package from the server
+  //       await Updates.fetchUpdateAsync(); // Fetch the update package from the server
 
-        setIsUpdating(false); // After fetching the update package, set isUpdating to false
-        // Show an alert to the user about the available update
-        Alert.alert(
-          "Nova versão disponível! 🎉",
-          "Uma atualização foi descarregada. Queres reiniciar agora para aplicar?",
-          [
-            {
-              text: "Mais tarde",
-              style: "cancel",
-            },
-            {
-              text: "Reiniciar agora",
-              onPress: () => Updates.reloadAsync(),
-            },
-          ],
-        );
-      }
-    } catch (error) {
-      // If there is an error checking for updates, log it in development mode
-      if (__DEV__) {
-        console.error("Error checking for updates:", error);
-      }
-    }
-  };
+  //       setIsUpdating(false); // After fetching the update package, set isUpdating to false
+  //       // Show an alert to the user about the available update
+  //       Alert.alert(
+  //         "Nova versão disponível! 🎉",
+  //         "Uma atualização foi descarregada. Queres reiniciar agora para aplicar?",
+  //         [
+  //           {
+  //             text: "Mais tarde",
+  //             style: "cancel",
+  //           },
+  //           {
+  //             text: "Reiniciar agora",
+  //             onPress: () => Updates.reloadAsync(),
+  //           },
+  //         ],
+  //       );
+  //     }
+  //   } catch (error) {
+  //     // If there is an error checking for updates, log it in development mode
+  //     if (__DEV__) {
+  //       console.error("Error checking for updates:", error);
+  //     }
+  //   }
+  // };
 
   // If isUpdating is true, render a loading indicator
   // Otherwise, render the main navigation stack
