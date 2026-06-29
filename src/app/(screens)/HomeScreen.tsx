@@ -1,14 +1,16 @@
 // ----- REACT NATIVE ----------
-import React, { JSX, useEffect, useRef, useState } from "react";
+import React, { JSX, useEffect, useMemo, useRef, useState } from "react";
 import {
   ActivityIndicator,
   Alert,
   KeyboardAvoidingView,
   Platform,
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
   TextInput,
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 // ----- COMPONENTS -----
@@ -23,6 +25,7 @@ import { useMoodStore } from "@/src/store/useMoodStore";
 import { Mood, MoodEntry } from "@/src/types/moodType";
 // ----- HELPERS -----
 import { COLORS_PALETTE } from "@/src/constants/colors";
+import { MOODS } from "@/src/constants/moods";
 import { getCurrentMood, isValidEntry } from "@/src/helpers/helpers";
 import { storageService } from "@/src/services/storageService";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -35,34 +38,35 @@ import Ionicons from "@expo/vector-icons/Ionicons";
  * @returns {JSX.Element} The rendered HomeScreen component
  */
 const HomeScreen = (): JSX.Element => {
-  // ----- STATES -----
   const [moodNote, setMoodNote] = useState<string>("");
   const [selectedMood, setSelectedMood] = useState<Mood | "">("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  // ----- STORE -----
   const { todaysEntry, isLoading, saveEntry } = useMoodStore();
-  // ----- REF'S -----
   const scrollViewRef = useRef<ScrollView>(null);
   const textAreaRef = useRef<TextInput>(null);
-  // ----- Helpers -----
   const entryIsValid = isValidEntry(todaysEntry);
   const currentMoodValue = getCurrentMood(todaysEntry);
-
-  // ----- VARIABLES -----
-  const homeTitle = "Como te sentes hoje?";
   const date = new Date();
   const formattedDate = date.toLocaleDateString("pt-PT", {
     day: "numeric",
     month: "long",
     year: "numeric",
   });
+  const selectedMoodData = useMemo(
+    () => MOODS.find((mood) => mood.value === selectedMood),
+    [selectedMood],
+  );
+  const quickNotes = [
+    "Hoje foi divertido",
+    "Preciso de descanso",
+    "Aconteceu algo inesperado",
+    "Quero falar sobre isto depois",
+  ];
 
-  // Handle text area focus
   const handleFocus = () => {
-    // Measure the position of the text area and scroll to it
     if (textAreaRef.current && scrollViewRef.current) {
       textAreaRef.current.measureLayout(
-        scrollViewRef.current as any, // Need to cast to any to avoid type issues with measureLayout
+        scrollViewRef.current as any,
         (x: number, y: number) => {
           scrollViewRef.current?.scrollTo({ y: y - 100, animated: true });
         },
@@ -71,12 +75,21 @@ const HomeScreen = (): JSX.Element => {
     }
   };
 
-  // Handle form submission
-  const handleSubmit = async () => {
-    /**
-     * ----- VERIFICATIONS BEFORE SUBMIT -----
-     */
+  const handleQuickNote = (note: string) => {
+    setMoodNote((previousNote) => {
+      if (!previousNote.trim()) {
+        return note;
+      }
 
+      if (previousNote.includes(note)) {
+        return previousNote;
+      }
+
+      return `${previousNote.trim()}. ${note}`;
+    });
+  };
+
+  const handleSubmit = async () => {
     if (!selectedMood) {
       Alert.alert(
         "Oops! 🎈",
@@ -87,8 +100,6 @@ const HomeScreen = (): JSX.Element => {
 
     const alreadyExists = await storageService.hasTodayEntry();
 
-    // This should not happen, but it's a good practice
-    // to check if the entry already exists before submitting.
     if (alreadyExists && !entryIsValid) {
       Alert.alert(
         "Atenção! ⚠️",
@@ -97,9 +108,6 @@ const HomeScreen = (): JSX.Element => {
       );
       return;
     }
-    /**
-     * ----- END VERIFICATIONS BEFORE SUBMIT -----
-     */
 
     setIsSubmitting(true);
     try {
@@ -130,7 +138,6 @@ const HomeScreen = (): JSX.Element => {
     }
   };
 
-  // ----- USEFFECTS -----
   useEffect(() => {
     if (entryIsValid && todaysEntry) {
       setSelectedMood(todaysEntry.mood);
@@ -141,11 +148,10 @@ const HomeScreen = (): JSX.Element => {
     }
   }, [todaysEntry, entryIsValid]);
 
-  // Loading state while fetching data
   if (isLoading) {
     return (
       <SafeAreaView style={styles.centerContainer}>
-        <ActivityIndicator size="large" color={COLORS_PALETTE.ACCENT_2} />
+        <ActivityIndicator size="large" color={COLORS_PALETTE.BUTTON_PRIMARY} />
       </SafeAreaView>
     );
   }
@@ -169,24 +175,55 @@ const HomeScreen = (): JSX.Element => {
           contentContainerStyle={styles.scrollContent}
         >
           <Container>
-            {/* Display the current date in the top of the screen */}
-            <Text style={styles.dateContainer}>
-              <Ionicons
-                name="calendar"
-                size={18}
-                color={COLORS_PALETTE.ACCENT_2}
-              />{" "}
-              {formattedDate}
-            </Text>
+            <View style={styles.heroCard}>
+              <View style={styles.heroTopRow}>
+                <View style={styles.datePill}>
+                  <Ionicons
+                    name="sparkles"
+                    size={16}
+                    color={COLORS_PALETTE.ACCENT_2}
+                  />
+                  <Text style={styles.dateText}>{formattedDate}</Text>
+                </View>
+                <View style={styles.oneEntryPill}>
+                  <Text style={styles.oneEntryText}>1 registo por dia</Text>
+                </View>
+              </View>
 
-            <Title
-              title={homeTitle}
-              style={{
-                color: COLORS_PALETTE.ACCENT_2,
-              }}
-            />
+              <Title title="Como te sentes hoje?" />
+              <Text style={styles.heroSubtitle}>
+                Faz o teu check-in em menos de um minuto. Escolhe a emoção, adiciona
+                um contexto se quiseres e guarda o momento.
+              </Text>
 
-            {/* display existing entry if there is one for today */}
+              <View style={styles.heroHighlights}>
+                <View style={styles.highlightChip}>
+                  <Ionicons
+                    name="flash-outline"
+                    size={16}
+                    color={COLORS_PALETTE.ACCENT_2}
+                  />
+                  <Text style={styles.highlightChipText}>Rápido</Text>
+                </View>
+                <View style={styles.highlightChip}>
+                  <Ionicons
+                    name="hand-left-outline"
+                    size={16}
+                    color={COLORS_PALETTE.ACCENT_3}
+                  />
+                  <Text style={styles.highlightChipText}>Táctil</Text>
+                </View>
+                <View style={styles.highlightChip}>
+                  <Ionicons
+                    name="happy-outline"
+                    size={16}
+                    color={COLORS_PALETTE.ACCENT_4}
+                  />
+                  <Text style={styles.highlightChipText}>Expressivo</Text>
+                </View>
+              </View>
+            </View>
+
             {entryIsValid && currentMoodValue && todaysEntry && (
               <ExistingEntryCard
                 currentMood={currentMoodValue}
@@ -194,40 +231,74 @@ const HomeScreen = (): JSX.Element => {
               />
             )}
 
-            {/* Mood selector component for mood selection */}
             <MoodSelector
               selectedMood={selectedMood as Mood}
               onSelect={setSelectedMood}
             />
 
-            <TextInput
-              ref={textAreaRef}
-              style={styles.moodNote}
-              placeholder="Queres partilhar mais alguma coisa? (opcional)"
-              multiline={true}
-              numberOfLines={4}
-              value={moodNote}
-              onChangeText={setMoodNote}
-              onFocus={handleFocus}
-              editable={!isSubmitting}
-              maxLength={500}
-              accessibilityLabel="Nota sobre o teu dia"
-              accessibilityHint="Escreve uma breve nota sobre como foi o teu dia"
-            />
-
-            {typeof moodNote === "string" && moodNote.length > 0 && (
-              <Text style={styles.charCount}>
-                {moodNote.length}/500 caracteres
+            <View style={styles.noteCard}>
+              <Text style={styles.sectionEyebrow}>Etapa 2</Text>
+              <Text style={styles.sectionTitle}>Queres acrescentar um contexto?</Text>
+              <Text style={styles.sectionSubtitle}>
+                A nota é opcional, mas ajuda a perceber melhor o teu dia.
               </Text>
-            )}
 
-            <SubmitButton
-              text={
-                entryIsValid ? "Atualizar o meu humor" : "Registrar o meu humor"
-              }
-              handleSubmit={handleSubmit}
-              disabled={isSubmitting}
-            />
+              <View style={styles.quickNotesRow}>
+                {quickNotes.map((note) => (
+                  <Pressable
+                    key={note}
+                    style={styles.quickNoteChip}
+                    onPress={() => handleQuickNote(note)}
+                  >
+                    <Text style={styles.quickNoteText}>{note}</Text>
+                  </Pressable>
+                ))}
+              </View>
+
+              <TextInput
+                ref={textAreaRef}
+                style={styles.moodNote}
+                placeholder="Queres partilhar mais alguma coisa? (opcional)"
+                placeholderTextColor={COLORS_PALETTE.TEXT_TERTIARY}
+                multiline={true}
+                numberOfLines={5}
+                value={moodNote}
+                onChangeText={setMoodNote}
+                onFocus={handleFocus}
+                editable={!isSubmitting}
+                maxLength={500}
+                accessibilityLabel="Nota sobre o teu dia"
+                accessibilityHint="Escreve uma breve nota sobre como foi o teu dia"
+              />
+
+              <View style={styles.noteFooter}>
+                <Text style={styles.noteHint}>
+                  {selectedMoodData
+                    ? `Selecionaste: ${selectedMoodData.emoji} ${selectedMoodData.label}`
+                    : "Seleciona uma emoção para continuar"}
+                </Text>
+                <Text style={styles.charCount}>{moodNote.length}/500</Text>
+              </View>
+            </View>
+
+            <View style={styles.ctaCard}>
+              <View style={styles.ctaTextBlock}>
+                <Text style={styles.ctaTitle}>Pronto para guardar este momento?</Text>
+                <Text style={styles.ctaSubtitle}>
+                  Vais poder rever tendências e voltar a editar a entrada de hoje.
+                </Text>
+              </View>
+
+              <SubmitButton
+                text={
+                  entryIsValid
+                    ? "Atualizar o meu check-in"
+                    : "Guardar o meu check-in"
+                }
+                handleSubmit={handleSubmit}
+                disabled={isSubmitting}
+              />
+            </View>
           </Container>
         </ScrollView>
       </KeyboardAvoidingView>
@@ -242,45 +313,187 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-    paddingVertical: 30,
-  },
-  dateContainer: {
-    textAlign: "center",
-    color: COLORS_PALETTE.ACCENT_2,
-    backgroundColor: COLORS_PALETTE.CARD_BG,
-    fontWeight: "bold",
-    borderRadius: 10,
-    marginVertical: 10,
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    gap: 16,
-    alignSelf: "center",
-    borderColor: COLORS_PALETTE.BORDER_DEFAULT,
-    borderWidth: 1,
+    paddingVertical: 18,
   },
   centerContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
+  heroCard: {
+    backgroundColor: COLORS_PALETTE.CARD_BG,
+    borderRadius: 30,
+    borderWidth: 1,
+    borderColor: COLORS_PALETTE.BORDER_DEFAULT,
+    padding: 22,
+    marginBottom: 18,
+    shadowColor: COLORS_PALETTE.ACCENT_2,
+    shadowOffset: { width: 0, height: 12 },
+    shadowOpacity: 0.08,
+    shadowRadius: 20,
+    elevation: 3,
+  },
+  heroTopRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 18,
+    gap: 12,
+  },
+  datePill: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderRadius: 999,
+    backgroundColor: COLORS_PALETTE.CARD_HIGHLIGHT,
+  },
+  dateText: {
+    color: COLORS_PALETTE.TEXT_PRIMARY,
+    fontSize: 13,
+    fontWeight: "700",
+  },
+  oneEntryPill: {
+    paddingHorizontal: 12,
+    paddingVertical: 9,
+    borderRadius: 999,
+    backgroundColor: COLORS_PALETTE.CARD_SOFT,
+  },
+  oneEntryText: {
+    fontSize: 12,
+    fontWeight: "700",
+    color: COLORS_PALETTE.TEXT_SECONDARY,
+  },
+  heroSubtitle: {
+    marginTop: 10,
+    fontSize: 15,
+    lineHeight: 22,
+    color: COLORS_PALETTE.TEXT_SECONDARY,
+  },
+  heroHighlights: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 10,
+    marginTop: 18,
+  },
+  highlightChip: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+    borderRadius: 18,
+    backgroundColor: COLORS_PALETTE.BACKGROUND,
+    borderWidth: 1,
+    borderColor: COLORS_PALETTE.BORDER_DEFAULT,
+  },
+  highlightChipText: {
+    fontSize: 13,
+    fontWeight: "700",
+    color: COLORS_PALETTE.TEXT_PRIMARY,
+  },
+  noteCard: {
+    backgroundColor: COLORS_PALETTE.CARD_BG,
+    borderRadius: 28,
+    borderWidth: 1,
+    borderColor: COLORS_PALETTE.BORDER_DEFAULT,
+    padding: 20,
+    marginBottom: 18,
+  },
+  sectionEyebrow: {
+    fontSize: 12,
+    fontWeight: "800",
+    color: COLORS_PALETTE.ACCENT_2,
+    textTransform: "uppercase",
+    letterSpacing: 1.1,
+    marginBottom: 8,
+  },
+  sectionTitle: {
+    fontSize: 22,
+    lineHeight: 28,
+    fontWeight: "800",
+    color: COLORS_PALETTE.TEXT_PRIMARY,
+  },
+  sectionSubtitle: {
+    marginTop: 8,
+    fontSize: 14,
+    lineHeight: 20,
+    color: COLORS_PALETTE.TEXT_SECONDARY,
+  },
+  quickNotesRow: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 10,
+    marginTop: 16,
+    marginBottom: 14,
+  },
+  quickNoteChip: {
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderRadius: 999,
+    backgroundColor: COLORS_PALETTE.BACKGROUND_ALT,
+    borderWidth: 1,
+    borderColor: COLORS_PALETTE.BORDER_DEFAULT,
+  },
+  quickNoteText: {
+    fontSize: 13,
+    fontWeight: "700",
+    color: COLORS_PALETTE.TEXT_PRIMARY,
+  },
   moodNote: {
     borderWidth: 1,
     borderColor: COLORS_PALETTE.BORDER_DEFAULT,
-    borderRadius: 12,
-    padding: 12,
-    minHeight: 100,
+    borderRadius: 22,
+    padding: 16,
+    minHeight: 130,
     textAlignVertical: "top",
     fontSize: 16,
-    marginVertical: 20,
-    backgroundColor: COLORS_PALETTE.CARD_BG,
+    lineHeight: 22,
+    marginTop: 8,
+    backgroundColor: COLORS_PALETTE.BACKGROUND_ALT,
+    color: COLORS_PALETTE.TEXT_PRIMARY,
+  },
+  noteFooter: {
+    marginTop: 12,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 12,
+  },
+  noteHint: {
+    flex: 1,
+    fontSize: 13,
+    lineHeight: 18,
     color: COLORS_PALETTE.TEXT_SECONDARY,
+    fontWeight: "600",
   },
   charCount: {
     fontSize: 12,
+    color: COLORS_PALETTE.TEXT_TERTIARY,
+    fontWeight: "700",
+  },
+  ctaCard: {
+    backgroundColor: COLORS_PALETTE.CARD_BG,
+    borderRadius: 28,
+    borderWidth: 1,
+    borderColor: COLORS_PALETTE.BORDER_DEFAULT,
+    padding: 20,
+  },
+  ctaTextBlock: {
+    marginBottom: 4,
+  },
+  ctaTitle: {
+    fontSize: 20,
+    lineHeight: 26,
+    fontWeight: "800",
+    color: COLORS_PALETTE.TEXT_PRIMARY,
+    marginBottom: 6,
+  },
+  ctaSubtitle: {
+    fontSize: 14,
+    lineHeight: 20,
     color: COLORS_PALETTE.TEXT_SECONDARY,
-    textAlign: "right",
-    marginTop: -12,
-    marginBottom: 12,
   },
 });
 

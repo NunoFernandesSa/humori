@@ -17,153 +17,153 @@ export default function ExistingEntryCard({
   todaysEntry,
 }: ExistingEntryCardProps) {
   return (
-    <View style={styles.updateMessage}>
-      <View style={styles.updateHeader}>
-        <Text style={styles.updateIcon}>📝</Text>
-        <Text style={styles.updateTitle}>Atualização do humor de hoje</Text>
+    <View style={styles.card}>
+      <View style={styles.topRow}>
+        <View>
+          <Text style={styles.eyebrow}>Hoje</Text>
+          <Text style={styles.title}>O teu check-in já está guardado</Text>
+        </View>
+        <Text style={styles.badge}>Editável</Text>
       </View>
 
-      <View style={styles.updateDetails}>
-        <Text style={styles.updateText}>Já registaste o teu humor hoje.</Text>
+      <Text style={styles.supportingText}>
+        Podes ajustar a tua emoção ou a tua nota se algo mudou entretanto.
+      </Text>
 
-        <View style={styles.currentMoodContainer}>
-          <Text style={styles.currentMoodLabel}>Humor atual:</Text>
-          <View
-            style={[
-              styles.currentMoodBadge,
-              {
-                backgroundColor: `${currentMood.color}15`,
-                borderColor: `${currentMood.color}40`,
-              },
-            ]}
-          >
-            <Text style={styles.currentMoodEmoji}>{currentMood.emoji}</Text>
-            <Text
-              style={[
-                styles.currentMoodText,
-                { color: COLORS_PALETTE.TEXT_SECONDARY },
-              ]}
-            >
-              {currentMood.label}
+      <View
+        style={[
+          styles.moodHighlight,
+          {
+            backgroundColor: `${currentMood.color}16`,
+            borderColor: `${currentMood.color}45`,
+          },
+        ]}
+      >
+        <Text style={styles.currentMoodEmoji}>{currentMood.emoji}</Text>
+        <View style={styles.highlightContent}>
+          <Text style={styles.currentMoodLabel}>Emoção atual</Text>
+          <Text style={styles.currentMoodText}>{currentMood.label}</Text>
+        </View>
+      </View>
+
+      {todaysEntry.note && (
+        <View style={styles.currentNoteContainer}>
+          <Text style={styles.currentNoteLabel}>Nota do dia</Text>
+          <View style={styles.noteBox}>
+            <Text style={styles.currentNoteText} numberOfLines={3}>
+              {todaysEntry.note}
             </Text>
           </View>
         </View>
+      )}
 
-        {todaysEntry.note && (
-          <View style={styles.currentNoteContainer}>
-            <Text style={styles.currentNoteLabel}>Nota atual:</Text>
-            <View style={styles.noteBox}>
-              <Text style={styles.currentNoteText} numberOfLines={3}>
-                {todaysEntry.note}
-              </Text>
-            </View>
-          </View>
-        )}
-
-        <Text style={styles.updateHint}>
-          💡 Podes modificar o teu humor e a tua nota abaixo
-        </Text>
-      </View>
+      <Text style={styles.updateHint}>
+        Dica: seleciona outra carta mais abaixo para atualizar como te sentes.
+      </Text>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  updateMessage: {
-    backgroundColor: COLORS_PALETTE.BACKGROUND,
-    borderRadius: 16,
-    marginVertical: 16,
-    marginHorizontal: 8,
-    borderWidth: 2,
-    borderColor: COLORS_PALETTE.ACCENT_1,
-    shadowOffset: { width: 0, height: 2 },
+  card: {
+    backgroundColor: COLORS_PALETTE.CARD_BG,
+    borderRadius: 28,
+    marginVertical: 18,
+    borderWidth: 1,
+    borderColor: COLORS_PALETTE.BORDER_DEFAULT,
+    padding: 20,
+    shadowColor: COLORS_PALETTE.ACCENT_2,
+    shadowOffset: { width: 0, height: 10 },
     shadowOpacity: 0.08,
-    shadowRadius: 8,
+    shadowRadius: 18,
     elevation: 3,
-    overflow: "hidden",
   },
-  updateHeader: {
+  topRow: {
     flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: COLORS_PALETTE.ACCENT_1,
-    paddingVertical: 12,
-    paddingHorizontal: 16,
-    gap: 8,
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+    gap: 12,
   },
-  updateIcon: {
-    fontSize: 18,
+  eyebrow: {
+    fontSize: 12,
+    fontWeight: "800",
+    color: COLORS_PALETTE.ACCENT_2,
+    textTransform: "uppercase",
+    letterSpacing: 1.1,
+    marginBottom: 6,
   },
-  updateTitle: {
-    fontSize: 15,
-    fontWeight: "700",
+  title: {
+    fontSize: 21,
+    lineHeight: 27,
+    fontWeight: "800",
     color: COLORS_PALETTE.TEXT_PRIMARY,
-    letterSpacing: 0.2,
   },
-  updateDetails: {
-    padding: 16,
+  badge: {
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: 999,
+    backgroundColor: COLORS_PALETTE.WARNING_BG,
+    color: COLORS_PALETTE.TEXT_PRIMARY,
+    fontSize: 12,
+    fontWeight: "700",
   },
-  updateText: {
+  supportingText: {
     fontSize: 14,
     color: COLORS_PALETTE.TEXT_SECONDARY,
-    marginBottom: 16,
+    marginTop: 12,
     lineHeight: 20,
   },
-  currentMoodContainer: {
+  moodHighlight: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 16,
-    gap: 10,
-    flexWrap: "wrap",
-  },
-  currentMoodLabel: {
-    fontSize: 14,
-    color: COLORS_PALETTE.TEXT_PRIMARY,
-    fontWeight: "600",
-  },
-  currentMoodBadge: {
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    borderRadius: 20,
-    borderWidth: 1.5,
-    gap: 6,
+    gap: 14,
+    marginTop: 18,
+    borderRadius: 22,
+    borderWidth: 1,
+    padding: 16,
   },
   currentMoodEmoji: {
-    fontSize: 16,
+    fontSize: 30,
+  },
+  highlightContent: {
+    flex: 1,
+  },
+  currentMoodLabel: {
+    fontSize: 13,
+    color: COLORS_PALETTE.TEXT_SECONDARY,
+    fontWeight: "600",
+    marginBottom: 4,
   },
   currentMoodText: {
-    fontSize: 14,
-    fontWeight: "500",
+    fontSize: 18,
+    fontWeight: "800",
+    color: COLORS_PALETTE.TEXT_PRIMARY,
   },
   currentNoteContainer: {
-    marginBottom: 16,
+    marginTop: 16,
   },
   currentNoteLabel: {
-    fontSize: 14,
+    fontSize: 13,
     color: COLORS_PALETTE.TEXT_PRIMARY,
-    fontWeight: "600",
+    fontWeight: "700",
     marginBottom: 8,
   },
   noteBox: {
-    borderWidth: 1.5,
-    borderColor: COLORS_PALETTE.SELECTION_BG,
-    borderRadius: 6,
-    padding: 12,
+    borderWidth: 1,
+    borderColor: COLORS_PALETTE.BORDER_DEFAULT,
+    backgroundColor: COLORS_PALETTE.BACKGROUND_ALT,
+    borderRadius: 18,
+    padding: 14,
   },
   currentNoteText: {
     fontSize: 14,
     color: COLORS_PALETTE.TEXT_SECONDARY,
     lineHeight: 20,
-    fontStyle: "italic",
   },
   updateHint: {
     fontSize: 13,
     color: COLORS_PALETTE.TEXT_SECONDARY,
-    marginTop: 4,
-    fontStyle: "italic",
-    fontWeight: "500",
-    textAlign: "center",
+    marginTop: 16,
+    fontWeight: "600",
   },
 });

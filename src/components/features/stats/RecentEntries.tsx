@@ -1,11 +1,12 @@
 import { COLORS_PALETTE } from "@/src/constants/colors";
 import { MOODS } from "@/src/constants/moods";
+import { MoodEntry } from "@/src/types/moodType";
 import { formatDateKey, getLocalDateKey } from "@/src/utils/date";
 import React, { JSX } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
 interface RecentEntriesProps {
-  filteredEntries: any[];
+  filteredEntries: MoodEntry[];
 }
 
 /**
@@ -21,9 +22,9 @@ export default function RecentEntries({
   return (
     <View style={styles.recentContainer}>
       <Text style={styles.recentTitle}>
-        Últimos humores ({filteredEntries.length})
+        Entradas recentes ({filteredEntries.length})
       </Text>
-      {filteredEntries.slice(0, 5).map((entry: any) => {
+      {filteredEntries.slice(0, 5).map((entry) => {
         const mood = MOODS.find((m) => m.value === entry.mood);
         const entryDateKey = getLocalDateKey(new Date(entry.date));
         const formattedDate = formatDateKey(entryDateKey);
@@ -53,17 +54,17 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   recentTitle: {
-    fontSize: 18,
-    fontWeight: "600",
+    fontSize: 20,
+    fontWeight: "800",
     marginBottom: 16,
-    color: COLORS_PALETTE.TEXT_SECONDARY,
+    color: COLORS_PALETTE.TEXT_PRIMARY,
   },
   recentEntry: {
     backgroundColor: COLORS_PALETTE.CARD_BG,
     borderWidth: 1,
-    borderColor: COLORS_PALETTE.ACCENT_1,
-    borderRadius: 12,
-    padding: 12,
+    borderColor: COLORS_PALETTE.BORDER_DEFAULT,
+    borderRadius: 20,
+    padding: 14,
     marginBottom: 12,
   },
   recentHeader: {
@@ -75,15 +76,16 @@ const styles = StyleSheet.create({
   recentDate: {
     fontSize: 14,
     color: COLORS_PALETTE.TEXT_SECONDARY,
+    fontWeight: "600",
   },
   recentMood: {
     fontSize: 14,
-    fontWeight: "500",
+    fontWeight: "800",
   },
   recentNote: {
     fontSize: 14,
     color: COLORS_PALETTE.TEXT_PRIMARY,
     marginTop: 4,
-    fontStyle: "italic",
+    lineHeight: 20,
   },
 });

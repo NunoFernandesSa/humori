@@ -6,40 +6,63 @@ export const MOODS: {
   label: string;
   emoji: string;
   color: string;
+  description: string;
 }[] = [
-  { value: "happy", label: "Feliz", emoji: "😄", color: COLORS_PALETTE.HAPPY },
+  {
+    value: "happy",
+    label: "Feliz",
+    emoji: "😄",
+    color: COLORS_PALETTE.HAPPY,
+    description: "Dia leve, bom e confortável.",
+  },
   {
     value: "excited",
-    label: "Excitado",
+    label: "Entusiasmado",
     emoji: "🤩",
     color: COLORS_PALETTE.EXCITED,
+    description: "Cheio de energia e vontade.",
   },
-  { value: "calm", label: "Calmo", emoji: "😌", color: COLORS_PALETTE.CALM },
-
-  { value: "sad", label: "Triste", emoji: "😢", color: COLORS_PALETTE.SAD },
+  {
+    value: "calm",
+    label: "Calmo",
+    emoji: "😌",
+    color: COLORS_PALETTE.CALM,
+    description: "Tranquilo, estável e sereno.",
+  },
+  {
+    value: "sad",
+    label: "Triste",
+    emoji: "😢",
+    color: COLORS_PALETTE.SAD,
+    description: "Mais sensível ou em baixo.",
+  },
   {
     value: "angry",
-    label: "Enfurecido",
+    label: "Zangado",
     emoji: "😡",
     color: COLORS_PALETTE.ANGRY,
+    description: "Frustrado ou irritado com algo.",
   },
   {
     value: "scared",
     label: "Assustado",
     emoji: "😨",
     color: COLORS_PALETTE.SCARED,
+    description: "Inseguro, apreensivo ou com medo.",
   },
   {
     value: "surprised",
-    label: "Surpreso",
+    label: "Surpreendido",
     emoji: "😲",
     color: COLORS_PALETTE.SURPRISED,
+    description: "Algo mexeu contigo de repente.",
   },
   {
     value: "tired",
     label: "Cansado",
     emoji: "😴",
     color: COLORS_PALETTE.TIRED,
+    description: "Corpo ou cabeça a pedir descanso.",
   },
 ];
 

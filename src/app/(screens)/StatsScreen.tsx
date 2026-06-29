@@ -22,6 +22,7 @@ import SummaryCards from "@/src/components/features/stats/SummaryCards";
 import { useFocusEffect } from "expo-router";
 // ----- HOOKS -----
 import { COLORS_PALETTE } from "@/src/constants/colors";
+import { MOODS } from "@/src/constants/moods";
 import { useMoodStats } from "@/src/hooks/useMoodStats";
 
 /**
@@ -66,27 +67,46 @@ const StatsScreen = (): JSX.Element => {
 
   const filteredEntries = getFilteredEntries();
   const moodCounts = getMoodCounts();
+  const dominantMoodEntry = Object.entries(moodCounts).sort(
+    (a, b) => b[1] - a[1],
+  )[0];
+  const dominantMood =
+    dominantMoodEntry && dominantMoodEntry[1] > 0
+      ? MOODS.find((mood) => mood.value === dominantMoodEntry[0])
+      : null;
+  const insightText = dominantMood
+    ? `${dominantMood.emoji} ${dominantMood.label} apareceu mais vezes neste período.`
+    : "Ainda não tens dados suficientes para gerar uma leitura emocional.";
 
   return (
     <ScrollView
       showsVerticalScrollIndicator={false}
+      contentContainerStyle={styles.scrollContent}
       refreshControl={
         <RefreshControl
           refreshing={refreshing}
           onRefresh={onRefresh}
-          colors={[COLORS_PALETTE.ACCENT_2]}
-          tintColor={COLORS_PALETTE.ACCENT_2}
+          colors={[COLORS_PALETTE.BUTTON_PRIMARY]}
+          tintColor={COLORS_PALETTE.BUTTON_PRIMARY}
         />
       }
       style={styles.container}
     >
       <Container style={styles.content}>
-        <Title
-          title="Tendências do teu humor"
-          style={{ color: COLORS_PALETTE.ACCENT_2 }}
-        />
+        <View style={styles.heroCard}>
+          <Text style={styles.heroEyebrow}>Leitura rápida</Text>
+          <Title title="Tendências do teu humor" />
+          <Text style={styles.heroSubtitle}>
+            Vê padrões, repete o que corre bem e identifica dias que pedem mais
+            atenção.
+          </Text>
 
-        {/* filters */}
+          <View style={styles.insightCard}>
+            <Text style={styles.insightTitle}>Insight do momento</Text>
+            <Text style={styles.insightText}>{insightText}</Text>
+          </View>
+        </View>
+
         <View style={styles.periodSelector}>
           <TouchableOpacity
             style={[
@@ -144,7 +164,6 @@ const StatsScreen = (): JSX.Element => {
           averageMood={getAverageMood()}
         />
 
-        {/* Pie Chart */}
         {getPieChartData().length > 0 && (
           <View style={styles.chartContainer}>
             <Text style={styles.chartTitle}>Distribuição dos humores</Text>
@@ -153,7 +172,8 @@ const StatsScreen = (): JSX.Element => {
               width={Dimensions.get("window").width - 48}
               height={200}
               chartConfig={{
-                color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                color: (opacity = 1) =>
+                  `rgba(31, 36, 64, ${opacity})`,
               }}
               accessor="count"
               backgroundColor="transparent"
@@ -163,7 +183,6 @@ const StatsScreen = (): JSX.Element => {
           </View>
         )}
 
-        {/* Line Chart */}
         {filteredEntries.length > 1 && (
           <View style={styles.chartContainer}>
             <Text style={styles.chartTitle}>Alterações de humor</Text>
@@ -176,15 +195,17 @@ const StatsScreen = (): JSX.Element => {
                 backgroundGradientFrom: COLORS_PALETTE.CARD_BG,
                 backgroundGradientTo: COLORS_PALETTE.CARD_BG,
                 decimalPlaces: 0,
-                color: (opacity = 1) => `rgba(76, 175, 80, ${opacity})`,
-                labelColor: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
+                color: (opacity = 1) =>
+                  `rgba(108, 99, 255, ${opacity})`,
+                labelColor: (opacity = 1) =>
+                  `rgba(92, 99, 132, ${opacity})`,
                 style: {
                   borderRadius: 16,
                 },
                 propsForDots: {
                   r: "6",
                   strokeWidth: "2",
-                  stroke: COLORS_PALETTE.ACCENT_2,
+                  stroke: COLORS_PALETTE.ACCENT_3,
                 },
                 propsForLabels: {
                   fontSize: 10,
@@ -210,13 +231,11 @@ const StatsScreen = (): JSX.Element => {
           </View>
         )}
 
-        {/* Mood Breakdown */}
         <MoodBreakdown
           moodCounts={moodCounts}
           getMoodPercentage={getMoodPercentage}
         />
 
-        {/* Recent Entries */}
         <RecentEntries filteredEntries={filteredEntries} />
       </Container>
     </ScrollView>
@@ -228,51 +247,98 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: COLORS_PALETTE.BACKGROUND,
   },
+  scrollContent: {
+    paddingBottom: 116,
+  },
   content: {
-    paddingVertical: 40,
+    paddingVertical: 18,
   },
   centerContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
+  heroCard: {
+    backgroundColor: COLORS_PALETTE.CARD_BG,
+    borderRadius: 30,
+    padding: 22,
+    borderWidth: 1,
+    borderColor: COLORS_PALETTE.BORDER_DEFAULT,
+    marginBottom: 20,
+  },
+  heroEyebrow: {
+    fontSize: 12,
+    fontWeight: "800",
+    color: COLORS_PALETTE.ACCENT_2,
+    textTransform: "uppercase",
+    letterSpacing: 1.1,
+    marginBottom: 8,
+  },
+  heroSubtitle: {
+    marginTop: 10,
+    fontSize: 14,
+    lineHeight: 20,
+    color: COLORS_PALETTE.TEXT_SECONDARY,
+  },
+  insightCard: {
+    marginTop: 18,
+    borderRadius: 22,
+    padding: 16,
+    backgroundColor: COLORS_PALETTE.CARD_HIGHLIGHT,
+  },
+  insightTitle: {
+    fontSize: 13,
+    fontWeight: "800",
+    color: COLORS_PALETTE.TEXT_PRIMARY,
+    marginBottom: 6,
+  },
+  insightText: {
+    fontSize: 14,
+    lineHeight: 20,
+    color: COLORS_PALETTE.TEXT_SECONDARY,
+  },
   periodSelector: {
     flexDirection: "row",
     justifyContent: "center",
-    gap: 6,
-    marginVertical: 20,
+    gap: 8,
+    marginBottom: 20,
+    flexWrap: "wrap",
   },
   periodButton: {
-    paddingHorizontal: 20,
-    paddingVertical: 8,
-    borderRadius: 20,
+    paddingHorizontal: 18,
+    paddingVertical: 11,
+    borderRadius: 999,
     backgroundColor: COLORS_PALETTE.CARD_BG,
     borderWidth: 1,
-    borderColor: COLORS_PALETTE.BORDER_FOCUS,
+    borderColor: COLORS_PALETTE.BORDER_DEFAULT,
   },
   activePeriod: {
     backgroundColor: COLORS_PALETTE.ACCENT_2,
+    borderColor: COLORS_PALETTE.ACCENT_2,
   },
   periodText: {
     fontSize: 14,
     color: COLORS_PALETTE.TEXT_PRIMARY,
+    fontWeight: "700",
   },
   activePeriodText: {
     color: COLORS_PALETTE.TEXT_LIGHT,
-    fontWeight: "600",
+    fontWeight: "800",
   },
   chartContainer: {
     marginBottom: 24,
     alignItems: "center",
     backgroundColor: COLORS_PALETTE.CARD_BG,
-    padding: 16,
-    borderRadius: 16,
+    padding: 18,
+    borderRadius: 28,
+    borderWidth: 1,
+    borderColor: COLORS_PALETTE.BORDER_DEFAULT,
   },
   chartTitle: {
     fontSize: 18,
-    fontWeight: "600",
+    fontWeight: "800",
     marginBottom: 16,
-    color: COLORS_PALETTE.TEXT_SECONDARY,
+    color: COLORS_PALETTE.TEXT_PRIMARY,
   },
   chart: {
     marginVertical: 8,

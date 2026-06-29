@@ -1,3 +1,4 @@
+import { COLORS_PALETTE } from "@/src/constants/colors";
 import { TitleProps } from "@/src/types/title-props-types";
 import React, { JSX } from "react";
 import { StyleSheet, Text } from "react-native";
@@ -20,8 +21,11 @@ export function Title({ title, style }: TitleProps): JSX.Element {
 // ---------- styles ----------
 const styles = StyleSheet.create({
   title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    textAlign: "center",
+    fontSize: 30,
+    lineHeight: 36,
+    fontWeight: "800",
+    letterSpacing: -0.8,
+    textAlign: "left",
+    color: COLORS_PALETTE.TEXT_PRIMARY,
   },
 });

@@ -2,6 +2,7 @@ import { COLORS_PALETTE } from "@/src/constants/colors";
 import { MOODS } from "@/src/constants/moods";
 import { MoodSelectorProps } from "@/src/types/mood-selector-props-types";
 import { Mood } from "@/src/types/moodType";
+import * as Haptics from "expo-haptics";
 import React, { useState } from "react";
 import {
   Dimensions,
@@ -16,40 +17,27 @@ export const MoodSelector: React.FC<MoodSelectorProps> = ({
   selectedMood,
   onSelect,
 }) => {
-  //
-  // ----- STATE'S -----
-  //
   const [confettiKey, setConfettiKey] = useState(0);
   const [hasClicked, setHasClicked] = useState(false);
-
-  //
-  // ----- VARIABLES -----
-  //
-  const title =
-    "Escolhe o teu humor e adiciona uma breve nota sobre o teu dia.";
-
-  //
-  // ----- FUNCTIONS -----
-  //
+  const selectedMoodData = MOODS.find((mood) => mood.value === selectedMood);
   const handleSelect = (mood: string) => {
+    Haptics.selectionAsync();
     onSelect(mood as Mood);
     setHasClicked(true);
     setConfettiKey((prev) => prev + 1);
   };
 
-  // Calculate the center position of the screen for the confetti
   const screenWidth = Dimensions.get("window").width;
 
   return (
     <View style={styles.container}>
-      {/* 👈 confetti show after first click */}
       {hasClicked && (
         <ConfettiCannon
           key={confettiKey}
-          count={100}
+          count={36}
           origin={{ x: screenWidth / 2, y: -100 }}
           fadeOut={true}
-          fallSpeed={1500}
+          fallSpeed={1800}
           colors={[
             COLORS_PALETTE.HAPPY,
             COLORS_PALETTE.EXCITED,
@@ -60,21 +48,75 @@ export const MoodSelector: React.FC<MoodSelectorProps> = ({
         />
       )}
 
-      <Text style={styles.label}>{title}</Text>
+      <View style={styles.headerCard}>
+        <Text style={styles.eyebrow}>Etapa 1</Text>
+        <Text style={styles.label}>
+          Escolhe a emoção que mais combina contigo agora.
+        </Text>
+        <Text style={styles.helper}>
+          Rápido, visual e sem pressão. Podes sempre mudar depois.
+        </Text>
+
+        {selectedMoodData ? (
+          <View
+            style={[
+              styles.selectedBanner,
+              {
+                backgroundColor: `${selectedMoodData.color}18`,
+                borderColor: `${selectedMoodData.color}55`,
+              },
+            ]}
+          >
+            <Text style={styles.selectedEmoji}>{selectedMoodData.emoji}</Text>
+            <View style={styles.selectedCopy}>
+              <Text style={styles.selectedTitle}>{selectedMoodData.label}</Text>
+              <Text style={styles.selectedDescription}>
+                {selectedMoodData.description}
+              </Text>
+            </View>
+          </View>
+        ) : (
+          <View style={styles.emptyBanner}>
+            <Text style={styles.emptyBannerTitle}>
+              Nenhuma emoção selecionada
+            </Text>
+            <Text style={styles.emptyBannerText}>
+              Toca numa carta para começar o teu check-in.
+            </Text>
+          </View>
+        )}
+      </View>
+
       <View style={styles.moodGrid}>
         {MOODS.map((mood) => {
+          const isSelected = selectedMood === mood.value;
           return (
             <TouchableOpacity
               key={mood.value}
               style={[
                 styles.moodButton,
-                selectedMood === mood.value && styles.selectedMood,
-                { borderColor: mood.color },
+                { borderColor: `${mood.color}45` },
+                isSelected && styles.selectedMood,
+                isSelected && {
+                  backgroundColor: `${mood.color}18`,
+                  borderColor: mood.color,
+                },
               ]}
               onPress={() => handleSelect(mood.value)}
+              activeOpacity={0.86}
             >
-              <Text style={styles.moodEmoji}>{mood.emoji}</Text>
+              <View
+                style={[
+                  styles.emojiBubble,
+                  { backgroundColor: `${mood.color}16` },
+                ]}
+              >
+                <Text style={styles.moodEmoji}>{mood.emoji}</Text>
+              </View>
               <Text style={styles.moodLabel}>{mood.label}</Text>
+              <Text style={styles.moodDescription} numberOfLines={2}>
+                {mood.description}
+              </Text>
             </TouchableOpacity>
           );
         })}
@@ -85,40 +127,131 @@ export const MoodSelector: React.FC<MoodSelectorProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 20,
+    marginTop: 10,
+    marginBottom: 20,
+  },
+  headerCard: {
+    backgroundColor: COLORS_PALETTE.CARD_BG,
+    borderRadius: 28,
+    padding: 20,
+    borderWidth: 1,
+    borderColor: COLORS_PALETTE.BORDER_DEFAULT,
+    marginBottom: 18,
+    shadowColor: COLORS_PALETTE.ACCENT_2,
+    shadowOffset: { width: 0, height: 10 },
+    shadowOpacity: 0.08,
+    shadowRadius: 18,
+    elevation: 3,
+  },
+  eyebrow: {
+    fontSize: 12,
+    fontWeight: "800",
+    color: COLORS_PALETTE.ACCENT_2,
+    textTransform: "uppercase",
+    letterSpacing: 1.1,
+    marginBottom: 8,
   },
   label: {
-    fontSize: 16,
-    fontWeight: "600",
-    marginBottom: 12,
+    fontSize: 22,
+    lineHeight: 28,
+    fontWeight: "800",
     color: COLORS_PALETTE.TEXT_PRIMARY,
-    textAlign: "center",
+    marginBottom: 8,
+  },
+  helper: {
+    fontSize: 14,
+    lineHeight: 20,
+    color: COLORS_PALETTE.TEXT_SECONDARY,
+  },
+  selectedBanner: {
+    marginTop: 18,
+    borderRadius: 22,
+    borderWidth: 1,
+    padding: 16,
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 14,
+  },
+  selectedEmoji: {
+    fontSize: 32,
+  },
+  selectedCopy: {
+    flex: 1,
+  },
+  selectedTitle: {
+    fontSize: 16,
+    fontWeight: "800",
+    color: COLORS_PALETTE.TEXT_PRIMARY,
+    marginBottom: 4,
+  },
+  selectedDescription: {
+    fontSize: 13,
+    lineHeight: 18,
+    color: COLORS_PALETTE.TEXT_SECONDARY,
+  },
+  emptyBanner: {
+    marginTop: 18,
+    borderRadius: 22,
+    padding: 16,
+    backgroundColor: COLORS_PALETTE.CARD_SOFT,
+    borderWidth: 1,
+    borderColor: COLORS_PALETTE.BORDER_DEFAULT,
+  },
+  emptyBannerTitle: {
+    fontSize: 15,
+    fontWeight: "700",
+    color: COLORS_PALETTE.TEXT_PRIMARY,
+    marginBottom: 4,
+  },
+  emptyBannerText: {
+    fontSize: 13,
+    lineHeight: 18,
+    color: COLORS_PALETTE.TEXT_SECONDARY,
   },
   moodGrid: {
     flexDirection: "row",
     flexWrap: "wrap",
-    justifyContent: "center",
-    gap: 12,
+    justifyContent: "space-between",
+    rowGap: 12,
   },
   moodButton: {
-    width: "30%",
-    alignItems: "center",
-    padding: 12,
-    borderRadius: 16,
-    borderWidth: 3,
+    width: "48.2%",
+    minHeight: 156,
+    padding: 16,
+    borderRadius: 24,
+    borderWidth: 1.5,
     backgroundColor: COLORS_PALETTE.CARD_BG,
-    gap: 8,
+    justifyContent: "space-between",
+    shadowColor: "#000000",
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.05,
+    shadowRadius: 14,
+    elevation: 2,
   },
   selectedMood: {
-    backgroundColor: COLORS_PALETTE.ACCENT_3,
-    borderWidth: 3,
+    transform: [{ scale: 0.98 }],
+    shadowOpacity: 0.12,
+  },
+  emojiBubble: {
+    width: 54,
+    height: 54,
+    borderRadius: 18,
+    alignItems: "center",
+    justifyContent: "center",
   },
   moodEmoji: {
-    fontSize: 32,
+    fontSize: 28,
   },
   moodLabel: {
-    fontSize: 12,
-    fontWeight: "500",
+    fontSize: 16,
+    fontWeight: "800",
     color: COLORS_PALETTE.TEXT_PRIMARY,
+    marginTop: 14,
+    marginBottom: 6,
+  },
+  moodDescription: {
+    fontSize: 13,
+    lineHeight: 18,
+    color: COLORS_PALETTE.TEXT_SECONDARY,
   },
 });

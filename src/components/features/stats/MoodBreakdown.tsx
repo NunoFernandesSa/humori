@@ -14,7 +14,7 @@ export default function MoodBreakdown({
 }: MoodBreakdownProps) {
   return (
     <View style={styles.breakdownContainer}>
-      <Text style={styles.breakdownTitle}>Resumo de humor</Text>
+      <Text style={styles.breakdownTitle}>Resumo emocional</Text>
       {MOODS.map((mood) => {
         const count = moodCounts[mood.value];
         const percentage = getMoodPercentage(count);
@@ -44,20 +44,22 @@ const styles = StyleSheet.create({
     marginBottom: 24,
   },
   breakdownTitle: {
-    fontSize: 18,
-    fontWeight: "600",
+    fontSize: 20,
+    fontWeight: "800",
     marginBottom: 16,
-    color: COLORS_PALETTE.TEXT_SECONDARY,
+    color: COLORS_PALETTE.TEXT_PRIMARY,
   },
   moodRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
-    paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: COLORS_PALETTE.ACCENT_1,
+    paddingVertical: 14,
+    borderWidth: 1,
+    borderColor: COLORS_PALETTE.BORDER_DEFAULT,
     backgroundColor: COLORS_PALETTE.CARD_BG,
-    paddingHorizontal: 12,
+    paddingHorizontal: 14,
+    borderRadius: 20,
+    marginBottom: 10,
   },
   moodInfo: {
     flexDirection: "row",
@@ -70,6 +72,7 @@ const styles = StyleSheet.create({
   moodName: {
     fontSize: 16,
     color: COLORS_PALETTE.TEXT_PRIMARY,
+    fontWeight: "700",
   },
   moodStats: {
     flexDirection: "row",
@@ -81,7 +84,7 @@ const styles = StyleSheet.create({
   },
   moodPercentage: {
     fontSize: 14,
-    fontWeight: "600",
+    fontWeight: "800",
     color: COLORS_PALETTE.ACCENT_2,
   },
 });

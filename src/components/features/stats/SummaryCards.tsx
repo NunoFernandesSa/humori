@@ -10,12 +10,14 @@ export default function SummaryCards({
   return (
     <View style={styles.summaryContainer}>
       <View style={styles.summaryCard}>
+        <Text style={styles.summaryEyebrow}>Registos</Text>
         <Text style={styles.summaryNumber}>{totalEntries}</Text>
-        <Text style={styles.summaryLabel}>Número total de humores</Text>
+        <Text style={styles.summaryLabel}>Check-ins no período selecionado</Text>
       </View>
       <View style={styles.summaryCard}>
+        <Text style={styles.summaryEyebrow}>Clima geral</Text>
         <Text style={styles.summaryNumber}>{averageMood}</Text>
-        <Text style={styles.summaryLabel}>Humor médio</Text>
+        <Text style={styles.summaryLabel}>Síntese rápida do teu momento</Text>
       </View>
     </View>
   );
@@ -30,20 +32,29 @@ const styles = StyleSheet.create({
   summaryCard: {
     flex: 1,
     backgroundColor: COLORS_PALETTE.CARD_BG,
-    borderRadius: 12,
-    padding: 16,
-    alignItems: "center",
+    borderRadius: 24,
+    padding: 18,
+    alignItems: "flex-start",
     borderWidth: 1,
-    borderColor: COLORS_PALETTE.ACCENT_1,
+    borderColor: COLORS_PALETTE.BORDER_DEFAULT,
+  },
+  summaryEyebrow: {
+    fontSize: 12,
+    fontWeight: "800",
+    textTransform: "uppercase",
+    letterSpacing: 1,
+    color: COLORS_PALETTE.TEXT_SECONDARY,
+    marginBottom: 12,
   },
   summaryNumber: {
-    fontSize: 32,
-    fontWeight: "bold",
-    color: COLORS_PALETTE.TEXT_SECONDARY,
-    marginBottom: 8,
+    fontSize: 34,
+    fontWeight: "800",
+    color: COLORS_PALETTE.TEXT_PRIMARY,
+    marginBottom: 10,
   },
   summaryLabel: {
     fontSize: 14,
     color: COLORS_PALETTE.TEXT_SECONDARY,
+    lineHeight: 20,
   },
 });

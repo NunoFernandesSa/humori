@@ -20,7 +20,11 @@ const Container = ({
   children: React.ReactNode;
   style?: ViewStyle;
 }): JSX.Element => {
-  return <View style={[{ padding: 12 }, style]}>{children}</View>;
+  return (
+    <View style={[{ paddingHorizontal: 20, paddingTop: 12, paddingBottom: 28 }, style]}>
+      {children}
+    </View>
+  );
 };
 
 export default Container;

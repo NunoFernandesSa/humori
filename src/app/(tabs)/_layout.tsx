@@ -1,6 +1,6 @@
 // ----- REACT NATIVE -----
 import React, { JSX } from "react";
-import { Alert, Image, Text, TouchableOpacity } from "react-native";
+import { Alert, Text, TouchableOpacity, View } from "react-native";
 // ----- EXPO -----
 import { Tabs } from "expo-router";
 // ----- ICONS -----
@@ -54,16 +54,33 @@ export default function TabsLayout(): JSX.Element {
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: COLORS_PALETTE.ACCENT_2,
+          tabBarInactiveTintColor: COLORS_PALETTE.TEXT_TERTIARY,
           tabBarStyle: {
             backgroundColor: COLORS_PALETTE.CARD_BG,
-            borderTopColor: COLORS_PALETTE.BORDER_DEFAULT,
-            elevation: 0,
-            shadowOpacity: 0,
-            minHeight: 100,
+            borderTopColor: "transparent",
+            position: "absolute",
+            left: 18,
+            right: 18,
+            bottom: 18,
+            borderRadius: 28,
+            height: 84,
+            paddingTop: 8,
+            paddingBottom: 8,
+            elevation: 8,
+            shadowColor: COLORS_PALETTE.ACCENT_2,
+            shadowOffset: { width: 0, height: 10 },
+            shadowOpacity: 0.12,
+            shadowRadius: 20,
           },
           tabBarLabelStyle: {
             fontSize: 12,
-            fontWeight: "500",
+            fontWeight: "700",
+            marginBottom: 4,
+          },
+          tabBarItemStyle: {
+            borderRadius: 20,
+            marginHorizontal: 6,
+            marginVertical: 4,
           },
         }}
       >
@@ -75,39 +92,43 @@ export default function TabsLayout(): JSX.Element {
               backgroundColor: COLORS_PALETTE.BACKGROUND,
             },
             headerTitle: () => (
-              <Text
-                style={{
-                  color: COLORS_PALETTE.TEXT_PRIMARY,
-                  fontWeight: "bold",
-                }}
-              >
-                Início
-              </Text>
+              <View style={{ alignItems: "center" }}>
+                <Text
+                  style={{
+                    color: COLORS_PALETTE.TEXT_SECONDARY,
+                    fontSize: 12,
+                    fontWeight: "700",
+                    textTransform: "uppercase",
+                    letterSpacing: 1,
+                  }}
+                >
+                  Humori
+                </Text>
+                <Text
+                  style={{
+                    color: COLORS_PALETTE.TEXT_PRIMARY,
+                    fontWeight: "800",
+                    fontSize: 20,
+                  }}
+                >
+                  Check-in diário
+                </Text>
+              </View>
             ),
             headerLeft: () => (
-              <Image
-                source={require("../../assets/images/icon.png")}
+              <View
                 style={{
-                  width: 56,
-                  height: 56,
-                  marginHorizontal: 16,
+                  width: 44,
+                  height: 44,
+                  marginHorizontal: 18,
+                  borderRadius: 16,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: COLORS_PALETTE.CARD_SOFT,
                 }}
-              />
-            ),
-            headerRight: () => (
-              <TouchableOpacity onPress={() => handleDeleteAll()}>
-                <Ionicons
-                  name="trash-outline"
-                  size={22}
-                  style={{
-                    marginHorizontal: 16,
-                    color: COLORS_PALETTE.TEXT_SECONDARY,
-                    backgroundColor: COLORS_PALETTE.BACKGROUND,
-                    borderRadius: 12,
-                    padding: 8,
-                  }}
-                />
-              </TouchableOpacity>
+              >
+                <Text style={{ fontSize: 20 }}>H</Text>
+              </View>
             ),
             tabBarLabel: ({ color }) => <Text style={{ color }}>Início</Text>,
             tabBarIcon: ({ color, size }) => (
@@ -124,20 +145,69 @@ export default function TabsLayout(): JSX.Element {
               backgroundColor: COLORS_PALETTE.BACKGROUND,
             },
             headerTitle: () => (
-              <Text
-                style={{
-                  color: COLORS_PALETTE.TEXT_PRIMARY,
-                  fontWeight: "bold",
-                }}
-              >
-                Tendências
-              </Text>
+              <View style={{ alignItems: "center" }}>
+                <Text
+                  style={{
+                    color: COLORS_PALETTE.TEXT_SECONDARY,
+                    fontSize: 12,
+                    fontWeight: "700",
+                    textTransform: "uppercase",
+                    letterSpacing: 1,
+                  }}
+                >
+                  Humori
+                </Text>
+                <Text
+                  style={{
+                    color: COLORS_PALETTE.TEXT_PRIMARY,
+                    fontWeight: "800",
+                    fontSize: 20,
+                  }}
+                >
+                  Tendências
+                </Text>
+              </View>
             ),
             headerLeft: () => (
-              <Image
-                source={require("../../assets/images/icon.png")}
-                style={{ width: 56, height: 56, marginHorizontal: 16 }}
-              />
+              <View
+                style={{
+                  width: 44,
+                  height: 44,
+                  marginHorizontal: 18,
+                  borderRadius: 16,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: COLORS_PALETTE.CARD_HIGHLIGHT,
+                }}
+              >
+                <Ionicons
+                  name="stats-chart"
+                  size={20}
+                  color={COLORS_PALETTE.ACCENT_2}
+                />
+              </View>
+            ),
+            headerRight: () => (
+              <TouchableOpacity
+                onPress={() => handleDeleteAll()}
+                style={{
+                  marginRight: 18,
+                  width: 44,
+                  height: 44,
+                  borderRadius: 16,
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: COLORS_PALETTE.CARD_BG,
+                  borderWidth: 1,
+                  borderColor: COLORS_PALETTE.BORDER_DEFAULT,
+                }}
+              >
+                <Ionicons
+                  name="trash-outline"
+                  size={20}
+                  color={COLORS_PALETTE.TEXT_SECONDARY}
+                />
+              </TouchableOpacity>
             ),
             tabBarLabel: ({ color }) => (
               <Text style={{ color }}>Tendências</Text>
