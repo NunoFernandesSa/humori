@@ -4,10 +4,13 @@ import { COLORS_PALETTE } from "@/src/constants/colors";
 import { FONT_FAMILIES } from "@/src/constants/theme";
 import { useMoodStore } from "@/src/store/useMoodStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import Constants from "expo-constants";
 import { router } from "expo-router";
 import React, { JSX } from "react";
 import {
   Alert,
+  Linking,
+  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -22,11 +25,38 @@ import { SafeAreaView } from "react-native-safe-area-context";
  */
 export default function SettingsScreen(): JSX.Element {
   const { deleteAllEntries, entries } = useMoodStore();
+  const appVersion = Constants.expoConfig?.version ?? "1.0.0";
+  const buildVersion =
+    Platform.OS === "ios"
+      ? (Constants.expoConfig?.ios?.buildNumber ?? "-")
+      : String(Constants.expoConfig?.android?.versionCode ?? "-");
+  const supportEmail = "humori.app@gmail.com";
+
+  const handleOpenSupport = async () => {
+    try {
+      await Linking.openURL(
+        `mailto:${supportEmail}?subject=Humori%20-%20Suporte`,
+      );
+    } catch (error) {
+      console.error("Erro ao abrir o email de suporte:", error);
+      Alert.alert(
+        "Erro",
+        "Não foi possível abrir o email de suporte neste dispositivo.",
+      );
+    }
+  };
+
+  const handleOpenPrivacySummary = () => {
+    Alert.alert(
+      "Privacidade",
+      "Nesta versão, os teus registos ficam guardados localmente no dispositivo. Podes apagar todos os dados nesta página sempre que quiseres.",
+    );
+  };
 
   const handleDeleteAll = () => {
     Alert.alert(
       "Apagar todos os dados?",
-      "Esta ação remove todas as entradas, streaks e progressos guardados no dispositivo.",
+      "Esta ação remove todos os registos, séries e progressos guardados no dispositivo.",
       [
         { text: "Cancelar", style: "cancel" },
         {
@@ -38,7 +68,7 @@ export default function SettingsScreen(): JSX.Element {
               Alert.alert("Tudo limpo", "Todos os dados foram apagados.");
               router.back();
             } catch (error) {
-              console.error("Error deleting all data:", error);
+              console.error("Erro ao apagar todos os dados:", error);
               Alert.alert(
                 "Erro",
                 "Não foi possível apagar os dados. Tenta novamente.",
@@ -55,7 +85,13 @@ export default function SettingsScreen(): JSX.Element {
       <ScrollView contentContainerStyle={styles.content}>
         <Container>
           <View style={styles.headerRow}>
-            <Pressable style={styles.backButton} onPress={() => router.back()}>
+            <Pressable
+              style={styles.backButton}
+              onPress={() => router.back()}
+              accessibilityRole="button"
+              accessibilityLabel="Voltar"
+              accessibilityHint="Regressa ao ecrã anterior"
+            >
               <Ionicons
                 name="arrow-back"
                 size={20}
@@ -64,16 +100,84 @@ export default function SettingsScreen(): JSX.Element {
             </Pressable>
             <View style={styles.headerCopy}>
               <Text style={styles.eyebrow}>Definições</Text>
-              <Title title="Gestão dos dados" />
+              <Title title="Definições da aplicação" />
             </View>
           </View>
 
           <View style={styles.card}>
-            <Text style={styles.cardTitle}>Dados guardados</Text>
+            <Text style={styles.cardTitle}>Sobre o Humori</Text>
             <Text style={styles.cardText}>
-              Tens atualmente {entries.length} registos emocionais guardados
-              neste dispositivo.
+              O Humori ajuda-te a registar o teu humor, acompanhar tendências e
+              criar um ritual diário simples, leve e positivo.
             </Text>
+          </View>
+
+          <View style={styles.card}>
+            <Text style={styles.cardTitle}>Versão</Text>
+            <Text style={styles.cardText}>Versão da app: {appVersion}</Text>
+            <Text style={styles.metaText}>Build: {buildVersion}</Text>
+            <Text style={styles.metaText}>
+              Registos guardados neste dispositivo: {entries.length}
+            </Text>
+          </View>
+
+          <View style={styles.card}>
+            <Text style={styles.cardTitle}>Suporte</Text>
+            <Text style={styles.cardText}>
+              Se precisares de ajuda ou quiseres reportar um problema, podes
+              usar o contacto de suporte da app.
+            </Text>
+
+            <View style={styles.infoRow}>
+              <Ionicons
+                name="mail-outline"
+                size={18}
+                color={COLORS_PALETTE.ACCENT_2}
+              />
+              <Text style={styles.infoText}>{supportEmail}</Text>
+            </View>
+
+            <Pressable
+              style={styles.secondaryButton}
+              onPress={handleOpenSupport}
+              accessibilityRole="button"
+              accessibilityLabel="Contactar o suporte"
+              accessibilityHint="Abre a tua aplicação de email para enviar uma mensagem ao suporte"
+            >
+              <Ionicons
+                name="open-outline"
+                size={18}
+                color={COLORS_PALETTE.TEXT_PRIMARY}
+              />
+              <Text style={styles.secondaryButtonText}>
+                Contactar o suporte
+              </Text>
+            </Pressable>
+          </View>
+
+          <View style={styles.card}>
+            <Text style={styles.cardTitle}>Privacidade</Text>
+            <Text style={styles.cardText}>
+              Nesta versão, os teus dados emocionais são guardados localmente no
+              dispositivo. Não precisas de conta para começar.
+            </Text>
+
+            <Pressable
+              style={styles.secondaryButton}
+              onPress={handleOpenPrivacySummary}
+              accessibilityRole="button"
+              accessibilityLabel="Ver resumo de privacidade"
+              accessibilityHint="Mostra um resumo sobre como os teus dados são guardados no dispositivo"
+            >
+              <Ionicons
+                name="shield-checkmark-outline"
+                size={18}
+                color={COLORS_PALETTE.TEXT_PRIMARY}
+              />
+              <Text style={styles.secondaryButtonText}>
+                Ver resumo de privacidade
+              </Text>
+            </Pressable>
           </View>
 
           <View style={styles.card}>
@@ -83,7 +187,13 @@ export default function SettingsScreen(): JSX.Element {
               manter as tendências focadas na leitura do teu histórico.
             </Text>
 
-            <Pressable style={styles.dangerButton} onPress={handleDeleteAll}>
+            <Pressable
+              style={styles.dangerButton}
+              onPress={handleDeleteAll}
+              accessibilityRole="button"
+              accessibilityLabel="Apagar todos os dados"
+              accessibilityHint="Abre uma confirmação antes de remover todos os registos guardados"
+            >
               <Ionicons
                 name="trash-outline"
                 size={18}
@@ -153,6 +263,42 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
     color: COLORS_PALETTE.TEXT_SECONDARY,
+  },
+  metaText: {
+    fontFamily: FONT_FAMILIES.bodySemiBold,
+    fontSize: 13,
+    lineHeight: 18,
+    color: COLORS_PALETTE.TEXT_SECONDARY,
+    marginTop: 8,
+  },
+  infoRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 10,
+    marginTop: 14,
+  },
+  infoText: {
+    fontFamily: FONT_FAMILIES.bodySemiBold,
+    fontSize: 14,
+    color: COLORS_PALETTE.TEXT_PRIMARY,
+  },
+  secondaryButton: {
+    marginTop: 16,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 10,
+    backgroundColor: COLORS_PALETTE.BACKGROUND_ALT,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: COLORS_PALETTE.BORDER_DEFAULT,
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+  },
+  secondaryButtonText: {
+    fontFamily: FONT_FAMILIES.bodySemiBold,
+    color: COLORS_PALETTE.TEXT_PRIMARY,
+    fontSize: 14,
   },
   dangerButton: {
     marginTop: 18,

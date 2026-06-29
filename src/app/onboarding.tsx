@@ -83,7 +83,13 @@ export default function OnboardingScreen(): JSX.Element {
           </View>
         </View>
 
-        <Pressable style={styles.ctaButton} onPress={handleContinue}>
+        <Pressable
+          style={styles.ctaButton}
+          onPress={handleContinue}
+          accessibilityRole="button"
+          accessibilityLabel="Começar"
+          accessibilityHint="Termina o onboarding e entra na aplicação"
+        >
           <Text style={styles.ctaText}>Começar</Text>
         </Pressable>
       </ScrollView>

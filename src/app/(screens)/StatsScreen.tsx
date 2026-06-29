@@ -134,6 +134,10 @@ const StatsScreen = (): JSX.Element => {
                 selectedPeriod === "week" && styles.activePeriod,
               ]}
               onPress={() => setSelectedPeriod("week")}
+              accessibilityRole="button"
+              accessibilityLabel="Filtrar por semana"
+              accessibilityHint="Mostra as tendências emocionais da última semana"
+              accessibilityState={{ selected: selectedPeriod === "week" }}
             >
               <Text
                 style={[
@@ -150,6 +154,10 @@ const StatsScreen = (): JSX.Element => {
                 selectedPeriod === "month" && styles.activePeriod,
               ]}
               onPress={() => setSelectedPeriod("month")}
+              accessibilityRole="button"
+              accessibilityLabel="Filtrar por mês"
+              accessibilityHint="Mostra as tendências emocionais do último mês"
+              accessibilityState={{ selected: selectedPeriod === "month" }}
             >
               <Text
                 style={[
@@ -166,6 +174,10 @@ const StatsScreen = (): JSX.Element => {
                 selectedPeriod === "all" && styles.activePeriod,
               ]}
               onPress={() => setSelectedPeriod("all")}
+              accessibilityRole="button"
+              accessibilityLabel="Filtrar por todos os períodos"
+              accessibilityHint="Mostra todas as tendências emocionais guardadas"
+              accessibilityState={{ selected: selectedPeriod === "all" }}
             >
               <Text
                 style={[

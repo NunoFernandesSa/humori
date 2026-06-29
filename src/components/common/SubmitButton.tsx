@@ -19,6 +19,14 @@ const SubmitButton: React.FC<SubmitButtonProps> = ({
       style={[styles.button, disabled && styles.disabledButton]}
       onPress={handleSubmit}
       disabled={disabled}
+      accessibilityRole="button"
+      accessibilityLabel={text}
+      accessibilityHint={
+        disabled
+          ? "Aguarda enquanto o registo está a ser guardado"
+          : "Guarda o teu registo emocional"
+      }
+      accessibilityState={{ disabled }}
     >
       {disabled ? (
         <ActivityIndicator color={COLORS_PALETTE.ACCENT_2} />

@@ -161,7 +161,7 @@ const HomeScreen = (): JSX.Element => {
         "Ups! 😕",
         "Não foi possível registar o teu humor. Tenta novamente!",
       );
-      console.error("Submit error:", error);
+      console.error("Erro ao submeter o registo:", error);
     } finally {
       setIsSubmitting(false);
     }
@@ -356,6 +356,9 @@ const HomeScreen = (): JSX.Element => {
                     key={note}
                     style={styles.quickNoteChip}
                     onPress={() => handleQuickNote(note)}
+                    accessibilityRole="button"
+                    accessibilityLabel={`Adicionar nota rápida: ${note}`}
+                    accessibilityHint="Adiciona este texto a nota opcional do teu registo"
                   >
                     <Text style={styles.quickNoteText}>{note}</Text>
                   </Pressable>

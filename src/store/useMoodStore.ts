@@ -57,7 +57,7 @@ export const useMoodStore = create<MoodState>()(
             );
           }
         } catch (error) {
-          console.error("Error cleaning invalid data:", error);
+          console.error("Erro ao limpar dados inválidos:", error);
         }
       },
 
@@ -74,7 +74,7 @@ export const useMoodStore = create<MoodState>()(
             entries: validEntries.sort((a, b) => b.timestamp - a.timestamp),
           });
         } catch (error) {
-          console.error("Error loading entries:", error);
+          console.error("Erro ao carregar os registos:", error);
         } finally {
           set({ isLoading: false });
         }
@@ -91,7 +91,7 @@ export const useMoodStore = create<MoodState>()(
             set({ todaysEntry: null });
           }
         } catch (error) {
-          console.error("Error loading today's entry:", error);
+          console.error("Erro ao carregar o registo de hoje:", error);
           set({ todaysEntry: null });
         }
       },
@@ -103,7 +103,7 @@ export const useMoodStore = create<MoodState>()(
           await get().loadEntries();
           await get().loadTodaysEntry();
         } catch (error) {
-          console.error("Error saving entry:", error);
+          console.error("Erro ao guardar o registo:", error);
           throw error;
         }
       },
@@ -115,7 +115,7 @@ export const useMoodStore = create<MoodState>()(
           await get().loadEntries();
           await get().loadTodaysEntry();
         } catch (error) {
-          console.error("Error deleting all entries:", error);
+          console.error("Erro ao apagar todos os registos:", error);
           throw error;
         }
       },

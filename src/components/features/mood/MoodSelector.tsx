@@ -104,6 +104,14 @@ export const MoodSelector: React.FC<MoodSelectorProps> = ({
               ]}
               onPress={() => handleSelect(mood.value)}
               activeOpacity={0.86}
+              accessibilityRole="button"
+              accessibilityLabel={`Escolher emoção ${mood.label}`}
+              accessibilityHint={
+                isSelected
+                  ? "Esta emoção já está selecionada para o teu registo de hoje"
+                  : `Seleciona ${mood.label.toLowerCase()} para o teu registo de hoje`
+              }
+              accessibilityState={{ selected: isSelected }}
             >
               <View
                 style={[

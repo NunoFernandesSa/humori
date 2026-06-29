@@ -39,7 +39,7 @@ export const checkForUpdates = async (
   } catch (error) {
     // If there is an error checking for updates, log it in development mode
     if (__DEV__) {
-      console.error("Error checking for updates:", error);
+      console.error("Erro ao verificar atualizações:", error);
     }
   }
 };

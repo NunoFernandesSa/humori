@@ -39,7 +39,7 @@ export const storageService = {
 
       await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(entries));
     } catch (error) {
-      console.error("Error saving entry:", error);
+      console.error("Erro ao guardar o registo:", error);
       throw error;
     }
   },
@@ -52,7 +52,7 @@ export const storageService = {
       const data = await AsyncStorage.getItem(STORAGE_KEY);
       return data ? JSON.parse(data) : [];
     } catch (error) {
-      console.error("Error getting entries:", error);
+      console.error("Erro ao obter os registos:", error);
       return [];
     }
   },
@@ -72,7 +72,7 @@ export const storageService = {
         throw new Error(`Entrada com id ${entry.id} não encontrada.`);
       }
     } catch (error) {
-      console.error("Error updating entry:", error);
+      console.error("Erro ao atualizar o registo:", error);
       throw error;
     }
   },
@@ -92,7 +92,7 @@ export const storageService = {
 
       return todayEntry || null;
     } catch (error) {
-      console.error("Error getting today's entry:", error);
+      console.error("Erro ao obter o registo de hoje:", error);
       return null;
     }
   },
@@ -104,7 +104,7 @@ export const storageService = {
     try {
       await AsyncStorage.removeItem(STORAGE_KEY);
     } catch (error) {
-      console.error("Error deleting all entries:", error);
+      console.error("Erro ao apagar todos os registos:", error);
       throw error;
     }
   },
@@ -122,7 +122,7 @@ export const storageService = {
         return entryDateKey === todayKey;
       });
     } catch (error) {
-      console.error("Error checking entry existence:", error);
+      console.error("Erro ao verificar a existência de um registo:", error);
       return false;
     }
   },
@@ -141,7 +141,7 @@ export const storageService = {
         return entryDate >= startDate && entryDate <= endDate;
       });
     } catch (error) {
-      console.error("Error getting entries by date range:", error);
+      console.error("Erro ao obter os registos por intervalo de datas:", error);
       return [];
     }
   },
@@ -154,7 +154,7 @@ export const storageService = {
       const entries = await this.getEntries();
       return entries.length;
     } catch (error) {
-      console.error("Error getting entry count:", error);
+      console.error("Erro ao contar os registos:", error);
       return 0;
     }
   },

@@ -86,7 +86,7 @@ export default function TabsLayout(): JSX.Element {
                     fontSize: 20,
                   }}
                 >
-                  Check-in diário
+                  Registo diário
                 </Text>
               </View>
             ),
@@ -123,6 +123,9 @@ export default function TabsLayout(): JSX.Element {
                   borderWidth: 1,
                   borderColor: COLORS_PALETTE.BORDER_DEFAULT,
                 }}
+                accessibilityRole="button"
+                accessibilityLabel="Abrir definições"
+                accessibilityHint="Abre o ecrã de definições da aplicação"
               >
                 <Ionicons
                   name="settings-outline"
@@ -206,6 +209,9 @@ export default function TabsLayout(): JSX.Element {
                   borderWidth: 1,
                   borderColor: COLORS_PALETTE.BORDER_DEFAULT,
                 }}
+                accessibilityRole="button"
+                accessibilityLabel="Abrir definições"
+                accessibilityHint="Abre o ecrã de definições da aplicação"
               >
                 <Ionicons
                   name="settings-outline"
@@ -289,6 +295,9 @@ export default function TabsLayout(): JSX.Element {
                   borderWidth: 1,
                   borderColor: COLORS_PALETTE.BORDER_DEFAULT,
                 }}
+                accessibilityRole="button"
+                accessibilityLabel="Abrir definições"
+                accessibilityHint="Abre o ecrã de definições da aplicação"
               >
                 <Ionicons
                   name="settings-outline"

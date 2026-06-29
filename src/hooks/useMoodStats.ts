@@ -17,7 +17,7 @@ export const useMoodStats = () => {
       const allEntries = await storageService.getEntries();
       setEntries(allEntries.sort((a, b) => b.timestamp - a.timestamp));
     } catch (error) {
-      console.error("Error loading entries:", error);
+      console.error("Erro ao carregar os registos:", error);
       Alert.alert(
         "Erro",
         "Não foi possível carregar as estatísticas. Tenta novamente.",
@@ -144,7 +144,7 @@ export const useMoodStats = () => {
       await loadEntries();
       Alert.alert("Sucesso", "Todos os dados foram apagados.");
     } catch (error) {
-      console.error("Error deleting all entries:", error);
+      console.error("Erro ao apagar todos os registos:", error);
       Alert.alert("Erro", "Não foi possível apagar os dados.");
     }
   }, [loadEntries]);
