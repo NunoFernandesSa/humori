@@ -10,6 +10,7 @@ import { useMoodStore } from "@/src/store/useMoodStore";
 
 import { COLORS_PALETTE } from "@/src/constants/colors";
 import { StatusBar } from "expo-status-bar";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 /**
  * TabsLayout component defines the bottom-tab navigation structure for the MoodTracker app.
@@ -19,6 +20,8 @@ import { StatusBar } from "expo-status-bar";
  */
 export default function TabsLayout(): JSX.Element {
   const { deleteAllEntries } = useMoodStore();
+  const insets = useSafeAreaInsets();
+  const tabBarBottom = Math.max(18, insets.bottom + 6);
 
   // Handle deleting all entries
   const handleDeleteAll = () => {
@@ -61,7 +64,7 @@ export default function TabsLayout(): JSX.Element {
             position: "absolute",
             left: 18,
             right: 18,
-            bottom: 18,
+            bottom: tabBarBottom,
             borderRadius: 28,
             height: 84,
             paddingTop: 8,

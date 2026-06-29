@@ -171,7 +171,9 @@ const StatsScreen = (): JSX.Element => {
         <View style={styles.miniInsightsRow}>
           <View style={styles.miniInsightCard}>
             <Text style={styles.miniInsightValue}>{currentStreak}</Text>
-            <Text style={styles.miniInsightLabel}>dias seguidos neste recorte</Text>
+            <Text style={styles.miniInsightLabel}>
+              dias seguidos neste recorte
+            </Text>
           </View>
           <View style={styles.miniInsightCard}>
             <Text style={styles.miniInsightValue}>{weeklyCompletion}%</Text>
@@ -189,8 +191,7 @@ const StatsScreen = (): JSX.Element => {
               width={Dimensions.get("window").width - 48}
               height={200}
               chartConfig={{
-                color: (opacity = 1) =>
-                  `rgba(31, 36, 64, ${opacity})`,
+                color: (opacity = 1) => `rgba(31, 36, 64, ${opacity})`,
               }}
               accessor="count"
               backgroundColor="transparent"
@@ -212,10 +213,8 @@ const StatsScreen = (): JSX.Element => {
                 backgroundGradientFrom: COLORS_PALETTE.CARD_BG,
                 backgroundGradientTo: COLORS_PALETTE.CARD_BG,
                 decimalPlaces: 0,
-                color: (opacity = 1) =>
-                  `rgba(108, 99, 255, ${opacity})`,
-                labelColor: (opacity = 1) =>
-                  `rgba(92, 99, 132, ${opacity})`,
+                color: (opacity = 1) => `rgba(108, 99, 255, ${opacity})`,
+                labelColor: (opacity = 1) => `rgba(92, 99, 132, ${opacity})`,
                 style: {
                   borderRadius: 16,
                 },

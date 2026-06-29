@@ -13,6 +13,10 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import React, { JSX } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 
+/**
+ * Universe screen.
+ * Displays the universe screen with the user's progress and badges.
+ */
 export default function UniverseScreen(): JSX.Element {
   const { entries } = useMoodStore();
   const currentStreak = getCurrentStreak(entries);
@@ -142,6 +146,7 @@ export default function UniverseScreen(): JSX.Element {
   );
 }
 
+// ---- Styles ----
 const styles = StyleSheet.create({
   container: {
     flex: 1,
