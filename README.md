@@ -1,54 +1,90 @@
 # Humori
 
-**Humori** is a React Native MVP designed to help children log their daily mood and add a short note, while giving parents a simple way to review emotional trends over time.
+Humori is a playful premium mood-tracking mobile app built with Expo and React Native.
+It helps users create a simple daily emotional check-in, review trends over time, and stay engaged through gentle progression mechanics.
 
-Built with **Expo**, **TypeScript**, and **React Native**, the app focuses on simplicity, clarity, and a smooth user experience.
+## Overview
 
-## ✨ Why I built this
+Humori started as a lightweight mood journal and has evolved into a more polished mobile product with:
 
-I created Humori as a personal project for my 8-year-old son, who enjoys selecting his mood and adding a note every day.
+- a guided onboarding flow
+- a daily mood check-in with emoji-based cards
+- optional contextual notes
+- emotional trends and charts
+- a progression-oriented "Universo" tab
+- local-first privacy with data stored on device
+- a dedicated settings screen for support, privacy summary, version info, and data deletion
 
-The goal was to build a lightweight family tool that makes it easier to track emotions, identify weekly patterns, and better understand what may not be going well.
+The in-app copy is written in Portuguese from Portugal (`pt-PT`).
 
-## 🚀 Features
+## Core Features
 
-- **Daily Mood Tracking**: Log one mood per day with an intuitive emoji-based flow.
-- **Mood Notes**: Add a short note to capture the context behind each emotion.
-- **Weekly Insights**: Review emotional trends over time with simple charts and statistics.
-- **Local Persistence**: Data is stored locally on the device using `AsyncStorage`.
-- **Haptic Feedback**: Small tactile interactions for a more engaging experience.
-- **Responsive UI**: Optimized for both iOS and Android.
-- **Smooth Animations**: Powered by `react-native-reanimated`.
+- **Daily Check-In**: one emotional entry per day with a fast, tactile flow
+- **Mood Notes**: optional notes to add context to each day
+- **Trend Analysis**: weekly, monthly, and all-time views with summary cards and charts
+- **Mood Calendar**: visual overview of emotional history
+- **Universe Progression**: streaks, progress highlights, and badge-oriented motivation
+- **Onboarding Experience**: friendly first-run flow before entering the app
+- **Settings Area**: app info, support entry point, privacy summary, and safe data reset
+- **Accessibility Pass**: key buttons, filters, and interactive cards include accessibility labels, hints, and states
+- **Responsive UI**: tuned for mobile layouts, including smaller smartphone screens
 
-## 🛠️ Tech Stack
+## Tech Stack
 
-- **Framework**: [Expo](https://expo.dev/) (SDK 54)
+- **Framework**: [Expo](https://expo.dev/) `~54.0.35`
 - **Language**: [TypeScript](https://www.typescriptlang.org/)
 - **Navigation**: [Expo Router](https://docs.expo.dev/router/introduction/)
 - **State Management**: [Zustand](https://github.com/pmndrs/zustand)
-- **Styling**: React Native StyleSheet
-- **Icons**: [Expo Vector Icons](https://docs.expo.dev/guides/icons/) and SVG support
-- **Animations**: [React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/)
-- **Charts**: [React Native Chart Kit](https://github.com/indiespirit/react-native-chart-kit)
 - **Storage**: [Async Storage](https://react-native-async-storage.github.io/async-storage/)
+- **Animations**: [React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/)
+- **Haptics**: [Expo Haptics](https://docs.expo.dev/versions/latest/sdk/haptics/)
+- **Charts**: [React Native Chart Kit](https://github.com/indiespirit/react-native-chart-kit)
+- **Fonts**: [Plus Jakarta Sans](https://fonts.google.com/specimen/Plus+Jakarta+Sans) and [Fredoka](https://fonts.google.com/specimen/Fredoka) via `@expo-google-fonts`
+- **Icons**: [Expo Vector Icons](https://docs.expo.dev/guides/icons/) and `react-native-svg`
 
-## 📦 Getting Started
+## App Structure
+
+```text
+src/
+├── app/
+│   ├── (screens)/      # Main screen implementations
+│   ├── (tabs)/         # Tab routes: Início, Tendências, Universo
+│   ├── _layout.tsx     # Root app layout
+│   ├── index.tsx       # Entry routing (onboarding/app)
+│   ├── onboarding.tsx  # First-run onboarding screen
+│   └── settings.tsx    # Settings screen
+├── assets/
+│   ├── emojis/
+│   └── images/
+├── components/
+│   ├── common/
+│   └── features/
+├── constants/          # Colors, theme, layout, moods, storage keys
+├── helpers/            # Onboarding, updates, progress, utilities
+├── hooks/              # Screen-specific logic hooks
+├── services/           # Persistence layer
+├── store/              # Zustand store
+├── types/              # Shared TypeScript types
+└── utils/
+```
+
+## Getting Started
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) v18 or newer
-- [npm](https://www.npmjs.com/) or [yarn](https://yarnpkg.com/)
-- [Expo Go](https://expo.dev/go) installed on a physical device, or an emulator/simulator
+- [Node.js](https://nodejs.org/) 18 or newer
+- [npm](https://www.npmjs.com/)
+- [Expo Go](https://expo.dev/go), Android Emulator, or iOS Simulator
 
 ### Installation
 
 ```bash
 git clone <repository-url>
-cd mood
+cd humori
 npm install
 ```
 
-### Running the app
+### Run The Project
 
 ```bash
 npm start
@@ -56,39 +92,36 @@ npm start
 
 Then you can:
 
-- Press `i` to open the app in the iOS Simulator.
-- Press `a` to open the app in the Android Emulator.
-- Scan the QR code with Expo Go on a physical device.
-- Press `w` to open the app in the browser.
+- press `a` to open Android
+- press `i` to open iOS
+- press `w` to open web
+- scan the QR code with Expo Go on a device
 
-## 📂 Project Structure
+## Available Scripts
 
-```text
-src/
-├── app/             # Expo Router screens and layouts
-│   ├── (screens)/   # Individual app screens
-│   ├── (tabs)/      # Tab-based navigation configuration
-│   └── _layout.tsx  # Root layout
-├── assets/          # Emojis, images, and fonts
-├── components/      # Reusable UI components
-│   ├── common/      # Shared components
-│   └── features/    # Domain-specific components
-├── constants/       # App constants and configuration
-├── helpers/         # Utility functions
-├── hooks/           # Custom React hooks
-├── services/        # Storage and external services
-├── store/           # Zustand stores
-└── types/           # TypeScript types
-```
+- `npm start` - start the Expo development server
+- `npm run android` - launch the app on Android
+- `npm run ios` - launch the app on iOS
+- `npm run web` - launch the web target
+- `npm run lint` - run Expo ESLint checks
+- `npm run reset-project` - run the local reset script
 
-## 📜 Available Scripts
+## Configuration Notes
 
-- `npm start`: Starts the Expo development server.
-- `npm run ios`: Runs the app in the iOS Simulator.
-- `npm run android`: Runs the app in the Android Emulator.
-- `npm run web`: Runs the app in the browser.
-- `npm run lint`: Runs ESLint for code quality checks.
+- Expo app config lives in `app.json`
+- The app uses `expo-router` as the main entry point via `expo-router/entry`
+- Local data is persisted on-device, so no backend is required for the current version
+- OTA updates are enabled through `expo-updates`
 
-## 📄 License
+## Current Product Direction
 
-This project is a personal MVP and is intended for private development.
+Humori is currently focused on:
+
+- a polished and approachable mobile UI
+- local-first privacy
+- soft gamification rather than competitive mechanics
+- clear emotional tracking without account creation
+
+## License
+
+This project is currently intended for private development and product iteration.
