@@ -4,7 +4,6 @@ import {
   ActivityIndicator,
   Alert,
   KeyboardAvoidingView,
-  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -212,8 +211,8 @@ const HomeScreen = (): JSX.Element => {
       }}
     >
       <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 0 : 20}
+        behavior="height"
+        keyboardVerticalOffset={20}
         style={styles.container}
       >
         <ScrollView

@@ -1,11 +1,10 @@
 {
   "expo": {
     "name": "Humori",
-    "slug": "humori",
+    "slug": "humori-studio",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./src/assets/images/icon.png",
-    "scheme": "humori",
     "userInterfaceStyle": "light",
     "newArchEnabled": true,
     "splash": {
@@ -13,11 +12,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#FFF8F2"
     },
-    "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.humori.app",
-      "buildNumber": "1"
-    },
+    "platforms": ["android"],
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#FFF8F2",
@@ -29,29 +24,24 @@
       "predictiveBackGestureEnabled": false,
       "softwareKeyboardLayoutMode": "pan"
     },
-    "web": {
-      "output": "static",
-      "favicon": "./src/assets/images/favicon.png"
-    },
-    "plugins": ["expo-router", "expo-web-browser", "expo-font"],
+    "plugins": ["expo-router", "expo-font"],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
     },
     "extra": {
       "eas": {
-        "projectId": "d6ccc04e-85c5-4fad-8a26-35c32d54fae9"
+        "projectId": "4ff7ee20-1127-4a73-acff-d309b70f5626"
       }
     },
     "description": "Regista o teu humor todos os dias. O teu diário emocional.",
-    "owner": "nfdev",
-    "assetBundlePatterns": ["**/*"],
+    "owner": "humori-studio",
     "runtimeVersion": {
       "policy": "appVersion"
     },
     "updates": {
       "enabled": true,
-      "url": "https://u.expo.dev/d6ccc04e-85c5-4fad-8a26-35c32d54fae9",
+      "url": "https://u.expo.dev/4ff7ee20-1127-4a73-acff-d309b70f5626",
       "checkAutomatically": "ON_LOAD",
       "fallbackToCacheTimeout": 0
     }

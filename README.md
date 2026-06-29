@@ -74,7 +74,7 @@ src/
 
 - [Node.js](https://nodejs.org/) 18 or newer
 - [npm](https://www.npmjs.com/)
-- [Expo Go](https://expo.dev/go), Android Emulator, or iOS Simulator
+- [Expo Go](https://expo.dev/go) on Android, or an Android Emulator
 
 ### Installation
 
@@ -93,16 +93,12 @@ npm start
 Then you can:
 
 - press `a` to open Android
-- press `i` to open iOS
-- press `w` to open web
-- scan the QR code with Expo Go on a device
+- scan the QR code with Expo Go on an Android device
 
 ## Available Scripts
 
 - `npm start` - start the Expo development server
 - `npm run android` - launch the app on Android
-- `npm run ios` - launch the app on iOS
-- `npm run web` - launch the web target
 - `npm run lint` - run Expo ESLint checks
 - `npm run reset-project` - run the local reset script
 
@@ -110,6 +106,7 @@ Then you can:
 
 - Expo app config lives in `app.json`
 - The app uses `expo-router` as the main entry point via `expo-router/entry`
+- The project is currently configured for Android only
 - Local data is persisted on-device, so no backend is required for the current version
 - OTA updates are enabled through `expo-updates`
 

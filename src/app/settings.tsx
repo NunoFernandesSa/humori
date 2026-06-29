@@ -10,7 +10,6 @@ import React, { JSX } from "react";
 import {
   Alert,
   Linking,
-  Platform,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -26,10 +25,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 export default function SettingsScreen(): JSX.Element {
   const { deleteAllEntries, entries } = useMoodStore();
   const appVersion = Constants.expoConfig?.version ?? "1.0.0";
-  const buildVersion =
-    Platform.OS === "ios"
-      ? (Constants.expoConfig?.ios?.buildNumber ?? "-")
-      : String(Constants.expoConfig?.android?.versionCode ?? "-");
+  const buildVersion = String(
+    Constants.expoConfig?.android?.versionCode ?? "-",
+  );
   const supportEmail = "humori.app@gmail.com";
 
   const handleOpenSupport = async () => {
@@ -115,7 +113,9 @@ export default function SettingsScreen(): JSX.Element {
           <View style={styles.card}>
             <Text style={styles.cardTitle}>Versão</Text>
             <Text style={styles.cardText}>Versão da app: {appVersion}</Text>
-            <Text style={styles.metaText}>Build: {buildVersion}</Text>
+            <Text style={styles.metaText}>
+              Version code Android: {buildVersion}
+            </Text>
             <Text style={styles.metaText}>
               Registos guardados neste dispositivo: {entries.length}
             </Text>
