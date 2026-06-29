@@ -12,7 +12,10 @@ import {
   TextInput,
   View,
 } from "react-native";
-import { SafeAreaView, useSafeAreaInsets } from "react-native-safe-area-context";
+import {
+  SafeAreaView,
+  useSafeAreaInsets,
+} from "react-native-safe-area-context";
 // ----- COMPONENTS -----
 import Container from "@/src/components/common/Container";
 import SubmitButton from "@/src/components/common/SubmitButton";
@@ -25,7 +28,10 @@ import { useMoodStore } from "@/src/store/useMoodStore";
 import { Mood, MoodEntry } from "@/src/types/moodType";
 // ----- HELPERS -----
 import { COLORS_PALETTE } from "@/src/constants/colors";
-import { getContentBottomPadding, SCREEN_CONTENT_TOP } from "@/src/constants/layout";
+import {
+  getContentBottomPadding,
+  SCREEN_CONTENT_TOP,
+} from "@/src/constants/layout";
 import { MOODS } from "@/src/constants/moods";
 import { FONT_FAMILIES } from "@/src/constants/theme";
 import { getCurrentMood, isValidEntry } from "@/src/helpers/helpers";
@@ -216,7 +222,10 @@ const HomeScreen = (): JSX.Element => {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={[
             styles.scrollContent,
-            { paddingTop: SCREEN_CONTENT_TOP, paddingBottom: contentBottomPadding },
+            {
+              paddingTop: SCREEN_CONTENT_TOP,
+              paddingBottom: contentBottomPadding,
+            },
           ]}
         >
           <Container>

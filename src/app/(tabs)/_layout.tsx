@@ -299,7 +299,7 @@ export default function TabsLayout(): JSX.Element {
             ),
             tabBarLabel: ({ color }) => (
               <Text style={{ color, fontFamily: FONT_FAMILIES.bodySemiBold }}>
-                Univers
+                Universo
               </Text>
             ),
             tabBarIcon: ({ color, size }) => (

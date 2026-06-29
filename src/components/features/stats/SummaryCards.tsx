@@ -12,7 +12,9 @@ export default function SummaryCards({
       <View style={styles.summaryCard}>
         <Text style={styles.summaryEyebrow}>Registos</Text>
         <Text style={styles.summaryNumber}>{totalEntries}</Text>
-        <Text style={styles.summaryLabel}>Check-ins no período selecionado</Text>
+        <Text style={styles.summaryLabel}>
+          Check-ins no período selecionado
+        </Text>
       </View>
       <View style={styles.summaryCard}>
         <Text style={styles.summaryEyebrow}>Clima geral</Text>

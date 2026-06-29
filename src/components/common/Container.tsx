@@ -21,7 +21,12 @@ const Container = ({
   style?: ViewStyle;
 }): JSX.Element => {
   return (
-    <View style={[{ paddingHorizontal: 20, paddingTop: 12, paddingBottom: 28 }, style]}>
+    <View
+      style={[
+        { paddingHorizontal: 20, paddingTop: 12, paddingBottom: 28 },
+        style,
+      ]}
+    >
       {children}
     </View>
   );

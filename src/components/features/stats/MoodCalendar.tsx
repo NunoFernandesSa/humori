@@ -18,8 +18,8 @@ export default function MoodCalendar({
     <View style={styles.container}>
       <Text style={styles.title}>Régularité des 28 derniers jours</Text>
       <Text style={styles.subtitle}>
-        Chaque case représente un jour. Plus la couleur est vive, plus ton journal
-        émotionnel prend vie.
+        Chaque case représente un jour. Plus la couleur est vive, plus ton
+        journal émotionnel prend vie.
       </Text>
 
       <View style={styles.grid}>
@@ -36,7 +36,9 @@ export default function MoodCalendar({
                   : styles.emptyDayCell,
               ]}
             >
-              {day.moodMeta ? <Text style={styles.dayEmoji}>{day.moodMeta.emoji}</Text> : null}
+              {day.moodMeta ? (
+                <Text style={styles.dayEmoji}>{day.moodMeta.emoji}</Text>
+              ) : null}
             </View>
             <Text style={styles.dayLabel}>{day.date.getDate()}</Text>
           </View>
@@ -49,7 +51,12 @@ export default function MoodCalendar({
           <Text style={styles.legendText}>Sans entrée</Text>
         </View>
         <View style={styles.legendItem}>
-          <View style={[styles.legendDot, { backgroundColor: COLORS_PALETTE.ACCENT_2 }]} />
+          <View
+            style={[
+              styles.legendDot,
+              { backgroundColor: COLORS_PALETTE.ACCENT_2 },
+            ]}
+          />
           <Text style={styles.legendText}>Jour complété</Text>
         </View>
       </View>
