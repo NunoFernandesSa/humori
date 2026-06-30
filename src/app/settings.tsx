@@ -114,7 +114,7 @@ export default function SettingsScreen(): JSX.Element {
             <Text style={styles.cardTitle}>Versão</Text>
             <Text style={styles.cardText}>Versão da app: {appVersion}</Text>
             <Text style={styles.metaText}>
-              Version code Android: {buildVersion}
+              Código da versão Android: {buildVersion}
             </Text>
             <Text style={styles.metaText}>
               Registos guardados neste dispositivo: {entries.length}
