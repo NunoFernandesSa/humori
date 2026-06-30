@@ -54,7 +54,7 @@ export default function SettingsScreen(): JSX.Element {
   const handleDeleteAll = () => {
     Alert.alert(
       "Apagar todos os dados?",
-      "Esta ação remove todos os registos, séries e progressos guardados no dispositivo.",
+      "Esta ação remove todos os registos, séries e progressos guardados no dispositivo. Esta ação é irreversível e, depois de apagares os dados, não será possível recuperá-los.",
       [
         { text: "Cancelar", style: "cancel" },
         {
@@ -181,25 +181,25 @@ export default function SettingsScreen(): JSX.Element {
           </View>
 
           <View style={styles.card}>
-            <Text style={styles.cardTitle}>Zona segura</Text>
+            <Text style={styles.cardTitle}>Os teus dados</Text>
             <Text style={styles.cardText}>
-              A ação de apagar tudo fica aqui para evitar toques acidentais e
-              manter as tendências focadas na leitura do teu histórico.
+              Se quiseres recomeçar do zero, podes apagar aqui os teus registos.
+              Vamos pedir uma confirmação antes de continuar.
             </Text>
 
             <Pressable
               style={styles.dangerButton}
               onPress={handleDeleteAll}
               accessibilityRole="button"
-              accessibilityLabel="Apagar todos os dados"
-              accessibilityHint="Abre uma confirmação antes de remover todos os registos guardados"
+              accessibilityLabel="Apagar os meus dados"
+              accessibilityHint="Abre uma confirmação antes de apagar os teus registos"
             >
               <Ionicons
                 name="trash-outline"
                 size={18}
                 color={COLORS_PALETTE.TEXT_LIGHT}
               />
-              <Text style={styles.dangerText}>Apagar todos os dados</Text>
+              <Text style={styles.dangerText}>Apagar os meus dados</Text>
             </Pressable>
           </View>
         </Container>

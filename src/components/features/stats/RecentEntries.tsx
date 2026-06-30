@@ -69,18 +69,22 @@ const styles = StyleSheet.create({
   },
   recentHeader: {
     flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    flexWrap: "wrap",
+    gap: 8,
     marginBottom: 8,
   },
   recentDate: {
     fontSize: 14,
     color: COLORS_PALETTE.TEXT_SECONDARY,
     fontWeight: "600",
+    flexShrink: 1,
   },
   recentMood: {
     fontSize: 14,
     fontWeight: "800",
+    width: "100%",
   },
   recentNote: {
     fontSize: 14,

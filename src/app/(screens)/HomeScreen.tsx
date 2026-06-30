@@ -251,33 +251,6 @@ const HomeScreen = (): JSX.Element => {
                 Faz o teu registo em menos de um minuto. Escolhe a emoção,
                 adiciona um contexto se quiseres e guarda o momento.
               </Text>
-
-              <View style={styles.heroHighlights}>
-                <View style={styles.highlightChip}>
-                  <Ionicons
-                    name="flash-outline"
-                    size={16}
-                    color={COLORS_PALETTE.ACCENT_2}
-                  />
-                  <Text style={styles.highlightChipText}>Rápido</Text>
-                </View>
-                <View style={styles.highlightChip}>
-                  <Ionicons
-                    name="hand-left-outline"
-                    size={16}
-                    color={COLORS_PALETTE.ACCENT_3}
-                  />
-                  <Text style={styles.highlightChipText}>Tátil</Text>
-                </View>
-                <View style={styles.highlightChip}>
-                  <Ionicons
-                    name="happy-outline"
-                    size={16}
-                    color={COLORS_PALETTE.ACCENT_4}
-                  />
-                  <Text style={styles.highlightChipText}>Expressivo</Text>
-                </View>
-              </View>
             </Animated.View>
 
             <Animated.View
@@ -449,8 +422,9 @@ const styles = StyleSheet.create({
   },
   heroTopRow: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
     alignItems: "center",
+    flexWrap: "wrap",
     marginBottom: 18,
     gap: 12,
   },
@@ -458,6 +432,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 8,
+    flexShrink: 1,
+    maxWidth: "100%",
     paddingHorizontal: 14,
     paddingVertical: 10,
     borderRadius: 999,
@@ -469,15 +445,19 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
   oneEntryPill: {
+    flexShrink: 1,
+    maxWidth: "100%",
     paddingHorizontal: 12,
     paddingVertical: 9,
     borderRadius: 999,
     backgroundColor: COLORS_PALETTE.CARD_SOFT,
+    alignSelf: "flex-start",
   },
   oneEntryText: {
     fontFamily: FONT_FAMILIES.bodySemiBold,
     fontSize: 12,
     color: COLORS_PALETTE.TEXT_SECONDARY,
+    flexShrink: 1,
   },
   heroSubtitle: {
     fontFamily: FONT_FAMILIES.body,
