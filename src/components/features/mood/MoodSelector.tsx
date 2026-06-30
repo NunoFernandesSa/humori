@@ -6,6 +6,7 @@ import * as Haptics from "expo-haptics";
 import React, { useState } from "react";
 import {
   Dimensions,
+  Modal,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -19,34 +20,59 @@ export const MoodSelector: React.FC<MoodSelectorProps> = ({
 }) => {
   const [confettiKey, setConfettiKey] = useState(0);
   const [hasClicked, setHasClicked] = useState(false);
+  const [screenSize] = useState(Dimensions.get("window"));
+  const [confettiOrigin, setConfettiOrigin] = useState({
+    x: Dimensions.get("window").width / 2,
+    y: Dimensions.get("window").height / 2,
+  });
   const selectedMoodData = MOODS.find((mood) => mood.value === selectedMood);
-  const handleSelect = (mood: string) => {
-    Haptics.selectionAsync();
-    onSelect(mood as Mood);
-    setHasClicked(true);
+
+  const triggerConfetti = (originX: number, originY: number) => {
+    setConfettiOrigin({
+      x: originX,
+      y: screenSize.height - originY,
+    });
+    setHasClicked(false);
     setConfettiKey((prev) => prev + 1);
+    requestAnimationFrame(() => {
+      setHasClicked(true);
+    });
   };
 
-  const screenWidth = Dimensions.get("window").width;
+  const handleSelect = (
+    mood: string,
+    event: Parameters<
+      NonNullable<React.ComponentProps<typeof TouchableOpacity>["onPress"]>
+    >[0],
+  ) => {
+    const { pageX, pageY } = event.nativeEvent;
+
+    triggerConfetti(pageX, pageY);
+    Haptics.selectionAsync();
+    onSelect(mood as Mood);
+  };
 
   return (
     <View style={styles.container}>
-      {hasClicked && (
-        <ConfettiCannon
-          key={confettiKey}
-          count={36}
-          origin={{ x: screenWidth / 2, y: -100 }}
-          fadeOut={true}
-          fallSpeed={1800}
-          colors={[
-            COLORS_PALETTE.HAPPY,
-            COLORS_PALETTE.EXCITED,
-            COLORS_PALETTE.CALM,
-            COLORS_PALETTE.ACCENT_1,
-            COLORS_PALETTE.ACCENT_2,
-          ]}
-        />
-      )}
+      <Modal transparent visible={hasClicked} animationType="none">
+        <View pointerEvents="none" style={styles.confettiModal}>
+          <ConfettiCannon
+            key={confettiKey}
+            count={36}
+            origin={confettiOrigin}
+            fadeOut={true}
+            fallSpeed={1800}
+            onAnimationEnd={() => setHasClicked(false)}
+            colors={[
+              COLORS_PALETTE.HAPPY,
+              COLORS_PALETTE.EXCITED,
+              COLORS_PALETTE.CALM,
+              COLORS_PALETTE.ACCENT_1,
+              COLORS_PALETTE.ACCENT_2,
+            ]}
+          />
+        </View>
+      </Modal>
 
       <View style={styles.headerCard}>
         <Text style={styles.eyebrow}>Etapa 1</Text>
@@ -98,11 +124,12 @@ export const MoodSelector: React.FC<MoodSelectorProps> = ({
                 { borderColor: `${mood.color}45` },
                 isSelected && styles.selectedMood,
                 isSelected && {
-                  backgroundColor: `${mood.color}18`,
+                  backgroundColor: `${mood.color}24`,
                   borderColor: mood.color,
+                  shadowColor: mood.color,
                 },
               ]}
-              onPress={() => handleSelect(mood.value)}
+              onPress={(event) => handleSelect(mood.value, event)}
               activeOpacity={0.86}
               accessibilityRole="button"
               accessibilityLabel={`Escolher emoção ${mood.label}`}
@@ -137,6 +164,10 @@ const styles = StyleSheet.create({
   container: {
     marginTop: 10,
     marginBottom: 20,
+    position: "relative",
+  },
+  confettiModal: {
+    flex: 1,
   },
   headerCard: {
     backgroundColor: COLORS_PALETTE.CARD_BG,
@@ -237,8 +268,9 @@ const styles = StyleSheet.create({
     elevation: 2,
   },
   selectedMood: {
-    transform: [{ scale: 0.98 }],
-    shadowOpacity: 0.12,
+    shadowOpacity: 0.14,
+    shadowRadius: 18,
+    elevation: 5,
   },
   emojiBubble: {
     width: 54,
