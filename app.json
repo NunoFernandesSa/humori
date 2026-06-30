@@ -3,6 +3,7 @@
     "name": "Humori",
     "slug": "humori-studio",
     "version": "1.0.0",
+    "scheme": "humori",
     "orientation": "portrait",
     "icon": "./src/assets/images/icon.png",
     "userInterfaceStyle": "light",
